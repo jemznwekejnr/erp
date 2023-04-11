@@ -41,7 +41,7 @@
 											@endfor
 											@endif
 										</td>
-										<td><a href="{{ url('memodetails?id='.$memo->id) }}">@if($memo->status == 'Pending Approval') <button class="btn btn-warning btn-sm">{{ $memo->status }}</button> @elseif($memo->status == 'Approved') <button class="btn btn-success btn-sm">{{ $memo->status }}</button> @elseif($memo->status == 'Rejected') <button class="btn btn-danger btn-sm">{{ $memo->status }}</button> 
+										<td><a href="{{ url('memodetails?id='.$memo->id) }}">@if($memo->status == 'Pending') <button class="btn btn-warning btn-sm">{{ $memo->status }}</button> @elseif($memo->status == 'Approved') <button class="btn btn-success btn-sm">{{ $memo->status }}</button> @elseif($memo->status == 'Rejected') <button class="btn btn-danger btn-sm">{{ $memo->status }}</button> 
 										@else <button class="btn btn-primary btn-sm convertuser">{{ $memo->status }}</button> 
 										@endif</a></td>
 										

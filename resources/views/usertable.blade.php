@@ -44,19 +44,25 @@
 										<th>Role</th>
 										<th>Account Status</th>
 										<th>Date Converted</th>
+										@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 7, 7) == "allow")
 										<th>Action</th>
+										@endif
 									</tr>
 								</thead>
 								<tbody>
 									@foreach($users as $user)
+									@if($user->id != 1)
 									<tr>
 										<td>{{ $user->name }}</td>
 										<td>{{ $user->email }}</td>
-										<td>{{ $user->role }}</td>
+										<td>{{ app\Http\Controllers\Controller::getrolename($user->role) }}</td>
 										<td>@if($user->status == 'Active') <button type="button" class="btn btn-success">{{ $user->status }}</button> @else<button type="button" class="btn btn-danger">{{ $user->status }}</button>@endif </td>
 										<td>{{ $user->created_at }}</td>
+										@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 7, 7) == "allow")
 										<td><a href="{{ url('userprofile?id='.$user->id) }}" class="btn btn-dark px-5">View Details</a></td>
+										@endif
 									</tr>
+									@endif
 									@endforeach
 								</tbody>
 							</table>

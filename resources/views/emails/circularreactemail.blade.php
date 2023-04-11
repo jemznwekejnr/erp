@@ -25,7 +25,7 @@
                                 </tr>
                                 <tr>
                                     <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-                                        A memo which includes you as a recipient has been updated, kindly logon to the platform to view this update..<br /><br />
+                                        The circular you created was rejected, kindly log on to your portal to view this update..<br /><br />
                                         <br /><br /><br />
                                         Regards,
                                         <br /><br />

@@ -191,7 +191,7 @@ class AccessController extends Controller
 
 
         $process = $request->process;
-        $action = implode($request->actions, ',');
+        $action = implode( ',', $request->actions);
 
         if(!empty($request->proid)){
 

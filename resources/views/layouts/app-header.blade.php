@@ -21,11 +21,13 @@
 								</a>
 								<div class="dropdown-menu dropdown-menu-end">
 									<div class="row row-cols-3 g-3 p-3">
+									    @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 4, 2) == "allow")
 										<div class="col text-center">
 											<div class="app-box mx-auto text-primary"><i class='bx bx-group'></i>
 											</div>
-											<div class="app-title">Teams</div>
+											<div class="app-title">Staff</div>
 										</div>
+										@endif
 										<div class="col text-center">
 											<div class="app-box mx-auto text-danger"><i class='bx bx-atom'></i>
 											</div>
@@ -36,21 +38,27 @@
 											</div>
 											<div class="app-title">Tasks</div>
 										</div>
+										@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 2) == "allow")
 										<div class="col text-center">
 											<div class="app-box mx-auto text-info"><i class='bx bx-notification'></i>
 											</div>
-											<div class="app-title">Feeds</div>
+											<div class="app-title">PV</div>
 										</div>
+										@endif
+										@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 1, 2) == "allow")
 										<div class="col text-center">
 											<div class="app-box mx-auto text-warning"><i class='bx bx-file'></i>
 											</div>
-											<div class="app-title">Files</div>
+											<div class="app-title">Memo</div>
 										</div>
+										@endif
+										@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 3, 2) == "allow")
 										<div class="col text-center">
 											<div class="app-box mx-auto text-dark"><i class='bx bx-filter-alt'></i>
 											</div>
-											<div class="app-title">Alerts</div>
+											<div class="app-title">Circular</div>
 										</div>
+										@endif
 									</div>
 								</div>
 							</li>

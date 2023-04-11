@@ -32,14 +32,18 @@
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
+							    @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 8, 7) == "allow")
 								<li><a class="dropdown-item" href="{{ url('editstaff?id='.$_GET['id']) }}">Edit Profile</a>
 								</li>
+								@endif
 								@if(app\Http\Controllers\Controller::checkuser($_GET['id'])->count() == 0)
+								@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 7, 9) == "allow")
 								<li>
 									<hr class="dropdown-divider">
 								</li>
 								<li><a class="dropdown-item convertuser" id="{{ $_GET['id'] }}" href="{{ url('convertuser?id='.$_GET['id']) }}">Convert to User</a>
 								</li>
+								@endif
 								@endif
 								<li>
 									<hr class="dropdown-divider">

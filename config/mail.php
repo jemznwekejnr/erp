@@ -36,14 +36,14 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.reliaenergy.com'),
+            'host' => env('MAIL_HOST', 'smtp.office365.com'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN', 'reliaenergy.com')
+            'local_domain' => env('MAIL_EHLO_DOMAIN', 'office365.com')
         ],
 
         'ses' => [

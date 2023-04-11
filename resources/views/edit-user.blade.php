@@ -61,9 +61,9 @@
 							<div class="col-sm-2">
 								<label for="inputFirstName" class="form-label">Role</label>
 								<select name="role" class="form-control">
-									<option>{{ $user[0]->role }}</option>
+									<option value="{{ $user[0]->role }}">{{ app\Http\Controllers\Controller::getrolename($user[0]->role) }}</option>
 									@foreach($roles as $role)
-									<option>{{ $role->role }}</option>
+									<option value="{{ $role->id }}">{{ $role->role }}</option>
 									@endforeach
 								</select>
 							</div>

@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<!--end breadcrumb-->
-		<div class="card" style="padding-bottom: 30px;">
+		<div class="card" style="padding-bottom: 50px;">
 		       <div class="col-12 col-lg-12">
 		          <div class=" radius-10">
 				<div class="card-header">
@@ -27,7 +27,7 @@
 						<div>
 							<h4 class="mb-0">Compose Circular</h4>
 						</div>
-						<div class="dropdown ms-auto">
+						<!--<div class="dropdown ms-auto">
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
@@ -41,12 +41,12 @@
 								<li><a class="dropdown-item" href="javascript:;">Something else here</a>
 								</li>
 							</ul>
-						</div>
+						</div>-->
 					</div>
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
-					 <form class="row g-3" action="submitcircular" method="post" id="submitcirculars" enctype="multipart/form-data">
+					 <form class="row g-3" action="submitcircular" method="post" id="submitcircular" enctype="multipart/form-data">
 					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Circular Title</label>
@@ -59,7 +59,9 @@
 								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="recipient[]" required>
 								    <option>All Staff</option>
 								    @foreach($staffs as $staff)
+								    @if($staff->id != 1)
 								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
+								    @endif
 								    @endforeach
 								  </select>
 							</div>
@@ -67,19 +69,8 @@
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Circular Body</label>
-							<!--<textarea class="form-control" id="body" name="body" placeholder="Memo Body" style="height: 200px;"></textarea>-->
-							<!--Include the JS & CSS-->
-								<link rel="stylesheet" href="{{ asset('assets/richtexteditor/rte_theme_default.css') }}" />
-								<script type="text/javascript" src="{{ asset('assets/richtexteditor/rte.js') }}"></script>
-								<script type="text/javascript" src="{{ asset('assets/richtexteditor/plugins/all_plugins.js') }}"></script>
-								<textarea name="body" id="div_editor1" required>
-									
-								</textarea>
-
-								<script>
-									var editor1 = new RichTextEditor("#div_editor1");
-									//editor1.setHTMLCode("Use inline HTML or setHTMLCode to init the default content.");
-								</script>
+							<textarea class="form-control" id="body" name="body" placeholder="Circular Body" style="height: 300px;"></textarea>
+							
 								
 					 	</div>
 					 	<div class="col-sm-12">
@@ -104,3 +95,4 @@
 </div>
 <!--end page wrapper -->
 @include("layouts.app-footer")
+@include('process.circular')

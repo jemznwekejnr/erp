@@ -20,6 +20,8 @@ class ProfileController extends Controller
     }
 
     public function createstaff(){
+        
+        if($this->checkrole(Auth::user()->role, 4, 6) == "allow"){
 
         $offices = DB::table('offices')->orderBy('offices', 'asc')->get();
 
@@ -30,6 +32,13 @@ class ProfileController extends Controller
         $designations = DB::table('designations')->orderBy('designations', 'asc')->get();
 
         return view('add-staff', ['offices' => $offices, 'banks' => $banks, 'departments' => $departments, 'designations' => $designations]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
 
     }
 
@@ -45,39 +54,86 @@ class ProfileController extends Controller
 
 
     public function designations(){
+        
+        if($this->checkrole(Auth::user()->role, 8, 2) == "allow"){
 
         $designations = DB::table('designations')->orderBy('designations', 'asc')->get();
 
         return view('designations', ['designations' => $designations]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
     public function departments(){
+        
+        if($this->checkrole(Auth::user()->role, 8, 2) == "allow"){
 
         $departments = DB::table('departments')->orderBy('departments', 'asc')->get();
 
         return view('departments', ['departments' => $departments]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
     public function banks(){
+        
+        if($this->checkrole(Auth::user()->role, 8, 2) == "allow"){
 
         $banks = DB::table('banks')->orderBy('banks', 'asc')->get();
 
         return view('banks', ['banks' => $banks]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
 
     public function offices(){
+        
+        if($this->checkrole(Auth::user()->role, 8, 2) == "allow"){
 
         $offices = DB::table('offices')->orderBy('offices', 'asc')->get();
 
         return view('offices', ['offices' => $offices]);
+        
+        return view('banks', ['banks' => $banks]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
     public function staffprofile(Request $request){
+        
+        if($this->checkrole(Auth::user()->role, 4, 7) == "allow"){
 
         $staff = DB::table('profile')->where('id', $request->id)->get();
 
         return view('staffprofile', ['staff' => $staff]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
 
@@ -369,10 +425,19 @@ class ProfileController extends Controller
 
 
     public function showdesignations(){
+        
+        if($this->checkrole(Auth::user()->role, 8, 2) == "allow"){
 
         $designations = DB::table('designations')->orderBy('designations', 'asc')->get();
 
         return view('process.designation', ['designations' => $designations]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
 
@@ -918,6 +983,8 @@ class ProfileController extends Controller
 
 
     public function editstaff(Request $request){
+        
+        if($this->checkrole(Auth::user()->role, 4, 7) == "allow"){
 
 
         $staff = DB::table('profile')->where('id', $request->id)->get();
@@ -933,6 +1000,13 @@ class ProfileController extends Controller
 
 
         return view('edit-staff', ['staff' => $staff, 'offices' => $offices, 'banks' => $banks, 'departments' => $departments, 'designations' => $designations]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
 
     }
 
@@ -1176,19 +1250,37 @@ class ProfileController extends Controller
 
 
     public function stafftable(){
+        
+    if($this->checkrole(Auth::user()->role, 4, 2) == "allow"){
 
         $staffs = DB::table('profile')->orderBy('firstname')->get();
         //dd($staffs);
 
         return view('stafftable', ['staffs' => $staffs]);
+        
+    }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
 
     public function usertable(){
+        
+    if($this->checkrole(Auth::user()->role, 4, 2) == "allow"){
 
         $users = DB::table('users')->orderBy('name')->get();
 
         return view('usertable', ['users' => $users]);
+        
+    }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
 
@@ -1225,7 +1317,7 @@ class ProfileController extends Controller
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
                 ]);
             }
 

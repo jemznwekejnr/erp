@@ -6,7 +6,7 @@ $("#addsheet").click(function(){
 
 	
 	
-	$("#sheetdata").append('<tr id="'+x+'"><td><p id="sn">'+x+'</p></td><td><input type="text" class="form-control" id="description'+x+'" name="description[]" placeholder="Description"></td><td><input type="text" class="form-control qty" id="qty'+x+'" name="qty[]" value="0"></td><td><input type="text" class="form-control" id="price'+x+'" name="price[]" value="0.00"></td><td><p class="form-control" id="amount'+x+'">0.00</p><input type="hidden" class="form-control" id="amounts'+x+'" name="amounts[]" value="0.00"></td><td><input type="text" class="form-control" id="vatp'+x+'" name="vatp[]" value="0.00"></td><td><p class="form-control" id="vatamount'+x+'">0.00</p><input type="hidden" class="form-control" id="vata'+x+'" name="vata[]" value="0.00"></td><td><p class="form-control" id="grossamount'+x+'">0.00</p><input type="hidden" class="form-control" id="gross'+x+'" name="gross[]" value="0.00"></td><td><input type="text" class="form-control" id="whtp'+x+'" name="whtp[]" value="0.00"></td><td><p class="form-control" id="whtamount'+x+'">0.00</p><input type="hidden" class="form-control" id="whta'+x+'" name="whta[]" value="0.00"></td><td><p class="form-control" id="netamount'+x+'">0.00</p><input type="hidden" class="form-control" id="net'+x+'" name="net[]" value="0.00"></td></tr>');
+	$("#sheetdata").append('<tr id="'+x+'"><td><p id="sn'+x+'">'+x+'</p></td><td><input type="text" class="form-control" id="description'+x+'" name="description[]" placeholder="Description"></td><td><input type="text" class="form-control qty" id="qty'+x+'" name="qty[]" value="0"></td><td><input type="text" class="form-control" id="price'+x+'" name="price[]" value="0.00"></td><td><p class="form-control" id="amount'+x+'">0.00</p><input type="hidden" class="form-control" id="amounts'+x+'" name="amounts[]" value="0.00"></td><td><input type="text" class="form-control" id="vatp'+x+'" name="vatp[]" value="0.00"></td><td><p class="form-control" id="vatamount'+x+'">0.00</p><input type="hidden" class="form-control" id="vata'+x+'" name="vata[]" value="0.00"></td><td><p class="form-control" id="grossamount'+x+'">0.00</p><input type="hidden" class="form-control" id="gross'+x+'" name="gross[]" value="0.00"></td><td><input type="text" class="form-control" id="whtp'+x+'" name="whtp[]" value="0.00"></td><td><p class="form-control" id="whtamount'+x+'">0.00</p><input type="hidden" class="form-control" id="whta'+x+'" name="whta[]" value="0.00"></td><td><p class="form-control" id="netamount'+x+'">0.00</p><input type="hidden" class="form-control" id="net'+x+'" name="net[]" value="0.00"></td></tr>');
 
 
 	$("#counter").val(x);
@@ -44,7 +44,7 @@ $("#minussheet").click(function(){
 $("#sumrow").click(function(){
 
 	var a = $("#counter").val();
-
+    
 	var qty = $("#qty"+a).val();
 
 	var price = $("#price"+a).val();
@@ -90,15 +90,15 @@ $("#sumrow").click(function(){
 
 $("#editrow").click(function(){
 	$("#rowid").toggle();
-	$("#rowid").change(function(){
-		var rowid = $("#rowid").val();
+	
+});
 
+$("#rowid").change(function(){
+		var rowid = $("#rowid").val();
+        
 		$("#counter").val(rowid);
 
 	});
-})
-
-
 
 $("#sumall").click(function(){
 
@@ -177,7 +177,7 @@ $("#submitpv").on('submit', function(event){
 	        if(data.message == 'success'){
 	        	Swal.fire('Success!', data.info, 'success');
 	        	setTimeout(function() {
-				    window.location = '/allpvs';
+				    window.location = '/sentpvs';
 				}, 3000);
 	        }else{
 	        	Swal.fire("Error!", data.info, "error");
@@ -191,9 +191,8 @@ $("#submitpv").on('submit', function(event){
 
 	
 
-	$("#attachbutton").click(function(){
-
-		$("#showattachment").toggle();
+	$("#showattachment").click(function(){
+		$("#hideattachment").toggle();
 	});
 
 
@@ -216,7 +215,7 @@ $("#submitpv").on('submit', function(event){
 	        if(data.message == 'success'){
 	        	Swal.fire('Success!', data.info, 'success');
 	        	setTimeout(function() {
-				    window.location = '/allpvs';
+				    window.location = '/sentpvs';
 				}, 3000);
 	        }else{
 	        	Swal.fire("Error!", data.info, "error");
@@ -234,12 +233,12 @@ $("#submitpv").on('submit', function(event){
 
 
 
-	$("#submitpv").on('submit', function(event){
+	$("#submitpvstatus").on('submit', function(event){
 	      event.preventDefault();
 	      
 	      $.ajax({
 	        type: 'POST',
-	        url: 'submitpv',
+	        url: 'submitpvstatus',
 	        data: new FormData(this),
 	        contentType: false,
 	        cache: false,
@@ -267,7 +266,11 @@ $("#submitpv").on('submit', function(event){
 
 	
 
-	
+	$("#attachbutton").click(function(){
+
+		$("#showattachment").toggle();
+	});
+
 
 
 

@@ -25,9 +25,9 @@
 				<div class="card-header">
 					<div class="d-flex align-items-center">
 						<div>
-							<h6 class="mb-0">Edit User Data</h6>
+							<h6 class="mb-0">Change User Password</h6>
 						</div>
-						<div class="dropdown ms-auto">
+						<!--<div class="dropdown ms-auto">
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
@@ -41,7 +41,7 @@
 								<li><a class="dropdown-item" href="javascript:;">Something else here</a>
 								</li>
 							</ul>
-						</div>
+						</div>-->
 					</div>
 				</div>
 				  <div class="card-body" style="padding-top: 40px;">

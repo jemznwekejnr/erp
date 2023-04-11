@@ -23,7 +23,6 @@
 										<th>Sent To</th>
 										<th>CCs</th>
 										<th>Status</th>
-										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -31,24 +30,29 @@
 									<tr>
 										<td>{{ $pv->created_at }}</td>
 										<td>{{ $pv->title }}</td>
-										<td>{{ $pv->totalnet }}</td>
-										<td>{{ $pv->sentfrom }}</td>
-										<td>{{ $pv->sendto }}</td>
-										<td>{{ $pv->copies }}</td>
+										<td>{{ number_format($pv->totalnet, 2) }}</td>
+										<td>{{ app\Http\Controllers\Controller::staffname($pv->sentform) }}</td>
+										<td>{{ app\Http\Controllers\Controller::staffname($pv->sendto) }}</td>
+										<td>@if(!empty($pv->copies)) |
+											@php $copy = explode(",", $pv->copies) @endphp
+											
+											@for($j=0; $j < count($copy); $j++)
+											{{ app\Http\Controllers\Controller::staffname($copy[$j]) }} |
+											@endfor
+											@endif</td>
 										<td>
-											@if($pv->status == "Pending Approval")
+											<a href="{{ url('pvdetails?id='.$pv->id) }}">@if($pv->status == "Pending")
 											<button type="button" class="btn btn-warning btn-sm">{{ $pv->status }}</button>
 											@elseif($pv->status == "Approved")
 											<button type="button" class="btn btn-primary btn-sm">{{ $pv->status }}</button>
 											@elseif($pv->status == "Paid")
 											<button type="button" class="btn btn-success btn-sm">{{ $pv->status }}</button>
-											@elseid($pv->status == "Rejected")
+											@elseif($pv->status == "Rejected")
 											<button type="button" class="btn btn-danger btn-sm">{{ $pv->status }}</button>
 											@else
 											<button type="button" class="btn btn-info btn-sm">{{ $pv->status }}</button>
-											@endif
+											@endif</a>
 											</td>
-										<td><a href="{{ url('pvdetails?id='.$pv->id) }}" class="btn btn-dark px-5">View More</a></td>
 										
 									</tr>
 									@endforeach

@@ -31,4 +31,9 @@
 	      });
 	    });
 
+
+	$("#showattachment").click(function(){
+		$("#hideattachment").toggle();
+	});
+
 	</script>

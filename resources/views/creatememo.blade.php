@@ -27,7 +27,7 @@
 						<div>
 							<h4 class="mb-0">Compose Memo</h4>
 						</div>
-						<div class="dropdown ms-auto">
+						<!--<div class="dropdown ms-auto">
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
@@ -41,7 +41,7 @@
 								<li><a class="dropdown-item" href="javascript:;">Something else here</a>
 								</li>
 							</ul>
-						</div>
+						</div>-->
 					</div>
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
@@ -60,7 +60,9 @@
 									<option value="">Select Recipient</option>
 									@foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
+								    @if($staff->id != 1)
 								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
+								    @endif
 								    @endif
 								    @endforeach
 								</select>
@@ -71,7 +73,9 @@
 									<option value=""></option>
 								    @foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
+								    @if($staff->id != 1)
 								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
+								    @endif
 								    @endif
 								    @endforeach
 								  </select>
@@ -80,12 +84,8 @@
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Memo Body</label>
-							<!--<textarea class="form-control" id="body" name="body" placeholder="Memo Body" style="height: 200px;"></textarea>-->
-							<!--Include the JS & CSS-->
-								
-								<textarea id="" name="memobody" class="form-control" rows="20" required>
-									
-								</textarea>
+							<textarea class="form-control" id="body" name="memobody" placeholder="Memo Body" style="height: 300px;"></textarea>
+							
 
 								
 								

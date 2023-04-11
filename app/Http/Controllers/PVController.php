@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use DB;
 use Auth;
+use Mail;
 
 class PVController extends Controller
 {
@@ -18,42 +19,91 @@ class PVController extends Controller
     }
 
     public function paymentvoucher(){
+        
+        if($this->checkrole(Auth::user()->role, 2, 6) == "allow"){
 
         $staffs = DB::table('profile')->orderBy('firstname')->get();
 
-        return view('paymentvoucher', ['staffs' => $staffs]);
+        $banks = DB::table('banks')->orderBy('banks', 'asc')->get();
+
+        return view('paymentvoucher', ['staffs' => $staffs, 'banks' => $banks]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
     public function pvdetails(Request $reqtuest){
+        
+        if($this->checkrole(Auth::user()->role, 2, 2) == "allow"){
 
         $pvs = DB::table('pv')->orderBy('created_at', 'desc')->get();
 
         $vsheets = DB::table('vouchersheet')->where('pvid', $pvs[0]->id)->get();
 
-        $pvtrails = DB::table('pvtrail')->where('pvid', $pvs[0]->id)->get();
+        $actions = DB::table('processes')->where('process', 'Payment Voucher')->value('actions');
 
-        return view('pvdetails', ['pvs' => $pvs, 'vsheets' => $vsheets, 'pvtrails' => $pvtrails]);
+        $pvtrails = DB::table('pvtrail')->where('pvid', $pvs[0]->id)->orderBy('created_at', 'desc')->get();
+
+        return view('pvdetails', ['pvs' => $pvs, 'vsheets' => $vsheets, 'pvtrails' => $pvtrails, 'actions' => $actions]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
     public function allpvs(Request $reqtuest){
+        
+        if($this->checkrole(Auth::user()->role, 6, 2) == "allow"){
+
+        //update notification to read
+        $update = DB::table('notifications')
+                        ->where([['staff', Auth::user()->profileid],['type', 'Payment Voucher'],['location', 'allpvs']])
+                        ->update(['status' => 'Read', 'updated_at' => date('Y-m-d H:i:s')]);
 
         $pvs = DB::table('pv')->orderBy('created_at', 'desc')->get();
 
 
         return view('allpvs', ['pvs' => $pvs]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
 
     public function editpv(Request $reqtuest){
+        
+        if($this->checkrole(Auth::user()->role, 2, 7) == "allow"){
 
         $pvs = DB::table('pv')->orderBy('created_at', 'desc')->get();
 
         $vsheets = DB::table('vouchersheet')->where('pvid', $pvs[0]->id)->get();
 
+        return view('editpv', ['pvs' => $pvs, 'vsheets' => $vsheets]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
+
     }
 
 
     public function submitpv(Request $request){
+
+        //dd($request);
 
         $title = $request->title;
         $sendto = $request->sendto;
@@ -68,29 +118,31 @@ class PVController extends Controller
 
         $data = array();
 
-        $data['sentform'] = Auth::user()->id;
+        $data['sentform'] = Auth::user()->profileid;
         $data['title'] = $title;
         $data['sendto'] = $sendto;
-        $data['copies'] = $copies;
+        if(!empty($copies)){
+        $data['copies'] = implode($copies, ",");
+        }
         $data['body'] = $body;
-        $data['status'] = 'Pending Approval';
+        $data['status'] = 'Pending';
 
         if(!empty($attachment)){
-            $$attachmenturl = $$attachment->store('assets/attachment');
+            $attachmenturl = $attachment->store('assets/attachment');
             $data['attachment'] = $attachmenturl;
         }
-        $data['bankname'] = $bankname;
-        $data['accountnumber'] = $accountnumber;
+        $data['bank'] = $bankname;
+        $data['accountno'] = $accountnumber;
         $data['accountname'] = $accountname;
 
-        $data['totalprices'] = $totalprices;
-        $data['totalamounts'] = $totalamounts;
-        $data['totalvats'] = $totalvats;
-        $data['totalgrosses'] = $totalgrosses;
-        $data['totalwhts'] = $totalwhts;
-        $data['totalnets'] = $totalnets;
-        $data['amountinwords'] = $amountinwords;
-        $data['project'] = $project;
+        $data['totalprice'] = $request->totalprices;
+        $data['totalamount'] = $request->totalamounts;
+        $data['totalvat'] = $request->totalvats;
+        $data['totalgross'] = $request->totalgrosses;
+        $data['totalwht'] = $request->totalwhts;
+        $data['totalnet'] = $request->totalnets;
+        $data['amountinwords'] = $request->amountinwords;
+        $data['project'] = $request->project;
         $data['created_at'] = date('Y-m-d H:i:s');
 
 
@@ -104,7 +156,7 @@ class PVController extends Controller
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
-                    'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                    'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
                 ]);
             }
 
@@ -112,32 +164,32 @@ class PVController extends Controller
 
             $count = count($request->description);
 
-            for($i=0; $i<count; $i++){
+            for($i=0; $i<$count; $i++){
 
-                $description = $request->description[$i];
-                $qty = $request->qty[$i];
-                $price = $request->price[$i];
-                $amounts = $request->amounts[$i];
-                $vatp = $request->vatp[$i];
-                $vata = $request->vata[$i];
-                $gross = $request->gross[$i];
-                $whtp = $request->whtp[$i];
-                $whta = $request->whta[$i];
-                $net = $request->net[$i];
+                $description = $request->description;
+                $qty = $request->qty;
+                $price = $request->price;
+                $amounts = $request->amounts;
+                $vatp = $request->vatp;
+                $vata = $request->vata;
+                $gross = $request->gross;
+                $whtp = $request->whtp;
+                $whta = $request->whta;
+                $net = $request->net;
 
                 $sdata = array();
 
                 $sdata['pvid'] = $create;
-                $sdata['description'] = $description;
-                $sdata['qty'] = $qty;
-                $sdata['unitprice'] = $price;
-                $sdata['amount'] = $amounts;
-                $sdata['vatpercent'] = $vatp;
-                $sdata['vatamount'] = $vata;
-                $sdata['grossamount'] = $gross;
-                $sdata['whtpercent'] = $whtp;
-                $sdata['whtamount'] = $whta;
-                $sdata['netamount'] = $net;
+                $sdata['description'] = $description[$i];
+                $sdata['qty'] = $qty[$i];
+                $sdata['unitprice'] = $price[$i];
+                $sdata['amount'] = $amounts[$i];
+                $sdata['vatpercent'] = $vatp[$i];
+                $sdata['vatamount'] = $vata[$i];
+                $sdata['grossamount'] = $gross[$i];
+                $sdata['whtpercent'] = $whtp[$i];
+                $sdata['whtamount'] = $whta[$i];
+                $sdata['netamount'] = $net[$i];
                 $sdata['created_at'] = date('Y-m-d H:i:s');
 
                 
@@ -150,7 +202,7 @@ class PVController extends Controller
                     // something went wrong
                     return response()->json([
                         'message' => 'error',
-                        'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
+                        'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
                     ]);
                 }
 
@@ -172,6 +224,13 @@ class PVController extends Controller
                     
                 }
 
+            //send notification to the actors on the system
+
+            //create recipient notification
+
+            $this->createnotification($sendto, 'Payment Voucher', $title, 'Unread', 'allpvs');
+
+            if(!empty($copies)){
             $total = count($copies);
 
             for($i=0; $i<$total; $i++){
@@ -190,23 +249,15 @@ class PVController extends Controller
                         
                     }
 
-            }
-
-
-            //send notification to the actors on the system
-
-            //create recipient notification
-
-            $this->createnotification($sendto, 'Payment Voucher', $title, 'Unread', 'allpvs');
-
-
-            //create copies notifications
-            for($j=0; $j<$total; $j++){
 
                 $this->createnotification($copies[$i], 'Payment Voucher', $title, 'Unread', 'allpvs');
 
             }
 
+        }
+
+
+            
 
             //log the event
 
@@ -240,6 +291,7 @@ class PVController extends Controller
 
     public function submiteditpv(Request $request){
 
+        //dd($request);
 
         $title = $request->title;
         $sendto = $request->sendto;
@@ -254,44 +306,42 @@ class PVController extends Controller
 
         $data = array();
 
-        $data['sentform'] = Auth::user()->id;
+        
         $data['title'] = $title;
-        $data['sendto'] = $sendto;
-        $data['copies'] = $copies;
         $data['body'] = $body;
 
         if(!empty($attachment)){
-            $$attachmenturl = $$attachment->store('assets/attachment');
+            $attachmenturl = $attachment->store('assets/attachment');
             $data['attachment'] = $attachmenturl;
         }
-        $data['bankname'] = $bankname;
-        $data['accountnumber'] = $accountnumber;
+        $data['bank'] = $bankname;
+        $data['accountno'] = $accountnumber;
         $data['accountname'] = $accountname;
 
-        $data['totalprices'] = $totalprices;
-        $data['totalamounts'] = $totalamounts;
-        $data['totalvats'] = $totalvats;
-        $data['totalgrosses'] = $totalgrosses;
-        $data['totalwhts'] = $totalwhts;
-        $data['totalnets'] = $totalnets;
+        $data['totalprice'] = $request->totalprices;
+        $data['totalamount'] = $request->totalamounts;
+        $data['totalvat'] = $request->totalvats;
+        $data['totalgross'] = $request->totalgrosses;
+        $data['totalwht'] = $request->totalwhts;
+        $data['totalnet'] = $request->totalnets;
         $data['amountinwords'] = $amountinwords;
         $data['project'] = $project;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
 
         
-        try {
+        //try {
 
                 $update = DB::table('pv')->where('id', $request->id)->update($data);
 
-                } catch (\Exception $e) {
+                /*} catch (\Exception $e) {
                     DB::rollback();
                     // something went wrong
                     return response()->json([
                         'message' => 'error',
                         'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
                     ]);
-                }
+                }*/
 
         if($update){
 
@@ -299,7 +349,7 @@ class PVController extends Controller
 
             $count = count($request->description);
 
-            for($i=0; $i<count; $i++){
+            for($i=0; $i<$count; $i++){
 
                 $description = $request->description[$i];
                 $qty = $request->qty[$i];
@@ -314,7 +364,7 @@ class PVController extends Controller
 
                 $sdata = array();
 
-                $sdata['pvid'] = $create;
+                $sdata['pvid'] = $request->id;
                 $sdata['description'] = $description;
                 $sdata['qty'] = $qty;
                 $sdata['unitprice'] = $price;
@@ -328,20 +378,32 @@ class PVController extends Controller
                 $sdata['created_at'] = date('Y-m-d H:i:s');
 
                 
-                try {
+                //try {
 
                 $addsheet = DB::table('vouchersheet')->insert($sdata);
 
-                } catch (\Exception $e) {
+                /*} catch (\Exception $e) {
                     DB::rollback();
                     // something went wrong
                     return response()->json([
                         'message' => 'error',
                         'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
                     ]);
-                }
+                }*/
 
             }
+
+
+            //create pv trail
+            $pdata = array();
+
+            $pdata['pvid'] = $request->id;
+            $pdata['changes'] = $request->changes;
+            $pdata['actor'] = Auth::user()->profileid;
+            $pdata['actor_type'] = "Sender";
+            $pdata['created_at'] = date('Y-m-d H:i:s');
+
+            $pvtrail = DB::table('pvtrail')->insert($pdata);
 
 
             //send email to actors
@@ -359,6 +421,10 @@ class PVController extends Controller
                     
                 }
 
+                //create recipient notification
+                $this->createnotification($sendto, 'Payment Voucher', $title, 'Unread', 'sentpvs');
+
+            if(!empty($copies)){
             $total = count($copies);
 
             for($i=0; $i<$total; $i++){
@@ -377,23 +443,14 @@ class PVController extends Controller
                         
                     }
 
-            }
-
-
-            //send notification to the actors on the system
-
-            //create recipient notification
-
-            $this->createnotification($sendto, 'Payment Voucher', $title, 'Unread', 'allpvs');
-
-
-            //create copies notifications
-            for($j=0; $j<$total; $j++){
-
+                //create copies notifications
                 $this->createnotification($copies[$i], 'Payment Voucher', $title, 'Unread', 'allpvs');
 
             }
 
+
+            }
+            
 
             //log the event
 
@@ -429,15 +486,33 @@ class PVController extends Controller
 
         $pvid = $request->pvid;
         $status = $request->status;
-        $remarl = $request->remark;
+        $remark = $request->remark;
         $sentfrom = $request->sentfrom;
+        $title = $request->title;
+        //dd($request);
+
+        try {
+            $update = DB::table('pv')->where('id', $pvid)->update(['status' => $status, 'updated_at' => date('Y-m-d H:i:s')]);
+
+            } catch (\Exception $e) {
+                    DB::rollback();
+                    // something went wrong
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
+                    ]);
+                }
+
+        if($update){
+        
 
         $data = array();
 
-        $sdata['pvid'] = $pvid;
+        $data['pvid'] = $pvid;
         $data['status'] = $status;
         $data['remark'] = $remark;
-        $data['actor'] = Auth::user()->id;
+        $data['actor'] = Auth::user()->profileid;
+        $data['actor_type'] = "Recipient";
         $data['created_at'] = date('Y-m-d H:i:s');
 
         
@@ -476,7 +551,7 @@ class PVController extends Controller
 
             //create recipient notification
 
-            $this->createnotification($sentfrom, 'Payment Voucher', $title, 'Unread', 'allpvs');
+            $this->createnotification($sentfrom, 'Payment Voucher', $title, 'Unread', 'sentpvs');
 
             //log the event
 
@@ -497,16 +572,43 @@ class PVController extends Controller
 
             return response()->json([
                 'message' => 'error',
-                'info' => 'Payment voucher update failed, please try again.'
+                'info' => 'Payment voucher update failed, please try again'
             ]);
         }
+
+    }else{
+
+        //log the event
+
+            $this->logevent("Attempted to update payment voucher with title ".$title." but failed");
+
+
+            return response()->json([
+                'message' => 'error',
+                'info' => 'Payment voucher update failed, please try again.'
+            ]);
+    }
     }
 
 
     public function sentpvs(){
+        
+        if($this->checkrole(Auth::user()->role, 2, 2) == "allow"){
+
+        //update notification to read
+        $update = DB::table('notifications')
+                        ->where([['staff', Auth::user()->profileid],['type', 'Payment Voucher'],['location', 'sentpvs']])
+                        ->update(['status' => 'Read', 'updated_at' => date('Y-m-d H:i:s')]);
 
         $pvs = DB::table('pv')->orderBy('created_at', 'desc')->where('sentform', Auth::user()->profileid)->get();
 
         return view('sentpvs', ['pvs' => $pvs]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 }

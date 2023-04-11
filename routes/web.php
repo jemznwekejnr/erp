@@ -154,6 +154,10 @@ Route::get('/listcirculars', [CircularController::class, 'listcirculars']);
 
 Route::post('submitcircular', [CircularController::class, 'submitcircular']);
 
+Route::post('submitcircularstatus', [CircularController::class, 'submitcircularstatus']);
+
+Route::get('/mycirculars', [CircularController::class, 'mycirculars']);
+
 
 /**************************** Role Privileges *************************************/
 

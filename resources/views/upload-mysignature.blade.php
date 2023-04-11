@@ -15005,10 +15005,10 @@ be a descendant of the grid when it is being dragged.
 					 		<!--image upload starts here--->
 	                	<div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new border-gray">
-	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
+	                      <img src="{{ asset('assets/images/signature.jpg') }}" width="250px" alt="...">
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists border-gray">
-	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
+	                      <img src="{{ asset('assets/images/signature.jpg') }}" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	

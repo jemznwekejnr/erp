@@ -12,7 +12,7 @@
 								<div class="d-flex align-items-center">
 									<div>
 										<p class="mb-0">Total Expenses {{ date('F, Y') }}</p>
-										<h4 class="my-1 text-warning">0.00</h4>
+										<h4 class="my-1 text-warning">{{ number_format(app\Http\Controllers\Controller::expensesthismonth(), 2) }}</h4>
 									</div>
 									<div class="text-warning ms-auto font-35">&#8358;
 									</div>
@@ -40,7 +40,7 @@
 								<div class="d-flex align-items-center">
 									<div>
 										<p class="mb-0">Total Expenses {{ date('Y') }}</p>
-										<h4 class="my-1 text-danger">0.00</h4>
+										<h4 class="my-1 text-danger">{{ number_format(app\Http\Controllers\Controller::expensesthisyear(), 2) }}</h4>
 									</div>
 									<div class="text-danger ms-auto font-35">&#8358;
 									</div>
@@ -159,7 +159,6 @@
 										<th>Sent To</th>
 										<th>CCs</th>
 										<th>Status</th>
-										<th>Action</th>
 									</tr>
 							 </thead>
 							 <tbody>@foreach($pvs as $pv)
@@ -167,23 +166,27 @@
 										<td>{{ $pv->created_at }}</td>
 										<td>{{ $pv->title }}</td>
 										<td>{{ $pv->totalnet }}</td>
-										<td>{{ $pv->sentfrom }}</td>
-										<td>{{ $pv->sendto }}</td>
-										<td>{{ $pv->copies }}</td>
+										<td>{{ app\Http\Controllers\Controller::staffname($pv->sentform) }}</td>
+										<td>{{ app\Http\Controllers\Controller::staffname($pv->sendto) }}</td>
+										<td>@if(!empty($pv->copies)) |
+											@php $copy = explode(",", $pv->copies) @endphp
+											@for($j=0; $j < count($copy); $j++)
+											{{ app\Http\Controllers\Controller::staffname($copy[$j]) }} |
+											@endfor
+											@endif</td>
 										<td>
-											@if($pv->status == "Pending Approval")
+											<a href="{{ url('pvdetails?id='.$pv->id) }}">@if($pv->status == "Pending Approval")
 											<button type="button" class="btn btn-warning btn-sm">{{ $pv->status }}</button>
 											@elseif($pv->status == "Approved")
 											<button type="button" class="btn btn-primary btn-sm">{{ $pv->status }}</button>
 											@elseif($pv->status == "Paid")
 											<button type="button" class="btn btn-success btn-sm">{{ $pv->status }}</button>
-											@elseid($pv->status == "Rejected")
+											@elseif($pv->status == "Rejected")
 											<button type="button" class="btn btn-danger btn-sm">{{ $pv->status }}</button>
 											@else
 											<button type="button" class="btn btn-info btn-sm">{{ $pv->status }}</button>
-											@endif
+											@endif</a>
 											</td>
-										<td><a href="{{ url('pvdetails?id='.$pv->id) }}" class="btn btn-dark px-5">View More</a></td>
 										
 									</tr>
 									@endforeach

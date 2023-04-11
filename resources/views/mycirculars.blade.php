@@ -30,28 +30,9 @@
 
 					
 						@foreach($circluars as $circluar)
-							<a href="{{ url('circulardetails?id='.$circluar->id) }}">
-								<div class="col alert alert-info" style="height: 150px; overflow: scroll;">
-								<div class="shadow p-4 rounded">
-									<div class="row">
-										<div class="col-sm-10">
-						 					{{ $circluar->title }}<br /><br />
-										</div>
-										@if($circluar->sentform == Auth::user()->profileid)
-									 	<div class="col-sm-2 text-right float-right">
-									 		@if($circluar->status == "Approved")
-											<button class="btn btn-success" type="button" id="button">{{ $circluar->status }}</button>
-											@elseif($circluar->status == "Rejected")
-											<button class="btn btn-danger" type="button" id="button">{{ $circluar->status }}</button>
-											@else
-											<button class="btn btn-warning" type="button" id="button">{{ $circluar->status }}</button>
-											@endif
-										</div>
-										@endif
-									</div> 
-									
-
-									<small>{{ $circluar->created_at }}</small> | <small>Total Recipients {{ $circluar->total_recipient }}</small>
+							<a href="{{ url('circulardetails?id='.$circluar->circularid) }}"><div class="col alert alert-info" style="height: 150px; overflow: scroll;">
+								<div class="shadow p-4 rounded">{{ app\Http\Controllers\Controller::circulartitle($circluar->circularid) }}<br /><br />
+									<small>{{ $circluar->created_at }}</small>
 								</div>
 								
 							</div></a><br /><br />

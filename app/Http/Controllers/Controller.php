@@ -22,6 +22,18 @@ class Controller extends BaseController
         return $staff[0]->firstname." ".$staff[0]->surname." ".$staff[0]->othername;
     }
 
+
+    public static function staffemail($user){
+
+        return DB::table('profile')->where('id', $user)->value('email');
+
+    }
+    
+    public static function getrolename($role){
+        
+        return DB::table('role')->where('id', $role)->value('role');
+    }
+
     public static function staffpics($user){
 
         return DB::table('profile')->where('id', $user)->value('image');
@@ -127,7 +139,7 @@ class Controller extends BaseController
     }
 
 
-    public function checkrole($role, $process, $action){
+    public static function checkrole($role, $process, $action){
 
         if(DB::table('privileges')->where([['role', $role], ['privilege', $process], ['action', $action]])->count() == 1){
 
@@ -143,11 +155,11 @@ class Controller extends BaseController
     }
 
     //check if staff profile is completed
-    public function checkprofile($staff){
+    public static function checkprofile($staff){
 
         $check = DB::table('profile')->where('id', $staff)->get();
 
-        if(empty($check[0]->staffid) || empty($check[0]->surname) || empty($check[0]->firstname) || empty($check[0]->email) || empty($check[0]->phone) || empty($check[0]->dob) || empty($check[0]->doe) || empty($check[0]->department) || empty($check[0]->designation) || empty($check[0]->office) || empty($check[0]->gender) || empty($check[0]->accountno) || empty($check[0]->bankname) || empty($check[0]->image) || empty($check[0]->signature)){
+        if(empty($check[0]->staffid) || empty($check[0]->surname) || empty($check[0]->firstname) || empty($check[0]->email) || empty($check[0]->phone) || empty($check[0]->dob) || empty($check[0]->doe) || empty($check[0]->department) || empty($check[0]->designation) || empty($check[0]->office) || empty($check[0]->gender) || empty($check[0]->image) || empty($check[0]->signature)){
 
             return "Incomplete";
 
@@ -213,6 +225,30 @@ class Controller extends BaseController
             return $seconds . " seconds "; 
         }
         
+    }
+
+
+    public static function circularrecipients($circular){
+
+
+        return DB::table('circular_recipeint')->where('circularid', $circular)->get();
+
+    }
+
+
+    public static function circulartitle($circular){
+
+        return DB::table('circular')->where('id', $circular)->value('title');
+    }
+    
+    public static function expensesthisyear(){
+        
+        return DB::table('pv')->where([['status', 'Approved'], ['created_at', 'LIKE', date('Y').'%']])->sum('totalnet');
+    }
+    
+    public static function expensesthismonth(){
+        
+        return DB::table('pv')->where([['status', 'Approved'], ['created_at', 'LIKE', date('Y-m').'%']])->sum('totalnet');
     }
 
 }

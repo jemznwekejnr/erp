@@ -31,14 +31,16 @@
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="javascript:;">Action</a>
+								@if($pvs[0]->sentform == Auth::user()->profileid)
+								@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 7) == "allow")
+								<li><a class="dropdown-item" href="{{ url('editpv?id='.$pvs[0]->id) }}">Edit PV</a>
 								</li>
-								<li><a class="dropdown-item" href="javascript:;">Another action</a>
-								</li>
+								@endif
+								@endif
 								<li>
 									<hr class="dropdown-divider">
 								</li>
-								<li><a class="dropdown-item" href="javascript:;">Something else here</a>
+								<li><a class="dropdown-item" href="{{ url('dashboard') }}">Back to Dashboard</a>
 								</li>
 							</ul>
 						</div>
@@ -48,6 +50,7 @@
 				  	<div class="form-body">
 					 
 					 	<div class="col-sm-12">
+
 					 		<label for="inputFirstName" class="form-label">PV Title</label>
 							<p class="form-control" id="title">{{ $pvs[0]->title }}</p>
 					 	</div><br />
@@ -55,37 +58,33 @@
 					 	<div class="row g-3">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV Recipient</label>
-								<p class="form-control" id="pvrecipient">{{ $pvs[0]->sendto }}</p>
+								<p class="form-control" id="pvrecipient">{{ app\Http\Controllers\Controller::staffname($pvs[0]->sendto) }}</p>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV CC</label>
-								<p class="form-control" id="pvcc">{{ $pvs[0]->copies }}</p>
+								<p class="form-control" id="pvcc">@if(!empty($pvs[0]->copies)) |
+											@php $copy = explode(",", $pvs[0]->copies) @endphp
+											@for($j=0; $j < count($copy); $j++)
+											{{ app\Http\Controllers\Controller::staffname($copy[$j]) }} |
+											@endfor
+											@endif</p>
 							</div>
 						</div>
 					</div>
 					 	<div class="col-sm-12">
-					 		<label for="inputFirstName" class="form-label">Memo Body</label>
-							<p class="form-control" id="pvrecipient">{{ $pvs[0]->body }}</p>
+					 		<label for="inputFirstName" class="form-label">PV Body</label>
+							<p class="form-control" id="" style="height: 100px !important; overflow: scroll;">{{ $pvs[0]->body }}</p>
 								
 					 	</div>
 
-					 	@if(!empty(pvs[0]->attachment))
-					 	<div class="col-sm-12" style="margin-top: 20px;" id="attachbutton">
-						<div class="row g-3">
-						 	<div class="col-sm-6">
-								<a href="#" class="btn btn-primary">PV Attachment</a>
-							</div>
-						 	<div class="col-sm-6 text-right float-right">
-								
-							</div>
+					 	@if(!empty($pvs[0]->attachment))
+					 	<p class="col-sm-12">
+					 	<button class="btn btn-info" type="button" id="showattachment">Attachment Display</button>
+					 	</p>
+					 	<div class="col-sm-12" id="hideattachment" style="display: none;">
+						 	<iframe src="{{ asset($pvs[0]->attachment) }}" width="100%" height="1000px"></iframe>
 						</div>
-					</div><br /><br />
-
-
-					 	<div class="col-sm-12" style="display: none;" id="showattachment">
-						 	<iframe src="{{ asset(memo[0]->sendto) }}" width="100%" height="1000px"></iframe>
-						</div>
-						@endif
+						@endif<br /><br />
 						
 					 
 					 </div>
@@ -147,14 +146,14 @@
 							 		<th class="tdsn"><b></b></th>
 							 		<th class="tdds"><b>Total</b></th>
 							 		<th class="tdqt"><b></b></th>
-							 		<th class="tdpr"><b>{{ $pvs[0]->totalprices }} </b></th>
-							 		<th class="tdam"><b>{{ $pvs[0]->totalamounts }} </b></th>
+							 		<th class="tdpr"><b>{{ $pvs[0]->totalprice }} </b></th>
+							 		<th class="tdam"><b>{{ $pvs[0]->totalamount }} </b></th>
 							 		<th class="tdva"><b></b></th>
-							 		<th class="tdvt"><b>{{ $pvs[0]->totalvats }}</b></th>
-							 		<th class="tdgr"><b>{{ $pvs[0]->totalgrosses }} </b></th>
+							 		<th class="tdvt"><b>{{ $pvs[0]->totalvat }}</b></th>
+							 		<th class="tdgr"><b>{{ $pvs[0]->totalgross }} </b></th>
 							 		<th class="tdwh"><b></b></th>
-							 		<th class="tdwt"><b>{{ $pvs[0]->totalwhts }} </b></th>
-							 		<th class="tdnt"><b>{{ $pvs[0]->totalnets }} </b></th>
+							 		<th class="tdwt"><b>{{ $pvs[0]->totalwht }} </b></th>
+							 		<th class="tdnt"><b>{{ $pvs[0]->totalnet }} </b></th>
 
 
 							</tfoot>
@@ -169,8 +168,8 @@
 					<br /><br />
 						<div class="col-sm-12" style="margin-top: 50px;">
 					 		
-							<p id="signature"><imp src="{{ asset(app\Http\Controllers\Controller::staffsignature(pvs[0]->sentfrom)) }}" width="50px"></p>
-							<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname(pvs[0]->sentfrom)) @endphp</b></p>
+							<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature($pvs[0]->sentform)) }}" width="150px"></p>
+							<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname($pvs[0]->sentform) @endphp</b></p>
 								
 					 	</div>
 				</div>
@@ -188,11 +187,11 @@
 						<div class="row g-3">
 						 	<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Bank Name</label>
-								<p class="form-control" id="title">{{ $pvs[0]->bankname }}</p>
+								<p class="form-control" id="title">{{ $pvs[0]->bank }}</p>
 							</div>
 							<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Account Number</label>
-								<p class="form-control" id="title">{{ $pvs[0]->accountnumber }}</p>
+								<p class="form-control" id="title">{{ $pvs[0]->accountno }}</p>
 							</div>
 							<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Account Name</label>
@@ -203,10 +202,13 @@
 					</div>
 				</div>
 
-				<form class="row g-3" action="submitpvstatus" id="submitpvstatus" method="post">
+				@if($pvs[0]->sentform != Auth::user()->profileid)
+				@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 1) == "allow" || app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 3) == "allow" || app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 4) == "allow")
+				<form action="submitpvstatus" id="submitpvstatus" method="post">
 					@csrf
+					<input type="hidden" name="title" value="{{ $pvs[0]->title }}">
 					<input type="hidden" name="pvid" value="{{ $pvs[0]->id }}">
-					<input type="hidden" name="sentfrom" value="{{ $pvs[0]->sentfrom }}">
+					<input type="hidden" name="sentfrom" value="{{ $pvs[0]->sentform }}">
 				<div class="card" style="padding-bottom: 30px;">
 					<div class="card-body">
 						<div class="card-header">
@@ -219,6 +221,24 @@
 						 		<label for="inputFirstName" class="form-label">Status</label>
 								<select name="status" id="status" class="form-control" required>
 									<option value="">Select Status</option>
+									@php $actioned = explode(",", $actions) @endphp
+									@php $total = count($actioned) @endphp
+									@for($i=0; $i < $total; $i++)
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Approved" || app\Http\Controllers\Controller::getactions($actioned[$i]) == "Rejected" || app\Http\Controllers\Controller::getactions($actioned[$i]) == "Verified" || app\Http\Controllers\Controller::getactions($actioned[$i]) == "Paid")
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == Approved && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 1) == "allow")
+									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
+									@endif
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == Rejected && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 3) == "allow")
+									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
+									@endif
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == Verified && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 4) == "allow")
+									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
+									@endif
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == Paid && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 5) == "allow")
+									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
+									@endif
+									@endif
+									@endfor
 								</select>
 							</div>
 							<div class="col-sm-8">
@@ -235,6 +255,8 @@
 					</div>
 				</div>
 				</form>
+				@endif
+				@endif
 
 				<div class="card" style="padding-bottom: 30px;">
 					<div class="card-body">
@@ -243,37 +265,38 @@
 						</div>
 						<hr/>
 					@foreach($pvtrails as $pvtrail)
+					@if($pvtrail->actor_type == "Sender")
 					<div class="col-sm-12">
 						<div class="row g-3">
-							<div class="col-sm-2">
-						 		<label for="inputFirstName" class="form-label">Date</label>
+						 	<div class="col-sm-6 form-control alert alert-warning" style="height: 150px; width: 60%; overflow: scroll;">
+						 		<p>{{ $pvtrail->changes }}</p><br />
+						 		@if(!empty($pvtrail->attachment))<a href="{{ $pvtrail->attachment }}" target="_blank" class="btn btn-primary"> Download Attachment</a>@endif
+						 		<br /><br />
+						 		<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature($pvtrail->actor)) }}" width="100px"></p>
+								<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname($pvtrail->actor) @endphp</b></p>
 								<p>{{ $pvtrail->created_at }}</p>
-							</div>
-						 	<div class="col-sm-2">
-						 		<label for="inputFirstName" class="form-label">Status</label>
-						 		@if($pvtrail->status == "Pending Approval")
-								<button type="button" class="btn btn-warning btn-sm">{{ $pvtrail->status }}</button>
-								@elseif($pvtrail->status == "Approved")
-								<button type="button" class="btn btn-primary btn-sm">{{ $pvtrail->status }}</button>
-								@elseif($pvtrail->status == "Paid")
-								<button type="button" class="btn btn-success btn-sm">{{ $pvtrail->status }}</button>
-								@elseid($pvtrail->status == "Rejected")
-								<button type="button" class="btn btn-danger btn-sm">{{ $pvtrail->status }}</button>
-								@else
-								<button type="button" class="btn btn-info btn-sm">{{ $pvtrail->status }}</button>
-								@endif
-							</div>
-							<div class="col-sm-6">
-						 		<label for="inputFirstName" class="form-label">Remark</label>
-								<p>{{ $pvtrail->status }}</p>
-							</div>
-						 	<div class="col-sm-2 text-right float-right">
-						 		<p><p id="signature"><imp src="{{ asset(app\Http\Controllers\Controller::staffsignature($pvtrail->actor)) }}" width="50px"></p>
-							<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname($pvtrail->actor)) @endphp</b></p></p>
+							</div><br /><br />
+						</div>
+					</div>
+					@else
+					<div class="col-sm-12">
+						<div class="row g-3">
+						 	<div class="col-sm-6 form-control alert alert-info float-right" style="height: 150px; width: 60%; overflow: scroll; margin-left: 40%;">
+						 		<h5>@if($pvtrail->status == 'Pending') <button class="btn btn-warning px-5">{{ $pvtrail->status }}</button> @elseif($pvtrail->status == 'Approved') <button class="btn btn-success px-5">{{ $pvtrail->status }}</button> @elseif($pvtrail->status == 'Rejected') <button class="btn btn-danger px-5">{{ $pvtrail->status }}</button> 
+										@else <button class="btn btn-primary px-5 convertuser">{{ $pvtrail->status }}</button> 
+										@endif</h5>
+						 		<p>{{ $pvtrail->remark }}</p>
+						 		<br /><br />
+						 		<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature($pvtrail->actor)) }}" width="100px"></p>
+								<p id="sender"><b>@php echo app\Http\Controllers\Controller::staffname($pvtrail->actor) @endphp</b></p>
+								<p>{{ $pvtrail->created_at }}</p>
 							</div>
 						</div>
 					</div><br /><br />
-					@endforeach
+					@endif
+					
+				@endforeach
+					<br /><br />
 					</div>
 				</div>
 

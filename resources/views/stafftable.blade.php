@@ -13,11 +13,11 @@
 							<ol class="breadcrumb mb-0 p-0">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Staff Records</li>
+								<li class="breadcrumb-item " aria-current="page">Staff Records</li>
 							</ol>
 						</nav>
 					</div>
-					<div class="ms-auto">
+					<!--<div class="ms-auto">
 						<div class="btn-group">
 							<button type="button" class="btn btn-primary">Settings</button>
 							<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
@@ -28,10 +28,10 @@
 								<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
 							</div>
 						</div>
-					</div>
+					</div>-->
 				</div>
 				<!--end breadcrumb-->
-				<h6 class="mb-0 text-uppercase">DataTable Example</h6>
+				<h6 class="mb-0 text-uppercase">ALl Staff Table</h6>
 				<hr/>
 				<div class="card">
 					<div class="card-body">
@@ -50,6 +50,7 @@
 								</thead>
 								<tbody>
 									@foreach($staffs as $staff)
+									@if($staff->id != 1)
 									<tr>
 										<td>{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername}}</td>
 										<td>{{ $staff->department }}</td>
@@ -57,9 +58,25 @@
 										<td>{{ $staff->office }}</td>
 										<td>{{ $staff->doe }}</td>
 										<td>
-											@if(app\Http\Controllers\Controller::checkuser($staff->id)->count() == 0)<button class="btn btn-danger px-5 convertuser" id="{{ $staff->id }}">Convert User</button>@elseif(app\Http\Controllers\Controller::checkuser($staff->id)[0]->status != 'Active') <button class="btn btn-warning px-5">Suspended</button> @else <button href="{{ url('staffprofile?id='.$staff->id) }}" class="btn btn-primary px-5">User</button> @endif</td>
+										@if(app\Http\Controllers\Controller::checkuser($staff->id)->count() == 0)
+										
+										@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 7, 9) == "allow")
+										<button class="btn btn-danger px-5 convertuser" id="{{ $staff->id }}">Convert User</button>
+										
+										@endif
+										
+										@elseif(app\Http\Controllers\Controller::checkuser($staff->id)[0]->status != 'Active') <button class="btn btn-warning px-5">Suspended</button> 
+										
+										@else 
+										<button href="{{ url('staffprofile?id='.$staff->id) }}" class="btn btn-primary px-5">User</button>
+										
+										 
+										
+										@endif
+										</td>
 										<td><a href="{{ url('staffprofile?id='.$staff->id) }}" class="btn btn-dark px-5">View Details</a></td>
 									</tr>
+									@endif
 									@endforeach
 								</tbody>
 							</table>

@@ -14997,16 +14997,17 @@ be a descendant of the grid when it is being dragged.
             <input type="hidden" name="user" value="{{ $_GET['id'] }}">
 					 	<div class="col-sm-12">
 					 	<center>
+					 	<a href="{{ url('https://www.slazzer.com/') }}" target="_blank">Click this link to remove background from your signature</a><br /><br /><br />
 
 
 
-					 		<!--image upload starts here--->
+					 	<!--image upload starts here--->
 	                	<div class="fileinput fileinput-new text-center" data-provides="fileinput">
 	                    <div class="fileinput-new border-gray">
-	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature($_GET['id']))) {{ asset(app\Http\Controllers\Controller::staffsignature($_GET['id'])) }} @else {{ asset('assets/images/signature.png') }} @endif" width="250px" alt="...">
+	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div class="fileinput-preview fileinput-exists border-gray">
-	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature($_GET['id']))) {{ asset(app\Http\Controllers\Controller::staffsignature($_GET['id'])) }} @else {{ asset('assets/images/signature.png') }} @endif" width="250px" alt="...">
+	                      <img src="@if(!is_null(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid))) {{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }} @else {{ asset('assets/images/signature.jpg') }} @endif" width="250px" alt="...">
 	                    </div>
 	                    <div>
 	                    	

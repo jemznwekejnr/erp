@@ -32,8 +32,10 @@
 							</a>
 							<ul class="dropdown-menu">
 								@if($memo[0]->sentform == Auth::user()->profileid)
+								@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 1, 7) == "allow")
 								<li><a class="dropdown-item" href="{{ url('editmemo?id='.$memo[0]->id) }}">Edit Memo</a>
 								</li>
+								@endif
 								@endif
 								<li>
 									<hr class="dropdown-divider">
@@ -97,6 +99,7 @@
 		</div>
 
 		@if($memo[0]->sentform != Auth::user()->profileid)
+		@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 1, 1) == "allow" || app\Http\Controllers\Controller::checkrole(Auth::user()->role, 1, 3) == "allow" || app\Http\Controllers\Controller::checkrole(Auth::user()->role, 1, 4) == "allow")
 		<form action="memoreaction" id="memoreaction" method="post">
 		@csrf
 		<div class="card" style="padding-bottom: 30px;">
@@ -117,8 +120,16 @@
 									@php $actioned = explode(",", $actions) @endphp
 									@php $total = count($actioned) @endphp
 									@for($i=0; $i < $total; $i++)
-									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) != "View")
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Approved" || app\Http\Controllers\Controller::getactions($actioned[$i]) == "Rejected" || app\Http\Controllers\Controller::getactions($actioned[$i]) == "Verified")
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Approved" && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 1, 1) == "allow")
 									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
+									@endif
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Rejected" && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 1, 3) == "allow")
+									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
+									@endif
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Rejected" && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 1, 4) == "allow")
+									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
+									@endif
 									@endif
 									@endfor
 								</select>
@@ -137,6 +148,7 @@
 					</div>
 				</div>
 		</form>
+		@endif
 		@endif
 
 		<div class="card" style="padding-bottom: 30px;">
@@ -164,7 +176,7 @@
 					<div class="col-sm-12">
 						<div class="row g-3">
 						 	<div class="col-sm-6 form-control alert alert-info float-right" style="height: 150px; width: 60%; overflow: scroll; margin-left: 40%;">
-						 		<h5>@if($memotrail->status == 'Pending Approval') <button class="btn btn-warning px-5">{{ $memotrail->status }}</button> @elseif($memotrail->status == 'Approved') <button class="btn btn-success px-5">{{ $memotrail->status }}</button> @elseif($memotrail->status == 'Rejected') <button class="btn btn-danger px-5">{{ $memotrail->status }}</button> 
+						 		<h5>@if($memotrail->status == 'Pending') <button class="btn btn-warning px-5">{{ $memotrail->status }}</button> @elseif($memotrail->status == 'Approved') <button class="btn btn-success px-5">{{ $memotrail->status }}</button> @elseif($memotrail->status == 'Rejected') <button class="btn btn-danger px-5">{{ $memotrail->status }}</button> 
 										@else <button class="btn btn-primary px-5 convertuser">{{ $memotrail->status }}</button> 
 										@endif</h5>
 						 		<p>{{ $memotrail->remark }}</p>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Pvtrail extends Migration
+class CircularRecipient extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class Pvtrail extends Migration
      */
     public function up()
     {
-        Schema::create('pvtrail', function (Blueprint $table) {
+        Schema::create('circular_recipeint', function (Blueprint $table) {
             $table->id();
-            $table->string("pvid");
-            $table->string("changes")->nullable();
-            $table->string("status")->nullable();
-            $table->string("remark")->nullable();
-            $table->string("actor");
-            $table->string("actor_type");
+            $table->integer('circularid');
+            $table->integer('recipient');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class Pvtrail extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pvtrail');
+        Schema::dropIfExists('circular_recipeint');
     }
 }

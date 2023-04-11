@@ -18,7 +18,10 @@
 						</nav>
 					</div>
 				</div>
-				<!--end breadcrumb-->
+		<!--end breadcrumb-->
+
+	 <form  method="post" action="submitpv" enctype="multipart/form-data" id="submitpv">
+	 	@csrf
 		<div class="card" style="padding-bottom: 30px;">
 		       <div class="col-12 col-lg-12">
 		          <div class=" radius-10">
@@ -27,7 +30,7 @@
 						<div>
 							<h4 class="mb-0">Payment Voucher (PV) Info</h4>
 						</div>
-						<div class="dropdown ms-auto">
+						<!--<div class="dropdown ms-auto">
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
@@ -41,14 +44,12 @@
 								<li><a class="dropdown-item" href="javascript:;">Something else here</a>
 								</li>
 							</ul>
-						</div>
+						</div>-->
 					</div>
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
-					 <form class="row g-3" method="post" action="submitpv" enctype="multipart/form-data" id="submitpvs">
-					 	@csrf
-					 	<div class="col-sm-12">
+					 	<div class="col-sm-12" style="margin-bottom: 15px;">
 					 		<label for="inputFirstName" class="form-label">PV Title</label>
 							<input type="text" class="form-control" id="title" name="title" placeholder="PV Title" required>
 					 	</div><br />
@@ -60,7 +61,9 @@
 									<option value="">Select Recipient</option>
 									@foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
+								    @if($staff->id != 1)
 								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
+								    @endif
 								    @endif
 								    @endforeach
 								</select>
@@ -72,7 +75,9 @@
 								    <option></option>
 								    @foreach($staffs as $staff)
 								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
+								    @if($staff->id != 1)
 								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
+								    @endif
 								    @endif
 								    @endforeach
 								  </select>
@@ -102,7 +107,7 @@
 						</div>
 					</div><br /><br />
 						
-					 </form>
+					 
 					 </div>
 				  </div>
 			  </div>
@@ -160,7 +165,7 @@
 							</thead>
 							<tbody id="sheetdata">
 								<tr>
-									<td><p id="sn">1</p></td>
+									<td><p id="sn1">1</p></td>
 									<td><input type="text" class="form-control" id="description1" name="description[]" placeholder="Description" required></td>
 									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="0" required></td>
 									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="0.00" required></td>
@@ -226,15 +231,18 @@
 						 		<label for="inputFirstName" class="form-label">Bank Name</label>
 								<select name="bankname" id="sendto" class="form-control" required>
 									<option value="">Select Bank</option>
+									@foreach($banks as $bank)
+									<option>{{ $bank->banks }}</option>
+									@endforeach
 								</select>
 							</div>
 							<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Account Number</label>
-								<input type="text" name="accountnumber" maxlength="10" class="form-control" placeholder="Account Number" required>
+								<input type="number" name="accountnumber" maxlength="10" class="form-control" placeholder="Account Number" required>
 							</div>
 							<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Account Name</label>
-								<input type="text" name="accountname" class="form-control" placeholder="Account Number" required>
+								<input type="text" name="accountname" class="form-control" placeholder="Account Name" required>
 							</div>
 						 	<div class="col-sm-2 text-right float-right" style="padding-top: 25px;">
 						 		<label for="inputFirstName" class="form-label"></label>
@@ -245,7 +253,7 @@
 					</div><br /><br />
 					</div>
 				</div>
-
+			</form>
 </div>
 <!--end page wrapper -->
 @include("layouts.app-footer")

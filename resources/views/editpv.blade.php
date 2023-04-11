@@ -19,6 +19,8 @@
 					</div>
 				</div>
 				<!--end breadcrumb-->
+		 <form class="row g-3" method="post" action="submiteditpv" enctype="multipart/form-data" id="submiteditpv">
+		 	@csrf
 		<div class="card" style="padding-bottom: 30px;">
 		       <div class="col-12 col-lg-12">
 		          <div class=" radius-10">
@@ -31,14 +33,13 @@
 							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="javascript:;">Action</a>
-								</li>
-								<li><a class="dropdown-item" href="javascript:;">Another action</a>
+
+								<li><a class="dropdown-item" href="{{ url('sentpvs') }}">My PVs</a>
 								</li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>
-								<li><a class="dropdown-item" href="javascript:;">Something else here</a>
+								<li><a class="dropdown-item" href="{{ url('dashboard') }}">Dashboard</a>
 								</li>
 							</ul>
 						</div>
@@ -46,8 +47,6 @@
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
-					 <form class="row g-3" method="post" action="submiteditpv" enctype="multipart/form-data" id="submiteditpv">
-					 	@csrf
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Title</label>
 							<input type="text" class="form-control" id="title" name="title" value="{{ $pvs[0]->title }}" required>
@@ -58,19 +57,20 @@
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV Recipient</label>
 								<select name="sendto" id="sendto" class="form-control">
-									<option>{{ $pvs[0]->sendto }}</option>
+									<option value="{{ $pvs[0]->sendto }}">{{ app\Http\Controllers\Controller::staffname($pvs[0]->sendto) }}</option>
 								</select>
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV CC</label>
 								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="copies[]">
 								    
-								    <option>{{ $pvs[0]->copies }}</option>
-								    @foreach($staffs as $staff)
-								    @if(Auth::user()->name != $staff->firstname.' '.$staff->surname.' '.$staff->othername)
-								    <option value="{{ $staff->id }}">{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername }}</option>
-								    @endif
-								    @endforeach
+								    <option value="{{ $pvs[0]->copies }}">@if(!empty($pvs[0]->copies)) |
+											@php $copy = explode(",", $pvs[0]->copies) @endphp
+											@for($j=0; $j < count($copy); $j++)
+											{{ app\Http\Controllers\Controller::staffname($copy[$j]) }} |
+											@endfor
+											@endif</option>
+								    
 								  </select>
 							</div>
 						</div>
@@ -82,29 +82,33 @@
 					 	</div>
 
 					 	
-					 	@if(!empty(pvs[0]->attachment))
+					 	
 					 	<div class="col-sm-12" style="margin-top: 20px;" id="attachbutton">
 						<div class="row g-3">
 						 	<div class="col-sm-6">
-								<a href="#" class="btn btn-primary">PV Attachment</a>
+								<label for="inputFirstName" class="form-label">Add Attachment</label>
+								<input type="file" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Project</label>
 								<select name="project" id="project" class="form-control" required>
-									<option value="">Select Project</option>
+									<option>{{ $pvs[0]->project }}</option>
 									<option>Not Applicable</option>
 								</select>
 							</div>
 						</div>
 					</div><br /><br />
+					
 
-
-					 	<div class="col-sm-12" style="display: none;" id="showattachment">
-						 	<iframe src="{{ asset(memo[0]->sendto) }}" width="100%" height="1000px"></iframe>
+					 	@if(!empty($pvs[0]->attachment))
+					 	<p class="col-sm-12">
+					 	<button class="btn btn-info" type="button" id="showattachment">Attachment Display</button>
+					 	</p>
+					 	<div class="col-sm-12" id="hideattachment" style="display: none;">
+						 	<iframe src="{{ asset($pvs[0]->attachment) }}" width="100%" height="1000px"></iframe>
 						</div>
-						@endif
+						@endif<br /><br />
 						
-					 </form>
 					 </div>
 				  </div>
 			  </div>
@@ -164,49 +168,50 @@
 								@php $x=1 @endphp
 								@foreach($vsheets as $vsheet)
 								<tr>
-									<td><p id="sn">{{ $x++ }}</p></td>
-									<td><input type="text" class="form-control" id="description1" name="description[]" value="{{ $vsheet->description }}" required></td>
-									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="{{ $vsheet->qty }}" required></td>
-									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="{{ $vsheet->unitprice }}" required></td>
-									<td><p class="form-control amt" id="amount1">{{ $vsheet->amount }}</p>
-						 			<input type="hidden" class="form-control" id="amounts1" name="amounts[]" value="{{ $vsheet->amount }}"></td>
-									<td><input type="text" class="form-control" id="vatp1" name="vatp[]" value="{{ $vsheet->vatpercent }}"></td>
-									<td><p class="form-control" id="vatamount1">{{ $vsheet->vatamount }}</p>
-						 			<input type="hidden" class="form-control" id="vata1" name="vata[]" value="{{ $vsheet->vatamount }}"></td>
-									<td><p class="form-control" id="grossamount1">{{ $vsheet->grossamount }}</p>
-						 			<input type="hidden" class="form-control" id="gross1" name="gross[]" value="{{ $vsheet->grossamount }}"></td>
-									<td><input type="text" class="form-control" id="whtp1" name="whtp[]" value="{{ $vsheet->whtpercent }}"></td>
-									<td><p class="form-control" id="whtamount1">{{ $vsheet->whtamount }}</p>
-						 			<input type="hidden" class="form-control" id="whta1" name="whta[]" value="{{ $vsheet->whtamount }}"></td>
-									<td><p class="form-control" id="netamount1">{{ $vsheet->netamount }}</p>
-						 			<input type="hidden" class="form-control" id="net1" name="net[]" value="{{ $vsheet->netamount }}"></td>
+									<td><p id="sn{{ $x }}">{{ $x }}</p></td>
+									<td><input type="text" class="form-control" id="description{{ $x }}" name="description[]" value="{{ $vsheet->description }}" required></td>
+									<td><input type="text" class="form-control qty" id="qty{{ $x }}" name="qty[]" value="{{ $vsheet->qty }}" required></td>
+									<td><input type="text" class="form-control prc" id="price{{ $x }}" name="price[]" value="{{ $vsheet->unitprice }}" required></td>
+									<td><p class="form-control amt" id="amount{{ $x }}">{{ $vsheet->amount }}</p>
+						 			<input type="hidden" class="form-control" id="amounts{{ $x }}" name="amounts[]" value="{{ $vsheet->amount }}"></td>
+									<td><input type="text" class="form-control" id="vatp{{ $x }}" name="vatp[]" value="{{ $vsheet->vatpercent }}"></td>
+									<td><p class="form-control" id="vatamount{{ $x }}">{{ $vsheet->vatamount }}</p>
+						 			<input type="hidden" class="form-control" id="vata{{ $x }}" name="vata[]" value="{{ $vsheet->vatamount }}"></td>
+									<td><p class="form-control" id="grossamount{{ $x }}">{{ $vsheet->grossamount }}</p>
+						 			<input type="hidden" class="form-control" id="gross{{ $x }}" name="gross[]" value="{{ $vsheet->grossamount }}"></td>
+									<td><input type="text" class="form-control" id="whtp{{ $x }}" name="whtp[]" value="{{ $vsheet->whtpercent }}"></td>
+									<td><p class="form-control" id="whtamount{{ $x }}">{{ $vsheet->whtamount }}</p>
+						 			<input type="hidden" class="form-control" id="whta{{ $x }}" name="whta[]" value="{{ $vsheet->whtamount }}"></td>
+									<td><p class="form-control" id="netamount{{ $x }}">{{ $vsheet->netamount }}</p>
+						 			<input type="hidden" class="form-control" id="net{{ $x }}" name="net[]" value="{{ $vsheet->netamount }}"></td>
 								</tr>
-								@endif
+								@php $x++ @endphp
+								@endforeach
 							</tbody>
 							<tfoot>
 								<tr>	
 							 		<th class="tdsn"><b></b></th>
 							 		<th class="tdds"><b>Total</b></th>
 							 		<th class="tdqt"><b></b></th>
-							 		<th class="tdpr totalsum" id="totalprice">{{ $pvs[0]->totalprices }}</th>
-							 		<input type="hidden" name="totalprices" id="totalprices" value="{{ $pvs[0]->totalprices }}">
-							 		<th class="tdam totalsum" id="totalamount">{{ $pvs[0]->totalamounts }}</th>
-							 		<input type="hidden" name="totalamounts" id="totalamounts" value="{{ $pvs[0]->totalamounts }}">
+							 		<th class="tdpr totalsum" id="totalprice">{{ $pvs[0]->totalprice }}</th>
+							 		<input type="hidden" name="totalprices" id="totalprices" value="{{ $pvs[0]->totalprice }}">
+							 		<th class="tdam totalsum" id="totalamount">{{ $pvs[0]->totalamount }}</th>
+							 		<input type="hidden" name="totalamounts" id="totalamounts" value="{{ $pvs[0]->totalamount }}">
 							 		<th class="tdva"><b></b></th>
-							 		<th class="tdvt totalsum" id="totalvat"><b>{{ $pvs[0]->totalvats }}</b></th>
-							 		<input type="hidden" name="totalvats" id="totalvats" value="{{ $pvs[0]->totalvats }}">
-							 		<th class="tdgr totalsum" id="totalgross">{{ $pvs[0]->totalgrosses }}</th>
-							 		<input type="hidden" name="totalgrosses" id="totalgrosses" value="{{ $pvs[0]->totalgrosses }}">
+							 		<th class="tdvt totalsum" id="totalvat"><b>{{ $pvs[0]->totalvat }}</b></th>
+							 		<input type="hidden" name="totalvats" id="totalvats" value="{{ $pvs[0]->totalvat }}">
+							 		<th class="tdgr totalsum" id="totalgross">{{ $pvs[0]->totalgross }}</th>
+							 		<input type="hidden" name="totalgrosses" id="totalgrosses" value="{{ $pvs[0]->totalgross }}">
 							 		<th class="tdwh"><b></b></th>
-							 		<th class="tdwt totalsum" id="totalwht">{{ $pvs[0]->totalwhts }}</th>
-							 		<input type="hidden" name="totalwhts" id="totalwhts" value="{{ $pvs[0]->totalwhts }}">
-							 		<th class="tdnt totalsum" id="totalnet">{{ $pvs[0]->totalnets }}</th>
-							 		<input type="hidden" name="totalnets" id="totalnets" value="{{ $pvs[0]->totalnets }}">
+							 		<th class="tdwt totalsum" id="totalwht">{{ $pvs[0]->totalwht }}</th>
+							 		<input type="hidden" name="totalwhts" id="totalwhts" value="{{ $pvs[0]->totalwht }}">
+							 		<th class="tdnt totalsum" id="totalnet">{{ $pvs[0]->totalnet }}</th>
+							 		<input type="hidden" name="totalnets" id="totalnets" value="{{ $pvs[0]->totalnet }}">
 							</tfoot>
 						</table>
 					</div>
-					<input type="hidden" name="counter" id="counter" value="1">
-					<input type="hidden" name="countrow" id="countrow" value="1">
+					<input type="hidden" name="counter" id="counter" value="{{ $vsheets->count() }}">
+					<input type="hidden" name="countrow" id="countrow" value="{{ $vsheets->count() }}">
 						</div>
 						<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Net Amount in Words</label>
@@ -218,7 +223,7 @@
 	</div>
 
 
-	<div class="card" style="padding-bottom: 30px;">
+		<div class="card" style="padding-bottom: 30px;">
 					<div class="card-body">
 						<div class="card-header">
 							<h4 class="mb-0">Beneficiary Bank Details</h4>
@@ -226,19 +231,37 @@
 						<hr/>
 					<div class="col-sm-12">
 						<div class="row g-3">
-						 	<div class="col-sm-3">
+						 	<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Bank Name</label>
-								<select name="bankname" id="sendto" class="form-control">
-									<option value="">{{ $pvs[0]->bankname }}</option>
+								<select name="bankname" id="bankname" class="form-control">
+									<option>{{ $pvs[0]->bank }}</option>
 								</select>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Account Number</label>
-								<input type="text" name="accountnumber" maxlength="10" class="form-control" value="{{ $pvs[0]->accountnumber }}">
+								<input type="text" name="accountnumber" maxlength="10" class="form-control" value="{{ $pvs[0]->accountno }}">
 							</div>
 							<div class="col-sm-4">
 						 		<label for="inputFirstName" class="form-label">Account Name</label>
 								<input type="text" name="accountname" class="form-control" value="{{ $pvs[0]->accountname }}">
+							</div>
+						</div>
+					</div><br /><br />
+					</div>
+				</div>
+
+
+		<div class="card" style="padding-bottom: 30px;">
+					<div class="card-body">
+						<div class="card-header">
+							<h4 class="mb-0">Major Changes Made</h4>
+						</div>
+						<hr/>
+					<div class="col-sm-12">
+						<div class="row g-3">
+						 	<div class="col-sm-10">
+						 		<label for="inputFirstName" class="form-label">What changed on this PV</label>
+								<input type="text" name="changes" id="changes" class="form-control" placeholder="Changes made">
 							</div>
 						 	<div class="col-sm-2 text-right float-right" style="padding-top: 25px;">
 						 		<label for="inputFirstName" class="form-label"></label>
@@ -249,6 +272,8 @@
 					</div><br /><br />
 					</div>
 				</div>
+
+				</form>
 
 </div>
 <!--end page wrapper -->

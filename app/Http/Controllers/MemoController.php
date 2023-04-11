@@ -19,15 +19,26 @@ class MemoController extends Controller
     }
 
     public function creatememo(){
+        
+        if($this->checkrole(Auth::user()->role, 1, 6) == "allow"){
 
         $staffs = DB::table('profile')->orderBy('firstname')->get();
 
         return view('creatememo', ['staffs' => $staffs]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
     
 
     public function memoinbox(){
+        
+        if($this->checkrole(Auth::user()->role, 1, 2) == "allow"){
 
         //update notification to read
         $update = DB::table('notifications')
@@ -39,9 +50,18 @@ class MemoController extends Controller
                     ->orWhere('copies', 'LIKE', '%'.Auth::user()->profileid.'%')->get();
 
         return view('memoinbox', ['memos' => $memos]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
     public function sentmemo(){
+        
+        if($this->checkrole(Auth::user()->role, 1, 2) == "allow"){
 
         //update notification to read
         $update = DB::table('notifications')
@@ -51,13 +71,29 @@ class MemoController extends Controller
         $memos = DB::table('memo')->where('sentform', Auth::user()->profileid)->get();
 
         return view('sentmemo', ['memos' => $memos]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
     public function allmemo(){
+        
+        if($this->checkrole(Auth::user()->role, 5, 2) == "allow"){
 
         $memos = DB::table('memo')->orderBy('created_at', 'desc')->get();
 
         return view('allmemo', ['memos' => $memos]);
+        
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
     public function submitmemo(Request $request){
@@ -68,7 +104,7 @@ class MemoController extends Controller
         $copies = $request->copies;
         $attachment = $request->attachment;
         $sender = Auth::user()->profileid;
-        $status = 'Pending Approval';
+        $status = 'Pending';
 
 
         //check if this memo was submitted earlier incase of network failure
@@ -222,6 +258,7 @@ class MemoController extends Controller
 
     public function memodetails(Request $request){
 
+    if($this->checkrole(Auth::user()->role, 1, 2) == "allow"){
 
         $memo = DB::table('memo')->where('id', $request->id)->get();
 
@@ -230,6 +267,13 @@ class MemoController extends Controller
         $memotrails = DB::table('memotrail')->where('memoid', $request->id)->orderBy('created_at', 'desc')->get();
 
         return view('memodetails', ['memo' => $memo, 'memotrails' => $memotrails, 'actions' => $actions]);
+        
+    }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
+        }
     }
 
 
@@ -316,13 +360,22 @@ class MemoController extends Controller
 
 
 
-        public function editmemo(Request $request){
+    public function editmemo(Request $request){
 
-
+        if($this->checkrole(Auth::user()->role, 1, 7) == "allow"){
+            
             $memo = DB::table('memo')->where('id', $request->id)->get();
 
             return view('editmemo',['memo' => $memo]);
+            
+        }else{
+            
+            Auth::logout();
+            
+            return redirect('login');
         }
+        
+    }
 
 
     public function submiteditmemo(Request $request){
