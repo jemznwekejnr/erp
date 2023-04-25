@@ -29,6 +29,7 @@
 
        <div class="card-body" style="padding-top: 40px;">
 		<x-flash-message />
+		
 				  	<div class="form-body">
 					 <form class="row g-3" action="/category/{{$category->id}} " id="submitstaff" method="post" name="edit-cat">
 					 	@csrf
