@@ -8,6 +8,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LogisticController;
 use App\Http\Controllers\ProcurementController;
@@ -158,23 +160,73 @@ Route::post('/submitpassword', [ProfileController::class, 'submitpassword']);
 
 
 Route::get('/logistics', [LogisticController::class, 'index']);
+
 Route::get('/logisticrequest', [LogisticController::class, 'myindex']);
+Route::get('/editlogistic{logistic}', [LogisticController::class, 'edit']);
 Route::get('/logisticcreate', [LogisticController::class, 'create']);
 Route::post('/logistics', [LogisticController::class, 'store']);
-Route::get('/logistic/{logistic}', [LogisticController::class, 'show']);
+Route::get('/logistic{logistic}', [LogisticController::class, 'show']);
 Route::delete('/logistic/{logistic}', [LogisticController::class, 'destroy']);
-Route::get('/logistic/edit/{logistic}', [LogisticController::class, 'edit']);
-Route::put('/logistic/{logistic}', [LogisticController::class, 'update']);
+Route::put('/logistic/edit/{logistic}', [LogisticController::class, 'update']);
+Route::put('/logistic/treat/{logistic}', [LogisticController::class, 'updatetreat']);
+
+/**************************** ENDING OF Logistics Route **************************************/
 
 
 
 
+/**************************** STARTING OF BUDGET Route **************************************/
+//create budget
+Route::post('/budgetcreate', [BudgetController::class, 'store']);
+
+// all budgets
+Route::get('/budgets', [BudgetController::class, 'index']);
+// all of my budgets
+Route::get('/mybudgets', [BudgetController::class, 'myindex']);
+// show details of my budget
+Route::get('/showmybudget{budget}', [BudgetController::class, 'show']);
+// show details of budget for treat
+Route::get('/showbudget{budget}', [BudgetController::class, 'show2']);
+
+// delete budget
+Route::delete('/budget/{budget}', [BudgetController::class, 'destroy']);
+
+//create budget
+Route::get('/budgetcreate', [BudgetController::class, 'create']);
+
+//showeditpage
+Route::get('/editbudget{budget}', [BudgetController::class, 'edit']);
+
+//showeditpage
+Route::put('/editbudget{budget}', [BudgetController::class, 'update']);
+
+
+//showeditpage
+Route::put('/treatbudget{budget}', [BudgetController::class, 'updatetreat']);
+
+//showeditpage
+Route::put('/bugetdisburse{budget}', [BudgetController::class, 'updatedisburse']);
+
+
+/**************************** Ending  OF BUDGET route **************************************/
+
+
+/**************************** STARTING OF TRAINING Route **************************************/
+
+//create budget
+Route::get('/trainingcreate', [BuildingController::class, 'create']);
+Route::post('/trainingcreate', [BuildingController::class, 'store']);
+Route::get('/mytrainings', [BuildingController::class, 'myindex']);
+Route::get('/trainings', [BuildingController::class, 'index']);
+Route::get('/showmytraining{training}', [BuildingController::class, 'show']);
+Route::get('/showtraining{training}', [BuildingController::class, 'show2']);
+Route::get('/edittraining{training}', [BuildingController::class, 'edit']);
+
+
+/**************************** Ending  OF BUDGET route **************************************/
 
 
 
-
-
-/**************************** Ending  OF logistics route **************************************/
 
 
 

@@ -4,13 +4,13 @@
 	<div class="page-content">
 		<!--breadcrumb-->
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-					<div class="breadcrumb-title pe-3">Logistics</div>
+					<div class="breadcrumb-title pe-3">Trainng</div>
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
-								<li class="breadcrumb-item"><a href="/logistics"><i class="bx bx-copy"></i></a>
+								<li class="breadcrumb-item"><a href="/trainings"><i class="bx bx-copy"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page"> {{$logistic->title}}  Request Page</li>
+								<li class="breadcrumb-item active" aria-current="page"> {{$training->description}}  Request Page</li>
 							</ol>
 						</nav>
 					</div>
@@ -28,8 +28,8 @@
                                     <div class="card-header">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <h4 class="mb-0">{{$logistic->title}}  Request Details</h4>
-                                                <p>View details of logistic request</p>
+                                                <h4 class="mb-0">{{$training->description}}  Request Details</h4>
+                                                <p>View details of Training request</p>
                                             </div>
 
                                         </div>
@@ -51,21 +51,7 @@
                              <div class="row my-3">
                                        
 
-                                    @if($logistic->status=="pending" && $logistic->requested_by == Auth::user()->profileid)
-                                        <div class="col-lg-2">
-                                            <form method="POST" action="/logistic/{{$logistic->id}}" name='delete'>
-                                                @csrf
-                                                @method('DELETE')
-                                                <button  class="btn btn-danger" id="delete-logistic" type="submit" data-src="delete">
-                                                    Delete<i class='bx bxs-trash'></i> 
-                                                </button>
-                                                <img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
-                                
-                                            </form>
-                                        
-                                        </div>
-
-                                    @endif
+                     
     
 
                                     <div class="col-lg-10 ">
@@ -73,22 +59,21 @@
                                             <div class="card-body">
                                                 
                                                 <div class="status mb-3">
-                                                                    @php
-                                                                        if($logistic->status=="pending"){
-                                                                            echo "<span class='badge bg-warning'>Request Pending Approval</span> ";
-                                                                        }else if($logistic->status=="approved"){
-                                                                            echo "<span class='badge bg-success'>Request Approved</span> ";
-                                                                        } elseif($logistic->status=="disbursed") {
-                                                                            echo "<span class='badge bg-info'>Request Disbursed</span> ";
+                                                    
+                                                                @php
                                                                 
-                                                                        } else {
-                                                                        echo "<span class='badge bg-danger'>Request Rejected</span> ";
-                                                                
+                                                                    if($training->status=="to-do"){
+                                                                            echo "<span class='badge bg-warning'>ToDo</span> ";
+                                                                        }else if($training->status=="rejected"){
+                                                                            echo "<span class='badge bg-danger'>Rejected</span> ";
+                                                                        }else if ($training->status=="approved") {
+                                                                            echo "<span class='badge bg-success'>Approved</span> ";
                                                                         }
-                                                                        
-
-                                                                        @endphp
-                                            
+                                                              
+                                                                @endphp
+                                                                
+                                                                
+                                    
                                                 </div>
                                             
                                             </div>
@@ -99,11 +84,11 @@
                            </div>
                            <div class="row my-3">
                                     <div class="col-lg-2">
-                                        <p>Request Title:</p>
+                                        <p>Training Description:</p>
                                     </div>
                                     <div class="col-lg-10 ">
                                          
-                                            <p><b>{{$logistic->title}}</b><p>
+                                            <p><b>{{$training->description}}</b><p>
 
                                            
                                         
@@ -112,114 +97,153 @@
                              
                           
                              
-                             <div class="row my-3">
+                            
+                        
+                              <div class="row my-3">
                                     <div class="col-lg-2">
-                                        <p>Purpose:</p>
+                                        <p>Training Type</p>
                                     </div>
                                     <div class="col-lg-10 ">
-                                          <p><b>{{$logistic->purpose}} </b></p>
+                                           <p> <b> {{$training->training_type}} </b></p>
+
                                     </div>
                             </div>
-                             <div class="row my-3">
+                            <div class="row my-3">
                                     <div class="col-lg-2">
-                                        <p>Amount</p>
+                                        <p>Training Date:</p>
+                                    </div>
+                                    <div class="col-lg-10">
+                                            <p> <b> {{date('Y-m-d', strtotime($training->training_date))}}</b></p>
+
+                                    </div>
+                            </div>
+                            <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Training Duration</p>
                                     </div>
                                     <div class="col-lg-10 ">
-                                           <p> <b>&#8358; {{number_format($logistic->amount,2)}} </b></p>
+                                           <p> <b> {{number_format($training->duration)}} </b></p>
 
                                     </div>
                             </div>
                            
+                           
                             
+                           
                             <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Training Mode:</p>
+                                    </div>
+                                    <div class="col-lg-10">
+                                            <p> <b> {{$training->training_mode}}</b></p>
+
+                                    </div>
+                            </div>
+                             <div class="row my-3">
+                                    <div class="col-lg-2">
+                                      <p> <b> Trainee(s):</b></p>
+                                    </div>
+                             </div>
+                             <div class="row my-3">
+                                   
+                                        @php 
+                                        $trainees =  explode(',', $training->trainees);
+                                    
+                                         
+                                        @endphp
+                                        
+                                                    @foreach($trainees as $assign)
+                                                  
+                                             <div class="col-md-2 ">
+                                            <img 
+                                            src="@if(!is_null(DB::table('profile')->where('id', $assign)->pluck('image')[0])){{ DB::table('profile')->where('id', $assign)->pluck('image')[0] }} @else {{ asset('assets/images/default-avatar.png') }} @endif" 
+                                            class="user-img" alt="user avatar">
+                                            <p>{{DB::table('profile')->where('id', $assign)->pluck('surname')[0]}} </p>
+                                             </div>
+                                            @endforeach
+                                   
+                            </div>
+                             <div class="row my-3">
                                     <div class="col-lg-2">
                                         <p>Requested By:</p>
                                     </div>
                                     <div class="col-lg-10">
-                                            <p> <b> {{$logistic->requestedBy->name}}</b></p>
+                                            <p> <b> {{$training->requestedBy->name}}</b></p>
 
                                     </div>
                             </div>
-                         <div class="row my-3">
-                                    <div class="col-lg-2">
-                                        <p>Sent To:</p>
-                                    </div>
-                                    <div class="col-lg-10">
-                                            <p><b>  {{$logistic->sentTo->name}}</b></p>
 
-                                    </div>
-                            </div>
-                            <div class="row">
-                                    <div class="col-lg-2">
-                                        <p>Duration:</p>
-                                    </div>
-                                    <div class="col-lg-10">
-                                        <p> 
-                                        @php
-                                            $date1 = "2007-03-24";
-                                        $date2 = "2009-06-26";
-
-                                        $diff = abs(strtotime($logistic->end_date) - strtotime($logistic->start_date));
-
-                                        $years = floor($diff / (365*60*60*24));
-                                        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                                        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-
-                                        printf("<b> %d months, %d days\n </b>", $months, $days);
-                                        @endphp
-                                          <b> -  {{date('Y-m-d', strtotime($logistic->start_date))}} - {{date('Y-m-d', strtotime($logistic->end_date))}}</b>
-                                        
-                                        </p>
-
-                                    </div>
-                            </div>
+                        @if($training->status=="to-do")
+                            
                            
                             <div class="row">
                                     <div class="col-lg-2">
                                         <p>Request Status:</p>
                                     </div>
                                     <div class="col-lg-10">
-                                              @php
-                                                                                        if($logistic->status=="pending"){
-                                                                                            echo "<span class='badge bg-warning'>Pending</span> ";
-                                                                                        }elseif($logistic->status=="rejected"){
-                                                                                            echo "<span class='badge bg-danger'>Rejected</span> ";
-                                                                                        }elseif($logistic->status=="approved"){
-                                                                                            echo "<span class='badge bg-success'>Approved</span> ";
-                                                                                        }else{
-                                                                                             echo "<span class='badge bg-success'>Disbursed</span> ";
-                                                                                   
-                                                                                        }
-                                                                                        
-
-                                                                                        @endphp
-
+                                             <span class='badge bg-warning'>To-Do</span> 
+                                               
                                     </div>
                             </div>
-                           
+
+                            @endif
+                         
+                                                @if(!is_null($training->decline_date))
+                                                <div class="row">
+                                                    <div class="col-lg-2">
+                                                        <p>Request Status:</p>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <span class='badge bg-danger'>Rejected</span> 
+                                                    </div>
+                                              </div>
+                                                <div class="row my-3">
+                                                            <div class="col-lg-2">
+                                                                <p>Date of Rejection :</p>
+                                                            </div>
+                                                            <div class="col-lg-10">
+                                                                    <p> <b> {{is_null($training->decline_date)?"--": $training->decline_date}} </b></p>
+
+                                                            </div>
+                                                </div>
+                                                @endif
+                                              @if($training->status=="approved" &&  date('Y-m-d') < date('Y-m-d', strtotime($training->training_date)) )
+                                              <div class="row">
+                                                    <div class="col-lg-2">
+                                                        <p>Request Status:</p>
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <span class='badge bg-success'>Approved</span> 
+                                                    </div>
+                                              </div>
+                                                <div class="row my-3">
+                                                            <div class="col-lg-2">
+                                                                <p>Date of Approval :</p>
+                                                            </div>
+                                                            <div class="col-lg-10">
+                                                                    <p> <b> {{is_null($training->approval_date)?"--": $training->approval_date}} </b></p>
+
+                                                            </div>
+          
+                                                </div>
+                                                @endif
+                                                 @if($training->status == "approved" && date('Y-m-d') >= date('Y-m-d', strtotime($training->training_date)) )
+                                                <div class="row my-3">
+                                                            <div class="col-lg-2">
+                                                                <p>Status</p>
+
+                                                            </div>
+                                                            <div class="col-lg-10">
+                                                                    <p> <b> <span class='badge bg-success'>Ongoing</span> </b></p>
+
+                                                            </div>
+                                                </div>
+                                                @endif
+                                                 
+                                        
 
                     
-                      @if(Auth::user()->profileid== $logistic->requested_by && $logistic->status=="pending")
-                        
-                                    <div class="row">
-                                    
-                            
-                                        <div class="col-lg-2">
-                                    
-                                            
-                                        <p>Edit:</p>
-                                    
-                                        </div>
-                                        <div class="col-lg-10 ">
-                                            <a href="/editlogistic{{$logistic->id}}">
-                                            <button  class="btn btn-warning" id="delete-task" >
-                                                    Edit<i class='bx bx-edit'></i>
-                                                </button>
-                                            </a>
-                                            
-                                        </div>
-                                    </div>
-                         @endif
+                    
                
                         </div>
                 
@@ -231,7 +255,8 @@
                     </div>
        </div>
 
-        @if(is_null($logistic->disbursed_date) && $logistic->status!="disbursed")
+
+          @if($training->status == "approved" && date('Y-m-d') >= date('Y-m-d', strtotime($training->training_date)) )
                      <div class="row my-3">
                                                 
                                                     <div class="col-lg-12 ">
@@ -239,7 +264,7 @@
                                                                 <div class="card-header">
                                                                     <div class="d-flex align-items-center">
                                                                         <div>
-                                                                            <h5 class="mb-0">Treat {{$logistic->title}} Logistic Request</h5>
+                                                                            <h5 class="mb-0">Treat {{$training->description}} Training Request</h5>
                                                                         </div>
                                                                         
                                                                     </div>
@@ -247,7 +272,7 @@
                                                                 <div class="card-body" style="padding-top: 40px;">
                                                               
                                                                     <div class="form-body">
-                                                                            <form class="row g-3" action="/logistic/treat/{{$logistic->id}}" id="treatlogistic" method="post" name="treat">
+                                                                            <form class="row g-3" action="/treattraining{{$training->id}}" id="treatbudget" method="post" name="treat">
                                                                                 @csrf
                                                                                 @method('PUT')
                                                                                 
@@ -256,7 +281,7 @@
 
                                                                                     <div class="col-sm-6">
                                                                                     
-                                                                                        <h3 class="form-control"> {{ucfirst($logistic->title)}}  for  &#8358;({{$logistic->amount}})</h3>
+                                                                                        <h3 class="form-control"> {{ucfirst($training->description)}}  for  &#8358;({{$training->amount}})</h3>
                                                                                         <input type="text" class="form-control" required id="treated_by"  name="treated_by"  value="{{ Auth::user()->profileid}}" hidden>
                                                                                     </div>
                                                                                     
@@ -315,7 +340,10 @@
 
                        </div>
                         
-              @endif
+          @endif
+		
+	
+     
 		
 	</div>
 </div>
@@ -328,52 +356,6 @@
 
 
 <script>
-$("form[name='treat']").submit(function(event) {
-    event.preventDefault(); // prevent the form from submitting
-     $("#button").hide();
-	$("#processing").show();
-	
-			const swalWithBootstrapButtons = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-success',
-				cancelButton: 'btn btn-danger'
-			},
-			buttonsStyling: false
-			})
-
-			swalWithBootstrapButtons.fire({
-			title: 'Are you sure you want to Treat this  Logistics Request?',
-			text: "You won't be able to revert this!",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: 'Yes, Treat !',
-			cancelButtonText: 'No, cancel!',
-			reverseButtons: true
-			}).then((result) => {
-			if (result.isConfirmed) {
-				$(this).unbind('submit').submit();
-				swalWithBootstrapButtons.fire(
-				'Updating Treat Request',
-				'...',
-				''
-				)
-			} else if (
-				/* Read more about handling dismissals below */
-				result.dismiss === Swal.DismissReason.cancel
-				
-			) {
-				swalWithBootstrapButtons.fire(
-				'Cancelled',
-				'You Cancelled this Operation :)',
-				'error'
-				)
-				$("#button").show();
-				$("#processing").hide();
-			}
-			})
-
-
-});
 
 $("form[name='delete']").submit(function(event) {
     event.preventDefault(); // prevent the form from submitting
@@ -389,7 +371,7 @@ $("form[name='delete']").submit(function(event) {
 			})
 
 			swalWithBootstrapButtons.fire({
-			title: 'Are you sure you want to Delete this  Logistics Request?',
+			title: 'Are you sure you want to Delete this  Budget Request?',
 			text: "You won't be able to revert this!",
 			icon: 'warning',
 			showCancelButton: true,
@@ -400,7 +382,7 @@ $("form[name='delete']").submit(function(event) {
 			if (result.isConfirmed) {
 				$(this).unbind('submit').submit();
 				swalWithBootstrapButtons.fire(
-				'Deleting Logistic Request',
+				'Deleting Budget Request',
 				'...',
 				''
 				)

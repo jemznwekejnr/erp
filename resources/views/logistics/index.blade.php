@@ -81,7 +81,7 @@
 			                	<h6 class="mb-0 text-uppercase">ALl Logistics Request List </h6>
 							</div>
 						 	<div class="col-sm-6">
-								<a href="/logistic/create"><button class="btn btn-success"> + Add New Logistic Rquest </button> </a>
+								<a href="/logisticcreate"><button class="btn btn-success"> + Add New Logistic Rquest </button> </a>
 							</div>
 				</div>
                 <br />
@@ -96,7 +96,7 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="table-responsive">
-							<table id="example" class="table table-striped table-bordered" style="width:100%">
+							<table id="example" class="table" style="width:100%">
 								<thead>
 									<tr>
 										<th>s/n</th>
@@ -107,7 +107,7 @@
 										<th>Sent to</th>
 										<th>Date </th>
 										<th>Status</th>
-                                        <th>Action</th>
+                              
                                         
 									</tr>
 								</thead>
@@ -131,12 +131,30 @@
                                                 <td><a href="/logistic/{{$logistic->id}}">{{ $key+1}}  </a></td>
                                                 <td>{{ $logistic->title }}</td>
                                                 <td>{{ $logistic->purpose }}</td>
-                                                <td>{{ $logistic->amount }}</td>
+                                                <td> &#8358; {{number_format($logistic->amount,2)}} </td>
                                                 <td>{{ $logistic->requestedBy->name ?? ""  }}</td>
                                                 <td>{{ $logistic->sentTo->name ?? ""}}</td>
                                                 <td>{{ $logistic->start_date }}</td>
-                                                <td>{{ $logistic->status }}</td>
-                                                <td><a href="/logistic/{{$logistic->id}}"><i class='bx bx-movie' style="color:orange;font-size: 3em;"></i></td>
+                                               
+														<td><a href="/logistic{{$logistic->id}}">
+													
+													  @if($logistic->status=="pending")
+                                                                <button type="button" class="btn btn-warning btn-sm">pending</button>
+                            
+                                                                @elseif($logistic->status=="approved")
+                                                                <button type="button" class="btn btn-success btn-sm"> Approved</button>
+
+                                                                @elseif($logistic->status=="rejected")
+                                                                <button type="button" class="btn btn-danger btn-sm"> Rejected</button>
+
+                                                                @elseif($logistic->status=="dispersed")
+                                                                <button type="button" class="btn btn-info btn-sm"> Dispersed</button>
+																@else
+																  <button type="button" class="btn btn-danger btn-sm"> Rejected</button>
+
+                                                                @endif
+												</td>
+                                               
                                                  </tr>
                                           
                                             @endforeach

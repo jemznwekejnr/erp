@@ -5,36 +5,41 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Logistic extends Model
+class Budget extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'title',
-        'purpose',
+        'number',
+        'description',
         'amount',
-        'requested_by',
-        'sent_to',
         'start_date',
         'end_date',
-        'status',
+        'actual_amount',
+        'requested_by',
+        'sent_to',
         'comment',
         'treated_by',
-        'approval_date',
         'decline_date',
-        'disbursed_date'
+        'approval_date',
+        'status'
 
     ];
-
-
 
 
     public function requestedBy()
     {
         return $this->belongsTo(User::class, 'requested_by');
     }
-    // Relationship With Tasks
+    // Relationship With User
     public function sentTo()
     {
         return $this->belongsTo(User::class, 'sent_to');
+    }
+
+    // Relationship With User
+    public function treatedBy()
+    {
+        return $this->belongsTo(User::class, 'treated_by');
     }
 }

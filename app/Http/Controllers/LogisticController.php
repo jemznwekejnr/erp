@@ -85,7 +85,7 @@ class LogisticController extends Controller
      */
     public function edit(Logistic $logistic)
     {
-        //
+        return view('logistics.edit', ['logistic' => $logistic, 'staffs' => DB::table('profile')->orderBy('firstname')->get()]);
     }
 
     /**
@@ -97,7 +97,67 @@ class LogisticController extends Controller
      */
     public function update(Request $request, Logistic $logistic)
     {
-        //
+        $formFields = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'purpose' => ['required', 'string', 'max:255'],
+            'amount' => 'required',
+            'requested_by' => 'required',
+            'sent_to' => 'required',
+            'start_date' => ['required'],
+            'end_date' => ['required'],
+        ]);
+
+
+
+
+
+
+        $formFields['status'] = 'pending';
+
+
+
+        //dd($formFields);
+        $logistic->update($formFields);
+        $logistic->save();
+        //  dd($formFields);
+        return redirect("/editlogistic{$logistic->id}")->with('message', 'Logistics Request Edited successfully!');
+    }
+
+    public function updatetreat(Request $request, Logistic $logistic)
+    {
+
+
+
+
+
+        $formFields = $request->validate([
+            'comment' => 'nullable|string',
+            'status' => 'required',
+            'treated_by' => 'required',
+
+        ]);
+        //$name = if($stock->name == )
+        $name = '';
+        if ($request->validate(['status' => 'required'])["status"] == "approve") {
+            $name = "approval_date";
+            $this->createnotification($logistic->requested_by, 'Logistic Request Approved', "You have an Approved Logistic Request", 'Unread', 'mystockrequest');
+        } else {
+            $name = 'decline_date';
+            $this->createnotification($logistic->requested_by, 'Logistic Request Rejected', "You have a Rejected Logistic Request", 'Unread', 'mystockrequest');
+        }
+
+        $formFields[$name] = now();
+
+
+
+
+
+        // dd($srequest);
+        $logistic->update($formFields);
+        $logistic->save();
+
+
+        return redirect("/logistic{$logistic->id}")->with('message', 'Approval Action Executed  successfully!');
     }
 
     /**
@@ -108,6 +168,8 @@ class LogisticController extends Controller
      */
     public function destroy(Logistic $logistic)
     {
-        //
+        $logistic->delete();
+
+        return redirect("logisticrequest/")->with('message', 'Logistic Request Deleted successfully!');
     }
 }

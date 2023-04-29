@@ -22,6 +22,8 @@ class CreateLogisticsTable extends Migration
             $table->foreignId('sent_to');
             $table->Timestamp('start_date')->default(now());
             $table->Timestamp('end_date')->nullable(true);
+            $table->Timestamp('disbursed_date')->nullable(true);
+            $table->Text('comment')->nullable(true);
             $table->string('status', 50);
 
             $table->timestamps();

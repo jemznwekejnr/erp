@@ -67,7 +67,7 @@
 						</li>
 					</ul>
 				</li>
-					<li>
+				<li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon">
 							<i class='bx bxl-product-hunt'></i>
@@ -250,6 +250,26 @@
 						<li> <a href="{{ url('categories') }}"><i class="bx bx-right-arrow-alt"></i>View All Category</a>
 						</li>
 					
+					   
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-group'></i>
+						</div>
+						<div class="menu-title">Budget</div>
+					</a>
+					<ul>
+						 <li> 
+							<a href="{{url('budgetcreate')}}"><i class="bx bx-right-arrow-alt"></i>New Budget Request</a>
+						</li>
+						<li> 
+							<a href="{{url('budgets')}}"><i class="bx bx-right-arrow-alt"></i>All Budget Request</a>
+						</li>
+					    <li>
+							 <a href="{{ url('mybudgets') }}"><i class="bx bx-right-arrow-alt"></i>My Budget Request</a>
+						</li>
 					   
 						
 					</ul>
