@@ -256,7 +256,7 @@
        </div>
 
 
-          @if($training->status == "approved" && date('Y-m-d') >= date('Y-m-d', strtotime($training->training_date)) )
+          @if($training->status != "approved" || date('Y-m-d') < date('Y-m-d', strtotime($training->training_date)) )
                      <div class="row my-3">
                                                 
                                                     <div class="col-lg-12 ">

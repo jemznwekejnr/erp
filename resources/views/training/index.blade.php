@@ -16,7 +16,70 @@
 					</div>
 
 				</div>
-				
+				 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+					<div class="col">
+						<div class="card radius-10 border-primary border-start border-0 border-4">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										<h4 class="my-1 text-primary">{{ $total_request}}</h4>
+										<p class="mb-0">Total training request</p>
+										
+									</div>
+									<div class="text-primary ms-auto font-35">
+										<i class='bx bx-git-pull-request'></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card radius-10 border-success border-start border-0 border-4">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										<h4 class="my-1 text-success">{{number_format($total_staff_trained)}}</h4>
+										<p class="mb-0">Total staff trained</p>
+										
+									</div>
+									<div class="text-success ms-auto font-35"><i class='bx bxl-microsoft-teams'></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card radius-10 border-success border-start border-0 border-4">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										
+										<h4 class="my-1 text-success ">{{number_format($total_training_done)}}</h4>
+										<p class="mb-0">Total training done</p>
+									</div>
+									<div class="text-success ms-auto font-35"><i class='bx bx-git-pull-request'></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card radius-10  border-warning border-start border-0 border-4">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										
+										<h4 class="text-warning my-1">{{number_format($staff_training_rate)}}</h4>
+										<p class="mb-0">Training To-Do</p>
+									</div>
+									<div class="text-warning ms-auto font-35"><i class='bx bx-stats'></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+	    	</div><!--end row-->
+
           
 		<div class="card" style="padding: 20px;">
 			<div class="card-body">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +22,11 @@ class StockController extends Controller
      */
     public function index()
     {
-        return view('stocks.index', ['stocks' => Stock::all()]);
+        $categories =  Category::all()->count();
+        $amount = Stock::all()->sum('total_amount');
+        $low = Stock::where('qty_purchased', '<', 10)->count();
+
+        return view('stocks.index', ['stocks' => Stock::all(), 'categories' => $categories, 'amount' => $amount, 'low' => $low]);
     }
 
     /**

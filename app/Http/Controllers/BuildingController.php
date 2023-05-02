@@ -26,14 +26,50 @@ class BuildingController extends Controller
      */
     public function index()
     {
+        $total_request = Building::all()->count();
+        // dd(Procurement::where('disbursed_date', '!=', null)->sum('total_price'));
+        $staff_trained = Building::where('status', '=', 'approved');
+        $total_staff_trained = 0;
+
+        foreach (Building::all() as $staff) {
+            // $total_staff_trained += count(explode(',', $staff->trainees));
+            if ($staff->status == "approved") {
+                $total_staff_trained += count(explode(',', $staff->trainees));
+            }
+        }
 
 
 
-        return view('training.myindex', ['trainings' => Building::all()]);
+
+        $total_training_done = Building::where('status', '=', 'approved')->count();
+        $staff_training_rate = Building::where('status', '=', 'to-do')->count();
+
+
+
+        return view('training.index', ['trainings' => Building::all(), 'total_request' => $total_request, 'total_staff_trained' => $total_staff_trained, 'total_training_done' => $total_training_done, 'staff_training_rate' => $staff_training_rate]);
     }
     public function myindex()
     {
-        return view('training.myindex', ['trainings' => Building::all()]);
+        $total_request = Building::where('requested_by', '=', Auth::user()->profileid)->count();
+        // dd(Procurement::where('disbursed_date', '!=', null)->sum('total_price'));
+        $staff_trained = Building::where('requested_by', '=', Auth::user()->profileid)->where('status', '=', 'approved');
+        $total_staff_trained = 0;
+
+        foreach (Building::all() as $staff) {
+            // $total_staff_trained += count(explode(',', $staff->trainees));
+            if ($staff->status == "approved") {
+                $total_staff_trained += count(explode(',', $staff->trainees));
+            }
+        }
+
+
+
+
+        $total_training_done = Building::where('requested_by', '=', Auth::user()->profileid)->where('status', '=', 'approved')->count();
+
+
+
+        return view('training.myindex', ['trainings' => Building::all(), 'total_request' => $total_request, 'total_staff_trained' => $total_staff_trained, 'total_training_done' => $total_training_done]);
     }
 
 
@@ -112,9 +148,25 @@ class BuildingController extends Controller
      * @param  \App\Models\Building  $building
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Building $building)
+    public function update(Request $request,  $building)
     {
-        //
+        $formFields = $request->validate([
+            'description' => ['required', 'string',],
+            'training_type' => 'required',
+            'duration' => 'integer',
+            'training_mode' => 'required',
+            'training_date' => 'required',
+            'trainees' => 'required',
+        ]);
+        $formFields['trainees'] = implode(", ", $formFields['trainees']);
+
+        $srequest = Building::find($building);
+        //dd($formFields);
+        $srequest->update($formFields);
+        $srequest->save();
+
+
+        return redirect("/edittraining{$srequest->id}")->with('message', 'Training Request updated successfully!');
     }
 
     /**
@@ -123,8 +175,11 @@ class BuildingController extends Controller
      * @param  \App\Models\Building  $building
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Building $building)
+    public function destroy($building)
     {
-        //
+        $srequest = Building::find($building)->delete();
+
+
+        return redirect('/mytrainings')->with('message', 'Training Request Deleted successfully!');
     }
 }

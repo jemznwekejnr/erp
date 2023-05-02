@@ -320,7 +320,7 @@ $("form[name='delete']").submit(function(event) {
 			})
 
 			swalWithBootstrapButtons.fire({
-			title: 'Are you sure you want to Delete this  Budget Request?',
+			title: 'Are you sure you want to Delete this  Training Request?',
 			text: "You won't be able to revert this!",
 			icon: 'warning',
 			showCancelButton: true,

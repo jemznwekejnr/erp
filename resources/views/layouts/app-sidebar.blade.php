@@ -274,6 +274,26 @@
 						
 					</ul>
 				</li>
+					<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-group'></i>
+						</div>
+						<div class="menu-title">Trainings</div>
+					</a>
+					<ul>
+						 <li> 
+							<a href="{{url('trainingcreate')}}"><i class="bx bx-right-arrow-alt"></i>New Training Request</a>
+						</li>
+						<li> 
+							<a href="{{url('trainings')}}"><i class="bx bx-right-arrow-alt"></i>All Training Request</a>
+						</li>
+					    <li>
+							 <a href="{{ url('mytrainings') }}"><i class="bx bx-right-arrow-alt"></i>My Training Request</a>
+						</li>
+					   
+						
+					</ul>
+				</li>
 				@endif
 				<!--<li>
 					<a href="charts-chartjs.html">

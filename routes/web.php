@@ -213,11 +213,14 @@ Route::put('/bugetdisburse{budget}', [BudgetController::class, 'updatedisburse']
 
 /**************************** STARTING OF TRAINING Route **************************************/
 
-//create budget
+//create budget 
 Route::get('/trainingcreate', [BuildingController::class, 'create']);
 Route::post('/trainingcreate', [BuildingController::class, 'store']);
+Route::put('/edittraining{training}', [BuildingController::class, 'update']);
+Route::put('/treattraining{training}', [BuildingController::class, 'create']);
 Route::get('/mytrainings', [BuildingController::class, 'myindex']);
 Route::get('/trainings', [BuildingController::class, 'index']);
+Route::delete('/training/{training}', [BuildingController::class, 'destroy']);
 Route::get('/showmytraining{training}', [BuildingController::class, 'show']);
 Route::get('/showtraining{training}', [BuildingController::class, 'show2']);
 Route::get('/edittraining{training}', [BuildingController::class, 'edit']);

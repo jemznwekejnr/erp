@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Logistic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class LogisticController extends Controller
@@ -15,13 +16,27 @@ class LogisticController extends Controller
      */
     public function index()
     {
-        return view('logistics.index', ['logistics' => Logistic::all()]);
+        $total_request = Logistic::all()->count();
+        // dd(Procurement::where('disbursed_date', '!=', null)->sum('total_price'));
+        $total_cost_incured = Logistic::where('status', '=', 'disbursed')->sum('amount');
+
+        $pending = Logistic::where('status', '=', 'pending')->count();
+        $approved = Logistic::where('status', '=', 'approved')->count();
+
+        return view('logistics.index', ['logistics' => Logistic::all(), 'total_request' => $total_request, 'total_cost_incured' => $total_cost_incured, $total_cost_incured, 'pending' => $pending, 'approved' => $approved]);
     }
 
 
     public function myindex()
     {
-        return view('logistics.myindex', ['logistics' => Logistic::all()]);
+        $total_request = Logistic::where('requested_by', '=', Auth::user()->profileid)->count();
+        // dd(Procurement::where('disbursed_date', '!=', null)->sum('total_price'));
+        $total_cost_incured = Logistic::where('status', '=', 'approved')->sum('amount');
+
+        $pending = Logistic::where('requested_by', '=', Auth::user()->profileid)->where('status', '=', 'pending')->count();
+        $approved = Logistic::where('requested_by', '=', Auth::user()->profileid)->where('status', '=', 'approved')->count();
+
+        return view('logistics.myindex', ['logistics' => Logistic::all(), 'total_request' => $total_request, 'total_cost_incured' => $total_cost_incured, $total_cost_incured, 'pending' => $pending, 'approved' => $approved]);
     }
 
     /**

@@ -44,9 +44,10 @@
 					</div>
 				  <div class="card-body" style="padding-top: 40px;">
 				     	<div class="form-body">
-							<form class="row g-3" action="/trainingcreate" id="trainingcreate" method="post"  enctype="multipart/form-data">
+							<x-flash-message />
+							<form class="row g-3" action="/edittraining{{$training->id}}" id="trainingcreate" method="post"  enctype="multipart/form-data">
 								@csrf
-
+                                @method('PUT')
 			
 								
 
@@ -182,11 +183,11 @@
 			})
 
 			swalWithBootstrapButtons.fire({
-			title: 'Are you sure you want to send Budget Request?',
+			title: 'Are you sure you want to edit this Training Request?',
 			text: "You won't be able to revert this!",
 			icon: 'warning',
 			showCancelButton: true,
-			confirmButtonText: 'Yes, Create !',
+			confirmButtonText: 'Yes, Edit !',
 			cancelButtonText: 'No, cancel!',
 			reverseButtons: true
 			}).then((result) => {

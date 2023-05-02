@@ -23,10 +23,12 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<p class="mb-0">Total Expenses {{ date('F, Y') }}</p>
-										<h4 class="my-1 text-warning">{{ number_format(app\Http\Controllers\Controller::expensesthismonth(), 2) }}</h4>
+										<h4 class="my-1 text-warning">{{ $categories}}</h4>
+										<p class="mb-0">Categories</p>
+										
 									</div>
-									<div class="text-warning ms-auto font-35">&#8358;
+									<div class="text-warning ms-auto font-35">
+										<i class='bx bxs-category'></i>
 									</div>
 								</div>
 							</div>
@@ -37,38 +39,40 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<p class="mb-0">Total Inflow {{ date('F, Y') }}</p>
-										<h4 class="my-1 text-primary">0.00</h4>
+										<h4 class="my-1 text-primary">{{$stocks->count()}}</h4>
+										<p class="mb-0">Total Items</p>
+										
 									</div>
-									<div class="text-primary ms-auto font-35">&#8358;
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card radius-10 border-danger border-start border-0 border-4">
-							<div class="card-body">
-								<div class="d-flex align-items-center">
-									<div>
-										<p class="mb-0">Total Expenses {{ date('Y') }}</p>
-										<h4 class="my-1 text-danger">{{ number_format(app\Http\Controllers\Controller::expensesthisyear(), 2) }}</h4>
-									</div>
-									<div class="text-danger ms-auto font-35">&#8358;
+									<div class="text-primary ms-auto font-35"><i class='bx bx-sitemap'></i>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="col">
-						<div class="card radius-10  border-success border-start border-0 border-4">
+						<div class="card radius-10 border-success border-start border-0 border-4">
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<p class="mb-0">Total Inflow {{ date('Y') }}</p>
-										<h4 class="text-success my-1">0.00</h4>
+										<p class="mb-0">Total item cost</p>
+										<h4 class="my-1 text-success ">{{number_format($amount, 2) }}</h4>
 									</div>
 									<div class="text-success ms-auto font-35">&#8358;
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card radius-10  border-danger border-start border-0 border-4">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										
+										<h4 class="text-danger my-1">{{number_format($low)}}</h4>
+										<p class="mb-0">Items low in stock</p>
+									</div>
+									<div class="text-danger ms-auto font-35"><i class='bx bx-line-chart-down' ></i>
 									</div>
 								</div>
 							</div>

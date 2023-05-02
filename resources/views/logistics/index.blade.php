@@ -16,44 +16,48 @@
 					</div>
 
 				</div>
-                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
-					<div class="col">
-						<div class="card radius-10 border-warning border-start border-0 border-4">
-							<div class="card-body">
-								<div class="d-flex align-items-center">
-									<div>
-										<p class="mb-0">Total Expenses {{ date('F, Y') }}</p>
-										<h4 class="my-1 text-warning">{{ number_format(app\Http\Controllers\Controller::expensesthismonth(), 2) }}</h4>
-									</div>
-									<div class="text-warning ms-auto font-35">&#8358;
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+                          <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
 					<div class="col">
 						<div class="card radius-10 border-primary border-start border-0 border-4">
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<p class="mb-0">Total Inflow {{ date('F, Y') }}</p>
-										<h4 class="my-1 text-primary">0.00</h4>
+										<h4 class="my-1 text-primary">{{ $total_request}}</h4>
+										<p class="mb-0">Total request made</p>
+										
 									</div>
-									<div class="text-primary ms-auto font-35">&#8358;
+									<div class="text-primary ms-auto font-35">
+										<i class='bx bx-git-pull-request'></i>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="col">
-						<div class="card radius-10 border-danger border-start border-0 border-4">
+						<div class="card radius-10 border-success border-start border-0 border-4">
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<p class="mb-0">Total Expenses {{ date('Y') }}</p>
-										<h4 class="my-1 text-danger">{{ number_format(app\Http\Controllers\Controller::expensesthisyear(), 2) }}</h4>
+										<h4 class="my-1 text-success">{{number_format($total_cost_incured, 2)}}</h4>
+										<p class="mb-0">Total cost incurred</p>
+										
 									</div>
-									<div class="text-danger ms-auto font-35">&#8358;
+									<div class="text-success ms-auto font-35">&#8358;
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card radius-10 border-warning border-start border-0 border-4">
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div>
+										
+										<h4 class="my-1 text-warning ">{{number_format($pending)}}</h4>
+										<p class="mb-0">Pending Request</p>
+									</div>
+									<div class="text-warning ms-auto font-35"><i class='bx bx-git-pull-request'></i>
 									</div>
 								</div>
 							</div>
@@ -64,10 +68,11 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<p class="mb-0">Total Inflow {{ date('Y') }}</p>
-										<h4 class="text-success my-1">0.00</h4>
+										
+										<h4 class="text-success my-1">{{number_format($approved)}}</h4>
+										<p class="mb-0">Approved Request</p>
 									</div>
-									<div class="text-success ms-auto font-35">&#8358;
+									<div class="text-success ms-auto font-35"><i class='bx bx-git-pull-request'></i>
 									</div>
 								</div>
 							</div>

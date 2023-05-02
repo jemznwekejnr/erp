@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Procurement;
+use App\Models\Stockrequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,11 +24,24 @@ class ProcurementController extends Controller
      */
     public function index()
     {
-        return view('procurements.index', ['procurements' => Procurement::all()]);
+
+        $total_request = Procurement::all()->count();
+        // dd(Procurement::where('disbursed_date', '!=', null)->sum('total_price'));
+        $total_cost_incured = Procurement::where('disbursed_date', '=', null)->sum('total_price');
+
+        $pending = Procurement::where('status', '=', 'pending')->count();
+        $approved = Procurement::where('status', '=', 'approved')->count();
+        return view('procurements.index', ['procurements' => Procurement::all(), 'total_request' => $total_request, 'total_cost_incured' => $total_cost_incured, $total_cost_incured, 'pending' => $pending, 'approved' => $approved]);
     }
     public function myindex()
     {
-        return view('procurements.myindex', ['procurements' => Procurement::all()]);
+        $total_request = Procurement::where('requested_by', '=', Auth::user()->profileid)->count();
+        // dd(Procurement::where('disbursed_date', '!=', null)->sum('total_price'));
+        $total_cost_incured = Procurement::where('disbursed_date', '=', null)->sum('total_price');
+
+        $pending = Procurement::where('requested_by', '=', Auth::user()->profileid)->where('status', '=', 'pending')->count();
+        $approved = Procurement::where('requested_by', '=', Auth::user()->profileid)->where('status', '=', 'approved')->count();
+        return view('procurements.myindex', ['procurements' => Procurement::all(), 'total_request' => $total_request, 'total_cost_incured' => $total_cost_incured, $total_cost_incured, 'pending' => $pending, 'approved' => $approved]);
     }
 
     /**
