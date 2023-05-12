@@ -50,13 +50,13 @@
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
 					 	<div class="col-sm-12" style="margin-bottom: 15px;">
-					 		<label for="inputFirstName" class="form-label">PV Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="PV Title" required>
+					 		<label for="inputFirstName" class="form-label">PV Title <span class="required" >*</span></label>
+							<input type="text" class="form-control" id="title" name="title" placeholder="PV Title" maxlength="225" required>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 							<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">PV Recipient</label>
+								<label for="inputFirstName" class="form-label">PV Recipient <span class="required" >*</span></label>
 								<select name="sendto" id="sendto" class="form-control" required>
 									<option value="">Select Recipient</option>
 									@foreach($staffs as $staff)
@@ -85,8 +85,8 @@
 						</div>
 					</div>
 					 	<div class="col-sm-12">
-					 		<label for="inputFirstName" class="form-label">PV Body</label>
-							<textarea class="form-control" id="body" name="body" placeholder="PV Body" required></textarea>
+					 		<label for="inputFirstName" class="form-label">PV Body <span class="required" >*</span></label>
+							<textarea class="form-control" id="body" name="body" placeholder="PV Body" maxlength="5000" required></textarea>
 								
 					 	</div>
 
@@ -98,10 +98,13 @@
 								<input type="file" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
 							</div>
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Project</label>
+								<label for="inputFirstName" class="form-label">Project <span class="required" >*</span></label>
 								<select name="project" id="project" class="form-control" required>
 									<option value="">Select Project</option>
 									<option>Not Applicable</option>
+									@foreach($projects as $project)
+									<option value="{{ $project->id }}">{{ $project->title }}</option>
+									@endforeach
 								</select>
 							</div>
 						</div>
@@ -165,7 +168,7 @@
 							</thead>
 							<tbody id="sheetdata">
 								<tr>
-									<td><p id="sn1">1</p></td>
+									<td><p id="sn1">1 <span class="required" >*</span></p></td>
 									<td><input type="text" class="form-control" id="description1" name="description[]" placeholder="Description" required></td>
 									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="0" required></td>
 									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="0.00" required></td>
@@ -203,6 +206,7 @@
 							 		<input type="hidden" name="totalwhts" id="totalwhts" value="0">
 							 		<th class="tdnt totalsum" id="totalnet">0.00</th>
 							 		<input type="hidden" name="totalnets" id="totalnets" value="0">
+							 	</tr>
 							</tfoot>
 						</table>
 					</div>

@@ -49,13 +49,13 @@
 					 <form class="row g-3" action="submitcircular" method="post" id="submitcircular" enctype="multipart/form-data">
 					 	@csrf
 					 	<div class="col-sm-12">
-					 		<label for="inputFirstName" class="form-label">Circular Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="Circular Title" required>
+					 		<label for="inputFirstName" class="form-label">Circular Title <span class="required" >*</span></label>
+							<input type="text" class="form-control" id="title" name="title" placeholder="Circular Title" maxlength="225" required>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-12">
-								<label for="inputFirstName" class="form-label">Recipient</label>
+								<label for="inputFirstName" class="form-label">Recipient <span class="required" >*</span></label>
 								<select data-placeholder="Begin typing a name to filter..." multiple class=" form-control" name="recipient[]" required>
 								    <option>All Staff</option>
 								    @foreach($staffs as $staff)
@@ -68,14 +68,15 @@
 						</div>
 					</div>
 					 	<div class="col-sm-12">
-					 		<label for="inputFirstName" class="form-label">Circular Body</label>
-							<textarea class="form-control" id="body" name="body" placeholder="Circular Body" style="height: 300px;"></textarea>
+					 		<label for="inputFirstName" class="form-label">Circular Body <span class="required" >*</span></label>
+							<textarea class="form-control" id="body" name="body" placeholder="Circular Body" maxlength="5000" style="height: 300px;"></textarea>
 							
 								
 					 	</div>
 					 	<div class="col-sm-12">
 						<div class="row g-3">
 						 	<div class="col-sm-6">
+						 		<label>Add Attachment</label>
 								<input type="file" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
 							</div>
 						 	<div class="col-sm-6 text-right float-right">

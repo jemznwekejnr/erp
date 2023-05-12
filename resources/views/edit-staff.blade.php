@@ -131,9 +131,9 @@
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Department</label>
 								<select class="form-control" id="department" name="department" required>
-									<option>{{ $staff[0]->department }}</option>
+									<option>{{ app\Http\Controllers\Controller::getdepartment($staff[0]->department) }}</option>
 									@foreach($departments as $department)
-									<option>{{ $department->departments }}</option>
+									<option value="{{ $department->id }}">{{ $department->departments }}</option>
 									@endforeach
 								</select>
 							</div>
@@ -151,9 +151,9 @@
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Designation</label>
 								<select class="form-control" id="designation" name="designation" required>
-									<option>{{ $staff[0]->designation }}</option>
+									<option>{{ app\Http\Controllers\Controller::getlevelname($staff[0]->designation) }}</option>
 									@foreach($designations as $designation)
-									<option>{{ $designation->designations }}</option>
+									<option value="{{ $designation->id }}">{{ $designation->designation }}</option>
 									@endforeach
 								</select>
 							</div>

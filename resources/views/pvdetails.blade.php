@@ -50,9 +50,12 @@
 				  	<div class="form-body">
 					 
 					 	<div class="col-sm-12">
-
 					 		<label for="inputFirstName" class="form-label">PV Title</label>
 							<p class="form-control" id="title">{{ $pvs[0]->title }}</p>
+					 	</div><br />
+					 	<div class="col-sm-12">
+					 		<label for="inputFirstName" class="form-label">Project</label>
+							<p class="form-control" id="title">{{ app\Http\Controllers\Controller::projectname($pvs[0]->project) }}</p>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
@@ -62,10 +65,10 @@
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV CC</label>
-								<p class="form-control" id="pvcc">@if(!empty($pvs[0]->copies)) |
+								<p class="form-control" id="pvcc">@if(!empty($pvs[0]->copies))
 											@php $copy = explode(",", $pvs[0]->copies) @endphp
 											@for($j=0; $j < count($copy); $j++)
-											{{ app\Http\Controllers\Controller::staffname($copy[$j]) }} |
+											{{ app\Http\Controllers\Controller::staffname($copy[$j]) }},
 											@endfor
 											@endif</p>
 							</div>
@@ -154,7 +157,7 @@
 							 		<th class="tdwh"><b></b></th>
 							 		<th class="tdwt"><b>{{ $pvs[0]->totalwht }} </b></th>
 							 		<th class="tdnt"><b>{{ $pvs[0]->totalnet }} </b></th>
-
+							 	</tr>
 
 							</tfoot>
 						</table>
@@ -225,16 +228,16 @@
 									@php $total = count($actioned) @endphp
 									@for($i=0; $i < $total; $i++)
 									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Approved" || app\Http\Controllers\Controller::getactions($actioned[$i]) == "Rejected" || app\Http\Controllers\Controller::getactions($actioned[$i]) == "Verified" || app\Http\Controllers\Controller::getactions($actioned[$i]) == "Paid")
-									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == Approved && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 1) == "allow")
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Approved" && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 1) == "allow")
 									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
 									@endif
-									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == Rejected && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 3) == "allow")
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Rejected" && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 3) == "allow")
 									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
 									@endif
-									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == Verified && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 4) == "allow")
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Verified" && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 4) == "allow")
 									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
 									@endif
-									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == Paid && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 5) == "allow")
+									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Paid" && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 5) == "allow")
 									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
 									@endif
 									@endif
@@ -282,8 +285,8 @@
 					<div class="col-sm-12">
 						<div class="row g-3">
 						 	<div class="col-sm-6 form-control alert alert-info float-right" style="height: 150px; width: 60%; overflow: scroll; margin-left: 40%;">
-						 		<h5>@if($pvtrail->status == 'Pending') <button class="btn btn-warning px-5">{{ $pvtrail->status }}</button> @elseif($pvtrail->status == 'Approved') <button class="btn btn-success px-5">{{ $pvtrail->status }}</button> @elseif($pvtrail->status == 'Rejected') <button class="btn btn-danger px-5">{{ $pvtrail->status }}</button> 
-										@else <button class="btn btn-primary px-5 convertuser">{{ $pvtrail->status }}</button> 
+						 		<h5>@if($pvtrail->status == 'Pending') <button class="btn btn-warning px-5">{{ $pvtrail->status }}</button> @elseif($pvtrail->status == 'Approved') <button class="btn btn-primary px-5">{{ $pvtrail->status }}</button> @elseif($pvtrail->status == 'Rejected') <button class="btn btn-danger px-5">{{ $pvtrail->status }}</button> 
+										@else <button class="btn btn-success px-5 convertuser">{{ $pvtrail->status }}</button> 
 										@endif</h5>
 						 		<p>{{ $pvtrail->remark }}</p>
 						 		<br /><br />

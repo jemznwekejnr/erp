@@ -19,8 +19,7 @@
 					</div>
 				</div>
 				<!--end breadcrumb-->
-		 <form class="row g-3" method="post" action="submiteditpv" enctype="multipart/form-data" id="submiteditpv">
-		 	@csrf
+		 
 		<div class="card" style="padding-bottom: 30px;">
 		       <div class="col-12 col-lg-12">
 		          <div class=" radius-10">
@@ -45,6 +44,8 @@
 						</div>
 					</div>
 				</div>
+				<form class="row g-3" method="post" action="submiteditpv" enctype="multipart/form-data" id="submiteditpv">
+		 		@csrf
 				  <div class="card-body" style="padding-top: 30px;">
 				  	<div class="form-body">
 					 	<div class="col-sm-12">

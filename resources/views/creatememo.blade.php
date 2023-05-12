@@ -49,13 +49,13 @@
 					 <form class="row g-3" action="submitmemo" id="submitmemo" method="post" enctype="multipart/form-data">
 					 	@csrf
 					 	<div class="col-sm-12">
-					 		<label for="inputFirstName" class="form-label">Memo Title</label>
-							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title" required>
+					 		<label for="inputFirstName" class="form-label">Memo Title <span class="required" >*</span></label>
+							<input type="text" class="form-control" id="title" name="title" placeholder="Memo Title" maxlength="225" required>
 					 	</div><br />
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Memo Recipient</label>
+								<label for="inputFirstName" class="form-label">Memo Recipient <span class="required" >*</span></label>
 								<select name="sendto" id="recipient" class="form-control" required>
 									<option value="">Select Recipient</option>
 									@foreach($staffs as $staff)
@@ -83,8 +83,8 @@
 						</div>
 					</div>
 					 	<div class="col-sm-12">
-					 		<label for="inputFirstName" class="form-label">Memo Body</label>
-							<textarea class="form-control" id="body" name="memobody" placeholder="Memo Body" style="height: 300px;"></textarea>
+					 		<label for="inputFirstName" class="form-label">Memo Body <span class="required" >*</span></label>
+							<textarea class="form-control" id="body" name="memobody" placeholder="Memo Body" maxlength="5000" style="height: 300px;"></textarea>
 							
 
 								
@@ -93,6 +93,7 @@
 					 	<div class="col-sm-12">
 						<div class="row g-3">
 						 	<div class="col-sm-6">
+						 		<label>Add Attachment</label>
 								<input type="file" id="pics" name="attachment" class="form-control" accept=".pdf" placeholder="Select Attachment">
 							</div>
 						 	<div class="col-sm-6 text-right float-right">

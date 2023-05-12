@@ -30,6 +30,15 @@
 
 	<style>
 
+		.required{
+
+			color: #ff0000;
+		}
+
+		body{
+			font-family: Garamond !important;
+		}
+
 		/* PV table definition */
 		.tdsn{
 			width: 5%;

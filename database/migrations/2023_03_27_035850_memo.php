@@ -17,7 +17,7 @@ class Memo extends Migration
             $table->id();
             $table->string("sentform");
             $table->string("title");
-            $table->string("body", 2000);
+            $table->string("body", 5000);
             $table->string("attachment")->nullable();
             $table->string("status");
             $table->string("sendto");

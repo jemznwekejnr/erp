@@ -205,8 +205,15 @@ class CircularController extends Controller
                 $data['body'] = $body;
                 $data['total_recipient'] = $staffs->count();
                 if(!empty($attachment)){
-                    $attachmenturl = $attachment->store('assets/attachment');
-                    $data['attachment'] = $attachmenturl;
+                    try{
+                        $attachmenturl = $attachment->store('assets/attachment');
+                        $data['attachment'] = $attachmenturl;
+                    } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading attachment, reduce the file size of try a different file.'
+                    ]);
+                }
                 }
                 $data['status'] = "Pending";
                 $data['created_at'] = date('Y-m-d H:i:s');
@@ -325,8 +332,15 @@ class CircularController extends Controller
                 $data['body'] = $body;
                 $data['total_recipient'] = count($recipient);
                 if(!empty($attachment)){
-                    $attachmenturl = $attachment->store('assets/attachment');
-                    $data['attachment'] = $attachmenturl;
+                    try{
+                        $attachmenturl = $attachment->store('assets/attachment');
+                        $data['attachment'] = $attachmenturl;
+                    } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading attachment, reduce the file size of try a different file.'
+                    ]);
+                }
                 }
                 $data['status'] = "Pending";
                 $data['created_at'] = date('Y-m-d H:i:s');

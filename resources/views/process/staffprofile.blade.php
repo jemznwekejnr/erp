@@ -325,14 +325,7 @@
 
 
 
-	var uploadField = document.getElementById("pics");
-
-	uploadField.onchange = function() {
-	    if(this.files[0].size > 2097152){
-	       Swal.fire("Error!", "File is too big, please ensure the file size is less than 2MB, then try again.", "error");
-	       this.value = "";
-	    };
-	};
+	
 
 	
 </script>

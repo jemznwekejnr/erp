@@ -251,7 +251,7 @@
 							<img src="@if(!is_null(app\Http\Controllers\Controller::staffimage(Auth::user()->profileid))){{ asset(app\Http\Controllers\Controller::staffimage(Auth::user()->profileid)) }} @else {{ asset('assets/images/default-avatar.png') }} @endif" class="user-img" alt="user avatar">
 							<div class="user-info ps-3">
 								<p class="user-name mb-0">{{ Auth::user()->name }}</p>
-								<p class="designattion mb-0">{{ app\Http\Controllers\Controller::staffdesignation(Auth::user()->profileid) }}</p>
+								<p class="designattion mb-0">{{ app\Http\Controllers\Controller::getlevelname(app\Http\Controllers\Controller::staffdesignation(Auth::user()->profileid)) }}</p>
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">

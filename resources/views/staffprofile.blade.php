@@ -138,7 +138,7 @@
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Department</label>
-								<p class="form-control" id="department">{{ $staff[0]->department }}</p>
+								<p class="form-control" id="department">{{ app\Http\Controllers\Controller::getdepartment($staff[0]->department) }}</p>
 							</div>
 						</div>
 						<br />
@@ -149,7 +149,7 @@
 							</div>
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">Designation</label>
-								<p class="form-control" id="designation">{{ $staff[0]->designation }}</p>
+								<p class="form-control" id="designation">{{ app\Http\Controllers\Controller::getlevelname($staff[0]->designation) }}</p>
 							</div>
 						</div><br />
 						<div class="row">

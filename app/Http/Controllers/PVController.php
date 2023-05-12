@@ -26,7 +26,9 @@ class PVController extends Controller
 
         $banks = DB::table('banks')->orderBy('banks', 'asc')->get();
 
-        return view('paymentvoucher', ['staffs' => $staffs, 'banks' => $banks]);
+        $projects = DB::table('projects')->where('status', 'Ongoing')->orderBy('title', 'asc')->get();
+
+        return view('paymentvoucher', ['staffs' => $staffs, 'banks' => $banks, 'projects' => $projects]);
         
         }else{
             
@@ -36,11 +38,11 @@ class PVController extends Controller
         }
     }
 
-    public function pvdetails(Request $reqtuest){
+    public function pvdetails(Request $request){
         
         if($this->checkrole(Auth::user()->role, 2, 2) == "allow"){
 
-        $pvs = DB::table('pv')->orderBy('created_at', 'desc')->get();
+        $pvs = DB::table('pv')->where('id', $request->id)->get();
 
         $vsheets = DB::table('vouchersheet')->where('pvid', $pvs[0]->id)->get();
 
@@ -122,14 +124,21 @@ class PVController extends Controller
         $data['title'] = $title;
         $data['sendto'] = $sendto;
         if(!empty($copies)){
-        $data['copies'] = implode($copies, ",");
+        $data['copies'] = implode(",", $copies);
         }
         $data['body'] = $body;
         $data['status'] = 'Pending';
 
         if(!empty($attachment)){
-            $attachmenturl = $attachment->store('assets/attachment');
-            $data['attachment'] = $attachmenturl;
+            try{
+                $attachmenturl = $attachment->store('assets/attachment');
+                $data['attachment'] = $attachmenturl;
+            } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading attachment, reduce the file size of try a different file.'
+                    ]);
+                }
         }
         $data['bank'] = $bankname;
         $data['accountno'] = $accountnumber;
@@ -311,8 +320,15 @@ class PVController extends Controller
         $data['body'] = $body;
 
         if(!empty($attachment)){
-            $attachmenturl = $attachment->store('assets/attachment');
-            $data['attachment'] = $attachmenturl;
+            try{
+                $attachmenturl = $attachment->store('assets/attachment');
+                $data['attachment'] = $attachmenturl;
+            } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading attachment, reduce the file size of try a different file.'
+                    ]);
+                }
         }
         $data['bank'] = $bankname;
         $data['accountno'] = $accountnumber;
@@ -330,18 +346,18 @@ class PVController extends Controller
 
 
         
-        //try {
+        try {
 
-                $update = DB::table('pv')->where('id', $request->id)->update($data);
+            $update = DB::table('pv')->where('id', $request->id)->update($data);
 
-                /*} catch (\Exception $e) {
+                } catch (\Exception $e) {
                     DB::rollback();
                     // something went wrong
                     return response()->json([
                         'message' => 'error',
                         'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
                     ]);
-                }*/
+                }
 
         if($update){
 
@@ -378,18 +394,18 @@ class PVController extends Controller
                 $sdata['created_at'] = date('Y-m-d H:i:s');
 
                 
-                //try {
+                try {
 
                 $addsheet = DB::table('vouchersheet')->insert($sdata);
 
-                /*} catch (\Exception $e) {
+                } catch (\Exception $e) {
                     DB::rollback();
                     // something went wrong
                     return response()->json([
                         'message' => 'error',
                         'info' => 'Error performing this action, make sure all the required fields are provided then try again, please try again'
                     ]);
-                }*/
+                }
 
             }
 
@@ -518,7 +534,7 @@ class PVController extends Controller
         
         try {
 
-                $update = DB::table('pvtrail')->insert($data);
+                $insert = DB::table('pvtrail')->insert($data);
 
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -530,9 +546,6 @@ class PVController extends Controller
                 }
 
         if($update){
-
-            //update pv status
-            $pv = DB::table('pv')->where('id', $pvid)->update(['status' => $status]);
 
             //send email to the owner of the pv
             $username = $this->staffname($sentfrom);

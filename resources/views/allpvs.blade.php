@@ -6,7 +6,7 @@
 <div class="page-wrapper">
 	<div class="page-content">
 		
-		<div class="card">
+		<div class="card" style="padding: 20px;">
 					<div class="card-body">
 						<div class="card-title">
 							<h4 class="mb-0">All Payment Vouchers</h4>
@@ -18,6 +18,7 @@
 									<tr>
 										<th>Date</th>
 										<th>Title</th>
+										<th>Project</th>
 										<th>Net Amount (&#8358;)</th>
 										<th>Created By</th>
 										<th>Sent To</th>
@@ -30,13 +31,14 @@
 									<tr>
 										<td>{{ $pv->created_at }}</td>
 										<td>{{ $pv->title }}</td>
+										<td>{{ app\Http\Controllers\Controller::projectname($pv->project) }}</td>
 										<td>{{ number_format($pv->totalnet, 2) }}</td>
 										<td>{{ app\Http\Controllers\Controller::staffname($pv->sentform) }}</td>
 										<td>{{ app\Http\Controllers\Controller::staffname($pv->sendto) }}</td>
-										<td>@if(!empty($pv->copies)) |
+										<td>@if(!empty($pv->copies))
 											@php $copy = explode(",", $pv->copies) @endphp
 											@for($j=0; $j < count($copy); $j++)
-											{{ app\Http\Controllers\Controller::staffname($copy[$j]) }} |
+											{{ app\Http\Controllers\Controller::staffname($copy[$j]) }},
 											@endfor
 											@endif</td>
 										<td>

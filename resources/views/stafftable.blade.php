@@ -10,7 +10,7 @@
 					<div class="breadcrumb-title pe-3">Staff</div>
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb mb-0 p-0">
+							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 								</li>
 								<li class="breadcrumb-item " aria-current="page">Staff Records</li>
@@ -31,9 +31,12 @@
 					</div>-->
 				</div>
 				<!--end breadcrumb-->
-				<h6 class="mb-0 text-uppercase">ALl Staff Table</h6>
 				<hr/>
-				<div class="card">
+				<div class="card" style="padding: 20px;">
+					<div class="card-header">
+						
+						<h4 class="mb-0 text-uppercase">ALL Staff</h4>
+					</div>
 					<div class="card-body">
 						<div class="table-responsive">
 							<table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -53,8 +56,8 @@
 									@if($staff->id != 1)
 									<tr>
 										<td>{{ $staff->firstname.' '.$staff->surname.' '.$staff->othername}}</td>
-										<td>{{ $staff->department }}</td>
-										<td>{{ $staff->designation }}</td>
+										<td>{{ app\Http\Controllers\Controller::getdepartment($staff->department) }}</td>
+										<td>{{ app\Http\Controllers\Controller::getlevelname($staff->designation) }}</td>
 										<td>{{ $staff->office }}</td>
 										<td>{{ $staff->doe }}</td>
 										<td>

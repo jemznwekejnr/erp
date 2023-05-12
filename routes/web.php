@@ -7,6 +7,11 @@ use App\Http\Controllers\CircularController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\PdfController;
+use App\Http\Controllers\PayrollController;
+
+
 
 
 /*
@@ -104,6 +109,13 @@ Route::get('/changepassword', [ProfileController::class, 'changepassword']);
 
 Route::post('/submitpassword', [ProfileController::class, 'submitpassword']);
 
+Route::get('/companyinfo', [ProfileController::class, 'companyinfo']);
+
+Route::post('/submitinfo', [ProfileController::class, 'submitinfo']);
+
+Route::get('/deleteinfo', [ProfileController::class, 'deleteinfo']);
+
+
 /*************************** Memo Controller *************************************/
 
 Route::get('/creatememo', [MemoController::class, 'creatememo']);
@@ -184,6 +196,128 @@ Route::get('/privileges', [AccessController::class, 'privileges']);
 Route::post('/submitprivileges', [AccessController::class, 'submitprivileges']);
 
 
+/**************************** Project Controller *************************************/
+
+Route::get('/createproject', [ProjectController::class, 'createproject']);
+
+Route::get('/projects', [ProjectController::class, 'projects']);
+
+Route::get('/projectdetails', [ProjectController::class, 'projectdetails']);
+
+Route::get('/addtask', [ProjectController::class, 'addtask']);
+
+Route::post('/submitproject', [ProjectController::class, 'submitproject']);
+
+Route::post('/submittask', [ProjectController::class, 'submittask']);
+
+Route::get('/taskdetails', [ProjectController::class, 'taskdetails']);
+
+Route::post('/submittaskupdate', [ProjectController::class, 'submittaskupdate']);
+
+Route::get('/edittask', [ProjectController::class, 'edittask']);
+
+Route::post('/submitedittask', [ProjectController::class, 'submitedittask']);
+
+Route::get('/deletetask', [ProjectController::class, 'deletetask']);
+
+Route::get('/editproject', [ProjectController::class, 'editproject']);
+
+Route::post('/submiteditproject', [ProjectController::class, 'submiteditproject']);
+
+Route::get('/deleteproject', [ProjectController::class, 'deleteproject']);
+
+Route::get('/createinvoice', [ProjectController::class, 'createinvoice']);
+
+Route::get('/getclientinfo', [ProjectController::class, 'getclientinfo']);
+
+Route::post('/submitinvoice', [ProjectController::class, 'submitinvoice']);
+
+Route::get('/allinvoices', [ProjectController::class, 'allinvoices']);
+
+Route::get('/allreceipts', [ProjectController::class, 'allreceipts']);
+
+Route::get('/invoicedetails', [ProjectController::class, 'invoicedetails']);
+
+Route::get('/receiptdetails', [ProjectController::class, 'receiptdetails']);
+
+Route::post('/submitinvoicestatus', [ProjectController::class, 'submitinvoicestatus']);
+
+Route::get('/editinvoice', [ProjectController::class, 'editinvoice']);
+
+Route::post('/submiteditinvoice', [ProjectController::class, 'submiteditinvoice']);
+
+Route::get('/deleteinvoice', [ProjectController::class, 'deleteinvoice']);
+
+/************************** PDF Controller ***********************************************/
+
+Route::get('/viewPDF', [PdfController::class, 'viewPDF']);
+
+Route::get('/invoicepdf', [PdfController::class, 'invoicepdf']);
+
+Route::get('/qrcode', [PdfController::class, 'qrcode']);
+
+Route::get('/receiptpdf', [PdfController::class, 'receiptpdf']);
+
+
+/************************* Payroll Controller **********************************************/
+
+Route::get('/basicpay', [PayrollController::class, 'basicpay']);
+
+Route::get('/allowances', [PayrollController::class, 'allowances']);
+
+Route::get('/bonuses', [PayrollController::class, 'bonuses']);
+
+Route::get('/deductions', [PayrollController::class, 'deductions']);
+
+Route::post('/submitbasicpay', [PayrollController::class, 'submitbasicpay']);
+
+Route::get('/deletebasicpay', [PayrollController::class, 'deletebasicpay']);
+
+Route::post('/submitallowances', [PayrollController::class, 'submitallowances']);
+
+Route::get('/deleteallowance', [PayrollController::class, 'deleteallowance']);
+
+Route::post('/submitbonus', [PayrollController::class, 'submitbonus']);
+
+Route::get('/deletebonus', [PayrollController::class, 'deletebonus']);
+
+Route::post('/submitdeduction', [PayrollController::class, 'submitdeduction']);
+
+Route::get('/deletededuction', [PayrollController::class, 'deletededuction']);
+
+Route::get('/alloweddeductions', [PayrollController::class, 'alloweddeductions']);
+
+Route::get('/paye', [PayrollController::class, 'paye']);
+
+Route::post('/submitpaye', [PayrollController::class, 'submitpaye']);
+
+Route::get('/deletepaye', [PayrollController::class, 'deletepaye']);
+
+Route::post('/submitadeduction', [PayrollController::class, 'submitadeduction']);
+
+Route::get('/deleteadeduction', [PayrollController::class, 'deleteadeduction']);
+
+Route::post('/generatepayslip', [PayrollController::class, 'generatepayslip']);
+
+Route::get('/payroll', [PayrollController::class, 'payroll']);
+
+Route::get('/allowanceslip', [PayrollController::class, 'allowanceslip']);
+
+Route::get('/deductionslip', [PayrollController::class, 'deductionslip']);
+
+Route::post('/submitpayroll', [PayrollController::class, 'submitpayroll']);
+
+Route::get('/allpayroll', [PayrollController::class, 'allpayroll']);
+
+Route::get('/individualpayroll', [PayrollController::class, 'individualpayroll']);
+
+Route::get('/payrolldetails', [PayrollController::class, 'payrolldetails']);
+
+Route::get('/querypayroll', [PayrollController::class, 'querypayroll']);
+
+Route::post('/updatepayroll', [PayrollController::class, 'updatepayroll']);
+
+Route::get('/staffpayslip', [PayrollController::class, 'staffpayslip']);
 
 
 

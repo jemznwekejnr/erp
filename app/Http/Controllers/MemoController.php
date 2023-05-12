@@ -105,7 +105,8 @@ class MemoController extends Controller
         $attachment = $request->attachment;
         $sender = Auth::user()->profileid;
         $status = 'Pending';
-
+        
+        
 
         //check if this memo was submitted earlier incase of network failure
 
@@ -121,16 +122,7 @@ class MemoController extends Controller
 
         if($checkmemo == 1){
 
-            //log the event
-
-            $logs = array();
-
-            $logs['user'] = Auth::user()->id;
-            $logs['action'] = "Attempted to create new memo but failed because the memo has been created earlier";
-            $logs['created_at'] = date('Y-m-d H:i:s');
-            $logs['updated_at'] = date('Y-m-d H:i:s');
-
-            $createlogs = DB::table('logs')->insert($logs);
+            $this->logevent("Attempted to create new memo but failed because the memo has been created earlier");
 
 
             return response()->json([
@@ -152,26 +144,33 @@ class MemoController extends Controller
             $data['status'] = $status;
             $data['sendto'] = $recipient;
             if(!empty($copies)){
-            $data['copies'] = implode($copies, ",");
+            $data['copies'] = implode(",", $copies);
             }
             if(!empty($attachment)){
-                $attachmenturl = $attachment->store('assets/attachments');
-                $data['attachment'] = $attachmenturl;
+                try{
+                    $attachmenturl = $attachment->store('assets/attachments');
+                    $data['attachment'] = $attachmenturl;
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading attachment, reduce the file size of try a different file.'
+                    ]);
+                }
             }
             $data['created_at'] = date('Y-m-d H:i:s');
 
-            //try {
+            try {
 
             $create = DB::table('memo')->insert($data);
 
-            /*} catch (\Exception $e) {
+            } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
                 return response()->json([
                     'message' => 'error',
                     'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
                 ]);
-            }*/
+            }
 
             if($create){
 
@@ -229,16 +228,7 @@ class MemoController extends Controller
                 
 
                 //log the event
-
-                $logs = array();
-
-                $logs['user'] = Auth::user()->id;
-                $logs['action'] = "Created new memo ".$title;
-                $logs['created_at'] = date('Y-m-d H:i:s');
-                $logs['updated_at'] = date('Y-m-d H:i:s');
-
-                $createlogs = DB::table('logs')->insert($logs);
-
+                $this->logevent("Created new memo ".$title);
 
                 return response()->json([
                     'message' => 'success',
@@ -416,9 +406,16 @@ class MemoController extends Controller
         $data['title'] = $request->title;
         $data['body'] = $request->memobody;
         if(!empty($request->attachment)){
-            $attachment = $request->file('attachment');
-            $attachmenturl = $attachment->store('assets/attachments');
-            $data['attachment'] = $attachmenturl;
+            try{
+                $attachment = $request->file('attachment');
+                $attachmenturl = $attachment->store('assets/attachments');
+                $data['attachment'] = $attachmenturl;
+            } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading attachment, reduce the file size of try a different file.'
+                    ]);
+                }
         }
 
         

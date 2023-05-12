@@ -18,7 +18,7 @@ class Circular extends Migration
             $table->integer("sentform");
             $table->string("total_recipient");
             $table->string("title");
-            $table->string("body");
+            $table->string("body", 5000);
             $table->string("attachment")->nullable();
             $table->string("status");
             $table->integer("reacted_by")->nullable();

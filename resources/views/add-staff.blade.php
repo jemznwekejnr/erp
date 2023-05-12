@@ -132,7 +132,7 @@
 								<select class="form-control" id="department" required name="department">
 									<option value="">Select Department</option>
 									@foreach($departments as $department)
-									<option>{{ $department->departments }}</option>
+									<option value="{{ $department->id }}">{{ $department->departments }}</option>
 									@endforeach
 								</select>
 							</div>
@@ -152,7 +152,7 @@
 								<select class="form-control" id="designation" required name="designation">
 									<option value="">Select Designation</option>
 									@foreach($designations as $designation)
-									<option>{{ $designation->designations }}</option>
+									<option value="{{ $designation->id }}">{{ $designation->designation }}</option>
 									@endforeach
 								</select>
 							</div>

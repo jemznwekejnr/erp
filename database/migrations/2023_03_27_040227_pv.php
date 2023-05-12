@@ -17,7 +17,7 @@ class Pv extends Migration
             $table->id();
             $table->string("sentform");
             $table->string("title");
-            $table->string("body", 1000);
+            $table->string("body", 5000);
             $table->string("attachment")->nullable();
             $table->string("status");
             $table->string("sendto");

@@ -57,8 +57,8 @@
 						<li> <a href="{{ url('paymentvoucher') }}"><i class="bx bx-right-arrow-alt"></i>New PV</a>
 						</li>
 						@endif
-						<li> <a href="{{ url('mypvs') }}"><i class="bx bx-right-arrow-alt"></i>My PV</a>
-						</li>
+						<!--<li> <a href="{{ url('mypvs') }}"><i class="bx bx-right-arrow-alt"></i>My PV</a>
+						</li>-->
 						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 6, 2) == "allow")
 						<li> <a href="{{ url('allpvs') }}"><i class="bx bx-right-arrow-alt"></i>View All PVs</a>
 						</li>
@@ -132,8 +132,8 @@
 						<li> <a href="{{ url('offices') }}"><i class="bx bx-right-arrow-alt"></i>Offices</a>
 						</li>
 						<li> <a href="{{ url('banks') }}"><i class="bx bx-right-arrow-alt"></i>Banks</a></li>
-						<!--<li> <a href="error-blank-page.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Blank Page</a>
-						</li>-->
+						<li> <a href="{{ url('companyinfo') }}"><i class="bx bx-right-arrow-alt"></i>Company Info</a>
+						</li>
 					</ul>
 				</li>
 				@endif
@@ -157,6 +157,96 @@
 					</ul>
 				</li>
 				@endif
+                @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 12, 2) == "allow")
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class="bx bx-video-recording"></i>
+						</div>
+						<div class="menu-title">Projects</div>
+					</a>
+					<ul>
+					    @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 12, 6) == "allow")
+						<li> <a href="{{ url('createproject') }}"><i class="bx bx-right-arrow-alt"></i>New Project</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 12, 2) == "allow")
+						<li> <a href="{{ url('projects') }}"><i class="bx bx-right-arrow-alt"></i>Project List</a>
+						</li>
+						@endif
+						<!--<li> <a href="{{ url('offices') }}"><i class="bx bx-right-arrow-alt"></i>Offices</a>
+						</li>
+						<li> <a href="{{ url('banks') }}"><i class="bx bx-right-arrow-alt"></i>Banks</a></li>
+						--<li> <a href="error-blank-page.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Blank Page</a>
+						</li>-->
+					</ul>
+				</li>
+                @endif
+                @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class="bx bx-repeat"></i>
+						</div>
+						<div class="menu-title">Accounts</div>
+					</a>
+					<ul>
+					    @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
+						<li> <a href="{{ url('createinvoice') }}"><i class="bx bx-right-arrow-alt"></i>New Invoice</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 6) == "allow")
+						<li> <a href="{{ url('allinvoices') }}"><i class="bx bx-right-arrow-alt"></i>Client Invoices</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 14, 2) == "allow")
+						<li> <a href="{{ url('allreceipts') }}"><i class="bx bx-right-arrow-alt"></i>Client Receipts</a>
+						</li>
+						@endif
+						<!--<li> <a href="{{ url('banks') }}"><i class="bx bx-right-arrow-alt"></i>Banks</a></li>
+						--<li> <a href="error-blank-page.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Blank Page</a>
+						</li>-->
+					</ul>
+				</li>
+				@endif
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class="bx bx-repeat"></i>
+						</div>
+						<div class="menu-title">Payroll</div>
+					</a>
+					<ul>
+					    @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
+						<li> <a href="{{ url('basicpay') }}"><i class="bx bx-right-arrow-alt"></i>Basic Pay</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
+						<li> <a href="{{ url('allowances') }}"><i class="bx bx-right-arrow-alt"></i>Allowances</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 6) == "allow")
+						<li> <a href="{{ url('alloweddeductions') }}"><i class="bx bx-right-arrow-alt"></i>Allowed Deductions</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 14, 2) == "allow")
+						<li> <a href="{{ url('bonuses') }}"><i class="bx bx-right-arrow-alt"></i>Bonuses</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
+						<li> <a href="{{ url('deductions') }}"><i class="bx bx-right-arrow-alt"></i>Staff Deductions</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 6) == "allow")
+						<li> <a href="{{ url('payroll') }}"><i class="bx bx-right-arrow-alt"></i>Generate Payroll</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 14, 2) == "allow")
+						<li> <a href="{{ url('allpayroll') }}"><i class="bx bx-right-arrow-alt"></i>Payroll History</a>
+						</li>
+						@endif
+						<!--<li> <a href="{{ url('banks') }}"><i class="bx bx-right-arrow-alt"></i>Banks</a></li>
+						--<li> <a href="error-blank-page.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Blank Page</a>
+						</li>-->
+					</ul>
+				</li>
 				<!--<li>
 					<a href="charts-chartjs.html">
 						<div class="parent-icon"><i class="bx bx-user-circle"></i>
@@ -173,15 +263,15 @@
                                         </a>
                                     </form>
 						</div>
-					<!--</a>
-				</li>
-				<!--<li>
-					<a href="table-datatable.html">
-						<div class="parent-icon"> <i class="bx bx-video-recording"></i>
-						</div>
-						<div class="menu-title">Tables</div>
 					</a>
 				</li>-->
+				<li>
+					<a href="{{ url('individualpayroll') }}">
+						<div class="parent-icon"> <i class="bx bx-video-recording"></i>
+						</div>
+						<div class="menu-title">My Payslip</div>
+					</a>
+				</li>
 			</ul>
 			<!--end navigation-->
 			

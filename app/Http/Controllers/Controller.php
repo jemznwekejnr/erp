@@ -22,6 +22,274 @@ class Controller extends BaseController
         return $staff[0]->firstname." ".$staff[0]->surname." ".$staff[0]->othername;
     }
 
+    public static function getdepartment($department){
+
+        return DB::table('departments')->where('id', $department)->value('departments');
+    }
+
+
+    public static function annualbasic($level){
+
+        return DB::table('basicpay')->where('level', $level)->value('amount') * 12;
+    }
+
+
+    public static function annualpension($level){
+
+        $allowancepen = DB::table('allowances')
+                            ->where('allowance', 'Housing')
+                            ->orWhere('allowance', 'Transport')
+                            ->sum('percentage');
+
+        $allowancepenval = ($allowancepen / 100) * static::annualbasic($level);
+
+        return round((8 / 100) * (static::annualbasic($level) + $allowancepenval));
+    }
+
+
+    public static function annualallowances($level){
+
+        $totalallowper = DB::table('allowances')->sum('percentage');
+
+        return round(($totalallowper / 100) * static::annualbasic($level));
+
+    }
+
+
+    public static function annualgross($level){
+
+        return round(static::annualbasic($level) + static::annualallowances($level));
+    }
+
+
+    public static function annualminimumtax($level){
+
+        return round((1 / 100) * static::annualgross($level));
+    }
+
+
+    public static function consolidatedrelief($level){
+
+        if((1 / 100) * static::annualgross($level) > 200000){ //if 1% of Annual Gross is Higher than 200k
+
+            return round(((1 / 100) * static::annualgross($level)) + ((20 / 100) * (static::annualgross($level) - static::annualpension($level))));
+
+        }else{
+
+            return round(200000 + ((20 / 100) * (static::annualgross($level) - static::annualpension($level))));
+
+        }
+    }
+
+
+    public static function totalreliefallowance($level){
+
+        return round(static::consolidatedrelief($level) + static::annualpension($level));
+    }
+
+
+    public static function chargeableincome($level){
+
+         return round(static::annualgross($level) - static::totalreliefallowance($level));
+    }
+
+
+    public static function annualtaxcaculation($level){
+
+        $paye = 0;
+
+        //level 1 for <= 300000 7%
+
+        if(static::chargeableincome($level) <= 300000){
+
+            if(static::annualminimumtax($level) > static::chargeableincome($level) * (7 / 100)){
+
+                return static::annualminimumtax($level);
+
+            }else{
+
+                return round(static::chargeableincome($level) * (7 / 100));
+
+            }
+
+        }else{
+
+            $incomebalance = static::chargeableincome($level) - 300000;
+
+            $paye += 300000 * (7 / 100);
+        }
+
+        //Level 2 for <= 600000 11%
+
+        if($incomebalance <= 300000){
+
+            $levelpaye = $incomebalance * (11 / 100);
+
+            $paye += $levelpaye;
+
+            if(static::annualminimumtax($level) > $paye){
+
+                return static::annualminimumtax($level);
+
+            }else{
+
+                return $paye;
+
+            }
+
+        }else{
+
+            $incomebalance = $incomebalance - 300000;
+
+            $levelpaye = 300000 * (11 / 100);
+
+            $paye += $levelpaye;
+            
+        }
+
+
+        //Level 3 for <= 1100000 15%
+
+        if($incomebalance <= 500000){
+
+            $levelpaye = $incomebalance * (15 / 100);
+
+            $paye += $levelpaye;
+
+            if(static::annualminimumtax($level) > $paye){
+
+                return static::annualminimumtax($level);
+
+            }else{
+
+                return $paye;
+
+            }
+
+        }else{
+
+            $incomebalance = $incomebalance - 500000;
+
+            $levelpaye = 500000 * (15 / 100);
+
+            $paye += $levelpaye;
+        }
+
+
+        //Level 4 for <= 1600000 19%
+
+        if($incomebalance <= 500000){
+
+            $levelpaye = $incomebalance * (19 / 100);
+
+            $paye += $levelpaye;
+
+            if(static::annualminimumtax($level) > $paye){
+
+                return static::annualminimumtax($level);
+
+            }else{
+
+                return $paye;
+
+            }
+
+        }else{
+
+            $incomebalance = $incomebalance - 500000;
+
+            $levelpaye = 500000 * (19 / 100);
+
+            $paye += $levelpaye;
+        }
+
+
+        //Level 5 for <= 2300000 21%
+
+        if($incomebalance <= 700000){
+
+            $levelpaye = $incomebalance * (21 / 100);
+
+            $paye += $levelpaye;
+
+            if(static::annualminimumtax($level) > $paye){
+
+                return static::annualminimumtax($level);
+
+            }else{
+
+                return $paye;
+
+            }
+
+        }else{
+
+            $incomebalance = $incomebalance - 700000;
+
+            $levelpaye = 700000 * (21 / 100);
+
+            $paye += $levelpaye;
+        }
+
+
+        //Level 6 for > 2300000 24%
+
+        if($incomebalance > 700000){
+
+            $levelpaye = $incomebalance * (24 / 100);
+
+            $paye += $levelpaye;
+
+            if(static::annualminimumtax($level) > $paye){
+
+                return static::annualminimumtax($level);
+
+            }else{
+
+                return $paye;
+
+            }
+
+        }
+    }
+
+
+    public static function annualdeduction($level){
+
+        return static::annualtaxcaculation($level) + static::annualpension($level);
+
+    }
+
+
+    public static function staffbonuses($staff, $month, $status){
+
+        return DB::table('bonuses')->where([['staff', $staff], ['month', $month], ['status', $status]])->sum('amount');
+    }
+
+
+    public static function staffdeductions($staff, $month, $status){
+
+        return DB::table('deductions')->where([['staff', $staff], ['month', $month], ['status', $status]])->sum('amount');
+    }
+
+
+    public static function getnetpay($level, $staff, $month, $status){
+
+        //basic + allowances + bonuses - deductions - staff deduction
+        return ((static::annualbasic($level) + static::annualallowances($level) - static::annualdeduction($level)) / 12) + static::staffbonuses($staff, $month, $status) - static::staffdeductions($staff, $month, $status);
+    }
+
+
+    public static function getbasicpay($level){
+
+        return DB::table('basicpay')->where('level', $level)->value('amount');
+    }
+
+    public static function getlevelname($level){
+
+        return DB::table('designations')->where('id', $level)->value('designations');
+    }
+
 
     public static function staffemail($user){
 
@@ -44,6 +312,14 @@ class Controller extends BaseController
     public static function staffsignature($user){
 
         return DB::table('profile')->where('id', $user)->value('signature');
+
+    }
+
+    public static function staffpdfsignature($user){
+
+        $signature = DB::table('profile')->where('id', $user)->value('signature');
+
+        return base64_encode(file_get_contents(public_path($signature)));
 
     }
 
@@ -112,10 +388,31 @@ class Controller extends BaseController
 
     }
 
+    public static function datediffs($date1, $date2){
+
+
+        $date1 = new DateTime($date1);
+        $date2 = new DateTime($date2);
+        $interval = $date1->diff($date2);
+
+        return $interval->d." days ";
+    }
 
     public static function staffdesignation($staff){
 
         return DB::table('profile')->where('id', $staff)->value('designation');
+    }
+
+
+
+    public static function projectname($project){
+
+        return DB::table('projects')->where('id', $project)->value('title');
+    }
+
+    public static function projectdetail($project){
+
+        return DB::table('projects')->where('id', $project)->get();
     }
 
     public static function staffimage($staff){
@@ -136,6 +433,83 @@ class Controller extends BaseController
             return "found";
         }
 
+    }
+
+
+    public static function clientpayments($project){
+
+        return DB::table('invoice')->where([['project', $project], ['status', 'Paid']])->sum('sumamounts');
+    }
+
+    //get project progress from the tasks
+    public static function projectprogress($project){
+
+        $total = DB::table('task')->where('projectid', $project)->count();
+
+        $completed = DB::table('task')->where([['projectid', $project],['status', 'completed']])->count();
+
+        if($total == 0){
+            return 0;
+        }else{
+            $progress = $completed / $total * 100;
+
+            if($progress == 100){ //update project status
+
+                $status = DB::table('projects')->where('projectid', $project)->update(['status' => 'Completed', 'updated_at' => date('Y-m-d H:i:s')]);
+
+            }
+
+            return $progress;
+        }
+
+        
+    }
+
+
+    public static function officename($office){
+
+        $info = DB::table('companyinfo')->where('id', $office)->get();
+
+        if($info->count() == 0){
+            return "Office not found, edit this page to select office";
+        }else{
+            return $info[0]->address.', '.$info[0]->city.' '.$info[0]->state;
+        }
+    }
+
+
+    public static function getfulloffice($office){
+
+        $info = DB::table('companyinfo')->where('id', $office)->get();
+
+        if($info->count() == 0){
+            return "Office not found, edit this page to select office";
+        }else{
+            return $info;
+        }
+    }
+
+    
+
+    //get project expenses
+    public static function projectexpenses($project){
+
+        return DB::table('pv')->where([['project', $project], ['status', 'Paid']])->sum('totalnet');
+    }
+
+    //get task percentage
+    public static function taskpercent($project, $category){
+
+        $total = DB::table('task')->where('projectid', $project)->count();
+
+        $category = DB::table('task')->where([['projectid', $project], ['status', $category]])->count();
+
+        if($total == 0){
+            return 0;
+        }else{
+            return $category / $total * 100;
+        }
+        
     }
 
 

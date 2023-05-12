@@ -886,7 +886,14 @@ class ProfileController extends Controller
 
         $email = DB::table('profile')->where('id', $user)->value('email');
 
-        $picsurl = $pics->store('assets/profile');
+        try{
+            $picsurl = $pics->store('assets/profile');
+        } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading profile pics, reduce the file size of try a different file.'
+                    ]);
+                }
 
         
         try {
@@ -939,7 +946,14 @@ class ProfileController extends Controller
 
         $email = DB::table('profile')->where('id', $user)->value('email');
 
-        $picsurl = $pics->store('assets/profile');
+        try{
+            $picsurl = $pics->store('assets/profile');
+        } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading attachment, reduce the file size of try a different file.'
+                    ]);
+                }
 
         try {
 
@@ -1522,7 +1536,14 @@ class ProfileController extends Controller
 
         $email = DB::table('profile')->where('id', $user)->value('email');
 
-        $picsurl = $pics->store('assets/profile');
+        try{
+            $picsurl = $pics->store('assets/profile');
+        } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading signature, reduce the file size of try a different file.'
+                    ]);
+                }
 
         
         try {
@@ -1575,7 +1596,14 @@ class ProfileController extends Controller
 
         $email = DB::table('profile')->where('id', $user)->value('email');
 
-        $picsurl = $pics->store('assets/profile');
+        try{
+            $picsurl = $pics->store('assets/profile');
+        } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'error',
+                        'info' => 'Error uploading signature, reduce the file size of try a different file.'
+                    ]);
+                }
 
         
         try {
@@ -1891,6 +1919,95 @@ class ProfileController extends Controller
                 "info" => "Error deleting bank ".$bank." please try again."
             ]);
         }
+    }
+
+
+    public function companyinfo(){
+
+        $infos = DB::table('companyinfo')->get();
+
+        return view('companyinfo', ['infos' => $infos]);
+    }
+
+
+    public function submitinfo(Request $request){
+
+        $address = $request->address;
+        $email = $request->email;
+        $phone = $request->phone;
+        $city = $request->city;
+        $rc = $request->rc;
+        $state = $request->state;
+        $website = $request->website;
+        $tin = $request->tin;
+        $logo = $request->file('logo');
+
+        $data = array();
+
+        $data['address'] = $address;
+        $data['city'] = $city;
+        $data['state'] = $state;
+        $data['rc'] = $rc;
+        $data['email'] = $email;
+        $data['phone'] = $phone;
+        $data['website'] = $website;
+        $data['tin'] = $tin;
+        if(!empty($logo)){
+            $logourl = $logo->store('assets/images');
+            $data['logo'] = $logourl;
+        }
+        
+        $create = DB::table('companyinfo')->insert($data);
+
+        if($create){
+            return response()->json([
+                "message" => "success",
+                "info" => "Company info successfully created"
+            ]);
+        }
+    }
+
+
+    public function deleteinfo(Request $request){
+
+        $info = DB::table('companyinfo')->where('id', $request->id)->value('city');
+
+        try {
+
+            $delete = DB::table('companyinfo')->where('id', $request->id)->limit(1)->delete();
+
+        } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return response()->json([
+                    'message' => 'error',
+                    'info' => 'Error performing this action, please try again.'
+                ]);
+            }
+
+        if($delete){
+
+            //log the event
+
+            $this->logevent("Successfully deleted company info for ".$info." office");
+
+            return response()->json([
+                "message" => "success",
+                "info" => "Company info for ".$info." office successfully removed from the database"
+            ]);
+
+        }else{
+
+            //log the event
+
+            $this->logevent("Attempted to delete company info for ".$info." office from the database but failed");
+
+            return response()->json([
+                "message" => "error",
+                "info" => "Error deleting company info for ".$info." office, please try again."
+            ]);
+        }
+
     }
 
     
