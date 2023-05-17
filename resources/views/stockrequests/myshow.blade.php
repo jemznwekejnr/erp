@@ -10,7 +10,7 @@
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
 								<li class="breadcrumb-item"><a href="/mystockrequest"><i class="bx bx-copy"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">  {{ucfirst($stockrequest['stock']['name'])}}  Stock request Page</li>
+								<li class="breadcrumb-item active" aria-current="page">  {{ucfirst($stockrequest?->stock?->name)}}  Stock request Page</li>
 							</ol>
 						</nav>
 					</div>
@@ -28,7 +28,7 @@
                                     <div class="card-header">
                                         <div class="d-flex align-items-center">
                                             <div  class="m-3">
-                                                <h4 class="mb-0">Request for {{ucfirst($stockrequest->stock->name)}} Stock Details</h4>
+                                                <h4 class="mb-0">Request for {{ucfirst($stockrequest?->stock?->name)}} Stock Details</h4>
                                             </div>
 
                                         </div>
@@ -103,7 +103,7 @@
                                     <div class="col-lg-10 ">
                                          
                                             <img 
-                                            src="@if(!is_null($stockrequest->stock->image)){{ asset($stockrequest->stock->image)}} @else {{ asset('assets/images/signature.jpg') }} @endif" 
+                                            src="@if(!is_null($stockrequest?->stock?->image)){{ asset($stockrequest?->stock?->image)}} @else {{ asset('assets/images/signature.jpg') }} @endif" 
                                             class="user-img" alt="user avatar">
                                            
                                         
@@ -117,7 +117,7 @@
                                         <p>Stock Name:</p>
                                     </div>
                                     <div class="col-lg-10 ">
-                                          <p><b>{{ucfirst($stockrequest->stock->name)}} </b></p>
+                                          <p><b>{{ucfirst($stockrequest?->stock?->name)}} </b></p>
                                     </div>
                         </div>
 
@@ -126,8 +126,33 @@
                                 <p>Category</p>
                             </div>
                             <div class="col-lg-10 ">
-                                    <p><b>{{ucfirst($stockrequest->stock->categories->name)}}</b> </p>
+                          
+                                    <p><b>{{ucfirst($stockrequest?->stock?->categories?->name)}}</b> </p>
                             </div>
+                       </div>
+                        <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Requested By:</p>
+                                    </div>
+                                    <div class="col-lg-10">
+                                          <p> <b> {{$stockrequest?->requester?->name}}</b></p>
+                                    </div>
+                       </div>
+                       <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Treated By:</p>
+                                    </div>
+                                    <div class="col-lg-10">
+                                          <p> <b> {{$stockrequest?->treater?->name}}</b></p>
+                                    </div>
+                       </div>
+                       <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Treated By:</p>
+                                    </div>
+                                    <div class="col-lg-10">
+                                          <p> <b> {{$stockrequest?->treat_comment}}</b></p>
+                                    </div>
                        </div>
                        <div class="row my-3">
                                     <div class="col-lg-2">
@@ -137,12 +162,20 @@
                                           <p> <b> {{number_format($stockrequest->qty_requested)}}</b></p>
                                     </div>
                        </div>
+                       <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Purpose of Request:</p>
+                                    </div>
+                                    <div class="col-lg-10">
+                                          <p> <b> {{$stockrequest->purpose}}</b></p>
+                                    </div>
+                       </div>
                         <div class="row my-3">
                                     <div class="col-lg-2">
                                         <p>Quantity in Stock:</p>
                                     </div>
                                     <div class="col-lg-10 ">
-                                          <p> <b> {{number_format($stockrequest->stock->qty_in_stock)}}</b></p>
+                                          <p> <b> {{number_format($stockrequest?->stock?->qty_in_stock)}}</b></p>
                                     </div>
                         </div>
                         
@@ -155,8 +188,17 @@
                               
                                     </div>
                         </div>
-                            @if($stockrequest->status=="approved")
-                    <div class="row my-3">
+                        <div class="row my-3">
+                                                <div class="col-lg-2">
+                                                    <p>Approval Commnet:</p>
+                                                </div>
+                                                <div class="col-lg-10 ">
+                                                    <p> <b> {{ucfirst($stockrequest->treat_comment)}}</b></p>
+                                        
+                                                </div>
+                                    </div>
+                           
+                       <div class="row my-3">
                                     <div class="col-lg-2">
                                         <p>Date of Approval :</p>
                                     </div>
@@ -165,30 +207,30 @@
                                           {{ is_null($stockrequest->approval_date)?"--":$stockrequest->approval_date}}</b></p>
 
                                      </div>
-                    </div>
-                        @endif
-                @if($stockrequest->status=="rejected")
+                        </div>
+                    
+               
                          <div class="row my-3">
                                     <div class="col-lg-2">
                                         <p>Date of Rejection :</p>
                                     </div>
                                     <div class="col-lg-10">
-                                            <p> <b> {{is_null($stockrequest->decline_date)?"--": $stockrequest->decline_date}} </b></p>
+                                            <p> <b> {{is_null($stockrequest?->decline_date)?"--": $stockrequest?->decline_date}} </b></p>
 
                                     </div>
                         </div>
-                         @endif
-                           @if($stockrequest->status=="disbursed")
+                        
+                        
                          <div class="row my-3">
                                     <div class="col-lg-2">
                                         <p>Date of Disbursment :</p>
                                     </div>
                                     <div class="col-lg-10">
-                                            <p> <b> {{is_null($stockrequest->disburse_date)?"--": $stockrequest->disburse_date}} </b></p>
+                                            <p> <b> {{is_null($stockrequest?->disburse_date)?"--": $stockrequest?->disburse_date}} </b></p>
 
                                     </div>
                         </div>
-                         @endif
+ 
 
                            @if($stockrequest->status=="pending")
                         

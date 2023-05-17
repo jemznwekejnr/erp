@@ -19,6 +19,7 @@ class Procurement extends Model
         'requested_by',
         'sent_to',
         'date',
+        'attachment'
 
     ];
     public function requestedBy()

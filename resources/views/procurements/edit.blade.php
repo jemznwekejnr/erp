@@ -140,36 +140,15 @@
 
 						 	<div class="col-sm-4">
 								<label for="qty_purchased" class="form-label">Add Attachment<small style="color:#ff0000">*</small></label>
-								<input type="file" class="form-control"   name="attachment"  value="{{old('attachment')}}" placeholder="Add Attachment">
-                                   @error('attachmentnt')
+								<input type="file" class="form-control"   name="files[]"  value="{{old('files.*')}}" placeholder="Add Attachment" multiple>
+                                   @error('files.*')
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
 							</div>
 
                              <div class="col-sm-4">
-								<label for="attachment_type" class="form-label"> To</label>
-								<select class="form-control" id="attachment_type" name="attachment_type">
-									<option value="">Select Attachment Type</option>
-									 @php
-                                        if($staff->id ==$procurement->sent_to){ echo "selected";}
-                                    @endphp
-
-                                    @foreach(["normal","admin"] as $attachment_type)
-									<option
-                                    @php
-                                        if($attachment_type ==$procurement->attachment_type){ echo "selected";}
-                                    @endphp
-                                     
-                                     
-                                     value="{{$attachment_type}}">{{ $procurement->attachment_type }} Attachment</option>
-									@endforeach
-
 								
-                                    
-								</select>
-                                 @error('attachment_type')
-                                    <p class="text-red-500 text-xs mt-1">{{$message}}</p>
-                                    @enderror
+                                
 							</div>
 						</div><br />
 						
@@ -188,11 +167,34 @@
 						</div>
 					 </form>
 					 </div>
+					 @if($procurement->attachment)
+											<div class="row">
+												<h1>Attachment(s)</h1>
+
+
+												<div class="row">
+													@foreach (explode("*",$procurement->attachment) as $attach)
+
+                                                     <div class="col-sm-6">
+															@if (Str::endsWith($attach, ['.pdf', '.doc', '.docx'])) <!-- Add supported document extensions here -->
+																<iframe src="{{ asset($attach) }}" width="100%" height="400px"></iframe>
+															@elseif (Str::endsWith($attach, ['.jpg', '.jpeg', '.png', '.gif'])) <!-- Add supported image extensions here -->
+																<img src="{{ asset($attach) }}" alt="Image"height="400">
+															@endif
+													 </div>
+													@endforeach
+													</div>
+													
+											</div>
+									@endif
+						
 				  </div>
 			  </div>
 		   </div>
 		
-		   </div>
+	</div>
+	
+	
 		</div>
 	</div>
 </div>

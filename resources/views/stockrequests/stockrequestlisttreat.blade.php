@@ -85,8 +85,8 @@
                                                                     @if ( $request['status']=='pending')
                                                                        <tr>
                                                                     
-                                                                    <td> {{ $request->stock->name }}</td>
-                                                                    <td>{{ $request->requester->name }}</td>
+                                                                    <td> {{ $request?->stock?->name }}</td>
+                                                                    <td>{{ $request?->requester?->name }}</td>
                                                                     <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-warning">View</button> </a></td>
                                                                    
                                                                         </tr>
@@ -151,8 +151,8 @@
                                                                     @if ( $request['status']=='approved')
                                                                        <tr>
                                                                     
-                                                                    <td> {{ $request->stock->name }}</td>
-                                                                    <td>{{ $request->requester->name }}</td>
+                                                                    <td> {{ $request?->stock?->name }}</td>
+                                                                    <td>{{ $request?->requester?->name }}</td>
                                                                     <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-success">View</button> </a></td>
                                                                    
                                                                         </tr>
@@ -220,8 +220,8 @@
                                                                     @if ( $request['status']=='disbursed')
                                                                        <tr>
                                                                     
-                                                                    <td> {{ $request->stock->name }}</td>
-                                                                    <td>{{ $request->requester->name }}</td>
+                                                                    <td> {{ $request?->stock?->name }}</td>
+                                                                    <td>{{ $request?->requester?->name }}</td>
                                                                     <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-info">View</button> </a></td>
                                                                    
                                                                         </tr>
@@ -286,8 +286,8 @@
                                                                     @if ( $request['status']=='rejected')
                                                                        <tr>
                                                                     
-                                                                    <td> {{ $request->stock->name }}</td>
-                                                                    <td>{{ $request->requester->name }}</td>
+                                                                    <td> {{ $request?->stock?->name }}</td>
+                                                                    <td>{{ $request?->requester?->name }}</td>
                                                                     <td> <a href="/stockrequestlisttreat{{$request->id}}"><button class="btn btn-danger">View</button> </a></td>
                                                                    
                                                                         </tr>

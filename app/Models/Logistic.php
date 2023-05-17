@@ -21,7 +21,10 @@ class Logistic extends Model
         'treated_by',
         'approval_date',
         'decline_date',
-        'disbursed_date'
+        'disbursed_date',
+        'attachments',
+        'retire_date',
+        'retire_attachment'
 
     ];
 
@@ -31,6 +34,10 @@ class Logistic extends Model
     public function requestedBy()
     {
         return $this->belongsTo(User::class, 'requested_by');
+    }
+    public function treatedBy()
+    {
+        return $this->belongsTo(User::class, 'treated_by');
     }
     // Relationship With Tasks
     public function sentTo()

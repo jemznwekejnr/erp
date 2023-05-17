@@ -10,7 +10,7 @@
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
 								<li class="breadcrumb-item"><a href="/stockrequestlisttreat"><i class="bx bx-copy"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">  {{ucfirst($stockrequest['stock']['name'])}}  Stock request Page</li>
+								<li class="breadcrumb-item active" aria-current="page">  {{ucfirst($stockrequest?->stock?->name)}}  Stock request Page</li>
 							</ol>
 						</nav>
 					</div>
@@ -28,7 +28,7 @@
                                         <div class="card-header">
                                             <div class="d-flex align-items-center">
                                                 <div  class="m-3 ">
-                                                    <h4 class="mb-0">Request for {{ucfirst($stockrequest->stock->name)}} Stock Details</h4>
+                                                    <h4 class="mb-0">Request for {{ucfirst($stockrequest?->stock?->name)}} Stock Details</h4>
                                                 </div>
 
                                             </div>
@@ -84,7 +84,7 @@
                                                 <div class="col-lg-10 ">
                                                     
                                                         <img 
-                                                        src="@if(!is_null($stockrequest->stock->image)){{ asset($stockrequest->stock->image)}} @else {{ asset('assets/images/signature.jpg') }} @endif" 
+                                                        src="@if(!is_null($stockrequest?->stock?->image)){{ asset($stockrequest?->stock?->image)}} @else {{ asset('assets/images/signature.jpg') }} @endif" 
                                                         class="user-img" alt="user avatar">
                                                     
                                                     
@@ -98,7 +98,7 @@
                                                     <p>Stock Name:</p>
                                                 </div>
                                                 <div class="col-lg-10 ">
-                                                    <p><b>{{ucfirst($stockrequest->stock->name)}} </b></p>
+                                                    <p><b>{{ucfirst($stockrequest?->stock?->name)}} </b></p>
                                                 </div>
                                     </div>
 
@@ -107,7 +107,7 @@
                                             <p>Category</p>
                                         </div>
                                         <div class="col-lg-10 ">
-                                                <p><b>{{ucfirst($stockrequest->stock->categories->name)}}</b> </p>
+                                                <p><b>{{ucfirst($stockrequest?->stock?->categories?->name)}}</b> </p>
                                         </div>
                                 </div>
                                 <div class="row my-3">
@@ -115,15 +115,23 @@
                                                     <p>Quantity Requested:</p>
                                                 </div>
                                                 <div class="col-lg-10">
-                                                    <p> <b> {{number_format($stockrequest->qty_requested)}}</b></p>
+                                                    <p> <b> {{number_format($stockrequest?->qty_requested)}}</b></p>
                                                 </div>
                                 </div>
+                                <div class="row my-3">
+                                    <div class="col-lg-2">
+                                        <p>Purpose of Request:</p>
+                                    </div>
+                                    <div class="col-lg-10">
+                                          <p> <b> {{$stockrequest->purpose}}</b></p>
+                                    </div>
+                       </div>
                                     <div class="row my-3">
                                                 <div class="col-lg-2">
                                                     <p>Quantity in Stock:</p>
                                                 </div>
                                                 <div class="col-lg-10 ">
-                                                    <p> <b> {{number_format($stockrequest->stock->qty_in_stock)}}</b></p>
+                                                    <p> <b> {{number_format($stockrequest?->stock?->qty_in_stock)}}</b></p>
                                                 </div>
                                     </div>
                                     
@@ -136,6 +144,16 @@
                                         
                                                 </div>
                                     </div>
+                                     <div class="row my-3">
+                                                <div class="col-lg-2">
+                                                    <p>Approval Commnet:</p>
+                                                </div>
+                                                <div class="col-lg-10 ">
+                                                    <p> <b> {{ucfirst($stockrequest->treat_comment)}}</b></p>
+                                        
+                                                </div>
+                                    </div>
+                                        
                                         
                                        @if($stockrequest->status=="approved")
                     <div class="row my-3">
@@ -206,7 +224,7 @@
 
                                                                     <div class="col-sm-6">
                                                                     
-                                                                        <h3 class="form-control"> {{ucfirst($stockrequest->stock->name)}}  qty({{$stockrequest->qty_requested}})</h3>
+                                                                        <h3 class="form-control"> {{ucfirst($stockrequest?->stock?->name)}}  qty({{$stockrequest->qty_requested}})</h3>
                                                                         <input type="text" class="form-control" required id="treated_by"  name="treated_by"  value="{{ Auth::user()->profileid}}" hidden>
                                                                     </div>
                                                                     

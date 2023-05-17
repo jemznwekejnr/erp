@@ -75,6 +75,7 @@ class ProcurementController extends Controller
             'requested_by' => 'required',
             'sent_to' => 'required',
             'date' => ['required'],
+            //  'files.*' => 'file|mimes:pdf,jpeg,png|max:2048'
         ]);
 
 
@@ -84,13 +85,35 @@ class ProcurementController extends Controller
 
         $formFields['status'] = 'pending';
 
-        if ($request->hasFile('attachment')) {
-            $formFields['attachment'] = $request->file('attachment')->store('image.attachment', 'local');
-            $formFields['attachment_type'] =  $request->validate(['attachment_type' => 'required'])["attachment_type"];
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+            $attachment = "";
+            $count = 0;
+
+            foreach ($files as $file) {
+                // Customize the storage path and file name as per your requirements
+                $path = $file->store('procurements');
+
+                if ($count == 0) {
+                    $attachment = $path;
+                } else {
+                    $attachment = $attachment . "*" . $path;
+                }
+
+
+                // Process the file as needed (e.g., save file details to database)
+                $count++;
+            }
+
+            //dd($attachment);
+            $formFields['attachment'] = $attachment;
         }
 
+
+        //    dd($formFields);
+
         DB::table('procurements')->insert($formFields);
-        //  dd($formFields);
+
         return redirect('/myprocurements')->with('message', 'Procurement Request created successfully!');
     }
 
@@ -133,16 +156,36 @@ class ProcurementController extends Controller
             'requested_by' => 'required',
             'sent_to' => 'required',
             'date' => ['required'],
+            'files.*' => 'file|mimes:pdf,jpeg,png|max:2048'
         ]);
 
         $formFields['status'] = 'pending';
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+            $attachment = "";
+            $count = 0;
 
-        if ($request->hasFile('attachment')) {
-            $formFields['attachment'] = $request->file('attachment')->store('procurement.attachment', 'local');
-            $formFields['attachment_type'] =  $request->validate(['attachment_type' => 'required'])["attachment_type"];
+            foreach ($files as $file) {
+                // Customize the storage path and file name as per your requirements
+                $path = $file->store('procurements');
+
+                if ($count == 0) {
+                    $attachment = $path;
+                } else {
+                    $attachment = $attachment . "*" . $path;
+                }
+
+
+                // Process the file as needed (e.g., save file details to database)
+                $count++;
+            }
+
+
+            $formFields['attachment'] = $attachment;
         }
 
-        //dd($formFields);
+
+        //  dd($formFields);
         $procurement->update($formFields);
         $procurement->save();
 

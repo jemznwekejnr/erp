@@ -44,7 +44,7 @@
 				</div>
 				  <div class="card-body" style="padding-top: 40px;">
 				  	<div class="form-body">
-					 <form class="row g-3" action="/logistics" id="submitstaff" method="post"  enctype="multipart/form-data">
+					 <form class="row g-3" action="/logisticcreate" id="submitstaff" method="post"  enctype="multipart/form-data" >
 					 	@csrf
 
        
@@ -74,15 +74,15 @@
 							</div>
 						 	
 						</div><br />
-                       <div class="row">
-                       <div class="col-sm-4">
+                  <div class="row">
+                        <div class="col-sm-4">
 								<label for="date" class="form-label">Requested By<small style="color:#ff0000">*</small></label>
 								<input type="text" class="form-control" id="dte" name="req" placeholder="{{Auth::user()->name}}"  value="" disabled>
                                 <input type="text" class="form-control" id="requested_by" name="requested_by" placeholder=""  value="{{Auth::user()->profileid}}" hidden >
                                 
-							</div>
+						</div>
 
-                    <div class="col-sm-4">
+                        <div class="col-sm-4">
 								<label for="sent_to" class="form-label">Send To</label>
 								<select class="form-control" id="sent_to" name="sent_to">
 									<option value="">Select Staff</option>
@@ -94,33 +94,50 @@
                                  @error('sent_to')
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
-					</div>
+					    </div>
 
-	
-                   <div class="col-sm-4">
-								<label for="start date" class="form-label">Start Date<small style="color:#ff0000">*</small></label>
-                                	
-								<input type="date" class="form-control" id="start_date" name="start_date"  placeholder="Choose date" value="{{old('start_date')}}"  required >
-                                 @error('start_date')
-                                    <p class="text-red-500 text-xs mt-1">{{$message}}</p>
-                                    @enderror
-				</div>
+				
+						<div class="col-sm-4">
+							<label for="start date" class="form-label">Start Date</label>
+								
+							<input type="date" class="form-control" id="start_date" name="start_date"  placeholder="Choose date" value="{{old('start_date')}}"  required >
+							@error('start_date')
+								<p class="text-red-500 text-xs mt-1">{{$message}}</p>
+								@enderror
+						</div>
                     
-					</div>
+	             </div>
                         <br />
 
 
-						<div class="row">
+					<div class="row">
                            <div class="col-sm-4">
-								<label for="end_date" class="form-label">End Date<small style="color:#ff0000">*</small></label>
+								<label for="end_date" class="form-label">End Date</label>
                                 	
 								<input type="date" class="form-control" id="end_date" name="end_date"  placeholder="Choose date" value="{{old('end_date')}}"  required >
                                  @error('end_date')
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
-			       	</div>
+			       	       </div>
+						   <div class="col-sm-4">
+								<label for="end_date" class="form-label">Attachment<small style="color:#ff0000"> (optional)</small></label>
+                                	
+								<input type="file" class="form-control" name="files[]" multiple >
+                                 @error('attachment')
+                                    <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+                                    @enderror
+			       	       </div>
                           
-						</div><br />
+					</div><br />
+					<div class="row">
+                        <div class="col-sm-12" style="margin-top: 50px;">
+					 		
+							<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }}" width="150px"></p>
+							<p id="sender"><b>{{ app\Http\Controllers\Controller::staffname(Auth::user()->profileid) }}</b></p>
+								
+					 	</div>
+					 	<br /><br />
+					</div>
 						
 					
 						
@@ -153,11 +170,11 @@
 	$("#processing").show();
 	
 			const swalWithBootstrapButtons = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-success',
-				cancelButton: 'btn btn-danger'
-			},
-			buttonsStyling: false
+						customClass: {
+							confirmButton: 'btn btn-success',
+							cancelButton: 'btn btn-danger'
+						},
+						buttonsStyling: false
 			})
 
 			swalWithBootstrapButtons.fire({

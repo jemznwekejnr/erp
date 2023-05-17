@@ -281,7 +281,7 @@
 
                                                                                     <div class="col-sm-6">
                                                                                     
-                                                                                        <h3 class="form-control"> {{ucfirst($training->description)}}  for  &#8358;({{$training->amount}})</h3>
+                                                                                        <h3 class="form-control"> {{ucfirst($training->description)}}  Training</h3>
                                                                                         <input type="text" class="form-control" required id="treated_by"  name="treated_by"  value="{{ Auth::user()->profileid}}" hidden>
                                                                                     </div>
                                                                                     
@@ -308,10 +308,12 @@
                                                                                 
                                                                                 <div class="row">
                                                                                 <div class="col-sm-6">
-                                                                                        <label for="comment"> Comment</label>
-                                                                                        <textarea class="form-control" id="comment" name= "comment" rows="3"></textarea>
+                                                                                        <label for="treat_comment"> Comment</label>
+                                                                                        <textarea class="form-control" id="comment" name= "treat_comment" rows="3"></textarea>
 
-                                                                                                                                        
+                                                                                           @error('treat_comment')
+                                                                                            <p class="text-red-500 text-danger text-xs mt-1">{{$message}}</p>
+                                                                                            @enderror                                             
                                                                                     </div>
                                                                                     
                                                                                 
@@ -371,7 +373,7 @@ $("form[name='delete']").submit(function(event) {
 			})
 
 			swalWithBootstrapButtons.fire({
-			title: 'Are you sure you want to Delete this  Budget Request?',
+			title: 'Are you sure you want to Delete this  Training Request?',
 			text: "You won't be able to revert this!",
 			icon: 'warning',
 			showCancelButton: true,
@@ -382,7 +384,7 @@ $("form[name='delete']").submit(function(event) {
 			if (result.isConfirmed) {
 				$(this).unbind('submit').submit();
 				swalWithBootstrapButtons.fire(
-				'Deleting Budget Request',
+				'Deleting Training Request',
 				'...',
 				''
 				)
@@ -404,4 +406,51 @@ $("form[name='delete']").submit(function(event) {
 
 });
 
+
+$("form[name='treat']").submit(function(event) {
+    event.preventDefault(); // prevent the form from submitting
+     $("#button").hide();
+	$("#processing").show();
+	
+			const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success',
+				cancelButton: 'btn btn-danger'
+			},
+			buttonsStyling: false
+			})
+
+			swalWithBootstrapButtons.fire({
+			title: 'Are you sure you want to Treat this  Training Request?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, Treat !',
+			cancelButtonText: 'No, cancel!',
+			reverseButtons: true
+			}).then((result) => {
+			if (result.isConfirmed) {
+				$(this).unbind('submit').submit();
+				swalWithBootstrapButtons.fire(
+				'Treating Training Request',
+				'...',
+				''
+				)
+			} else if (
+				/* Read more about handling dismissals below */
+				result.dismiss === Swal.DismissReason.cancel
+				
+			) {
+				swalWithBootstrapButtons.fire(
+				'Cancelled',
+				'You Cancelled this Operation :)',
+				'error'
+				)
+				$("#button").show();
+				$("#processing").hide();
+			}
+			})
+
+
+});
 </script>

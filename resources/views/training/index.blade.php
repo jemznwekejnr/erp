@@ -33,21 +33,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col">
-						<div class="card radius-10 border-success border-start border-0 border-4">
-							<div class="card-body">
-								<div class="d-flex align-items-center">
-									<div>
-										<h4 class="my-1 text-success">{{number_format($total_staff_trained)}}</h4>
-										<p class="mb-0">Total staff trained</p>
-										
-									</div>
-									<div class="text-success ms-auto font-35"><i class='bx bxl-microsoft-teams'></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					
 					<div class="col">
 						<div class="card radius-10 border-success border-start border-0 border-4">
 							<div class="card-body">

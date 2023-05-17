@@ -44,7 +44,7 @@
 				</div>
 				  <div class="card-body" style="padding-top: 40px;">
 				  	<div class="form-body">
-					 <form class="row g-3" action="/procurements" id="submitstaff" method="post"  enctype="multipart/form-data">
+					 <form class="row g-3" action="/procurementcreate" id="submitstaff" method="post"  enctype="multipart/form-data">
 					 	@csrf
 
        
@@ -131,29 +131,26 @@
 
 						 	<div class="col-sm-4">
 								<label for="qty_purchased" class="form-label">Add Attachment<small style="color:#ff0000">*</small></label>
-								<input type="file" class="form-control"   name="attachment"  value="{{old('attachment')}}" placeholder="Add Attachment">
-                                   @error('attachmentnt')
+								<input type="file" class="form-control"   name="files[]"  value="{{old('files')}}" placeholder="Add Attachment" multiple>
+                                   @error('files.*')
                                     <p class="text-red-500 text-danger text-xs mt-1">{{$message}}</p>
                                     @enderror
 							</div>
 
                              <div class="col-sm-4">
-								<label for="attachment_type" class="form-label"> To</label>
-								<select class="form-control" id="attachment_type" name="attachment_type">
-									<option value="">Select Attachment Type</option>
-									
-									<option value="normal">Normal Attachment</option>
-                                    <option value="admin">Admin Attachment</option>
 								
-                                    
-								</select>
-                                 @error('attachment_type')
-                                    <p class="text-red-500 text-danger text-xs mt-1">{{$message}}</p>
-                                    @enderror
 							</div>
 						</div><br />
 						
-					
+					<div class="row m-2">
+                          					<div class="col-sm-12" style="margin-top: 50px;">
+					 		
+							<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }}" width="150px"></p>
+							<p id="sender"><b>{{ app\Http\Controllers\Controller::staffname(Auth::user()->profileid) }}</b></p>
+								
+					 	</div>
+					 	<br /><br />
+						</div>
 						
                        
 						<div class="row">

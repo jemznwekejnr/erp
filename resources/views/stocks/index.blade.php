@@ -121,7 +121,6 @@
 										<th>Stock ID</th>
 										<th>Category</th>
 										<th>Last Purchased</th>
-										<th>Total Amount </th>
 										<th>In Stock</th>
                                         <th>Supplier</th>
                                         <th>status</th>
@@ -150,9 +149,24 @@
                                                 <td>{{ $stock->name }}</td>
                                                 <td>{{ $stock->stock_id }}</td>
 												
-                                                <td>{{ $stock->categories->name }}</td>
+                                                <td>
+													@php
+                                                     if( is_null($stock->categories )){
+														echo "NILL";
+													 }else {
+														
+														echo $stock->categories->name ;
+													 }
+
+                                                  @endphp
+
+
+
+											
+												
+												
+												</td>
                                                 <td>{{ number_format($stock->qty_purchased) }}</td>
-                                                <td><b>&#8358; {{number_format($stock->total_amount,2)}} </b></td>
                                                 <td>{{ number_format($stock->qty_in_stock) }}</td>
                                                 <td>{{ $stock->supplier }}</td>
                                                 <td>

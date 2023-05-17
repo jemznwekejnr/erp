@@ -320,9 +320,11 @@
 
                        </div>
                         
-              @endif
+          @endif
 		
-	</div>
+	
+    
+        </div>
 </div>
 <!--end page wrapper -->
 				

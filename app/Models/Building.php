@@ -17,7 +17,9 @@ class Building extends Model
         'training_mode',
         'training_date',
         'trainees',
-
+        'treat_comment',
+        'status',
+        'treated_by',
 
     ];
 

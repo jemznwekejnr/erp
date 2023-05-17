@@ -186,11 +186,11 @@
 						<div class="menu-title">Logistics</div>
 					</a>
 					<ul>
-						<li> <a href="{{ url('logistics') }}"><i class="bx bx-right-arrow-alt"></i>Logistics</a>
+						<li> <a href="{{ url('alllogistics') }}"><i class="bx bx-right-arrow-alt"></i>Logistics</a>
 						</li>
-						<li> <a href="{{ url('logisticcreate') }}"><i class="bx bx-right-arrow-alt"></i>Create Logistics</a>
+						<li> <a href="{{ url('logisticcreate') }}"><i class="bx bx-right-arrow-alt"></i>Create Request</a>
 						</li>
-					    <li> <a href="{{ url('logisticrequest') }}"><i class="bx bx-right-arrow-alt"></i>My logistics Request</a>
+					    <li> <a href="{{ url('logisticrequest') }}"><i class="bx bx-right-arrow-alt"></i>Requests</a>
 						</li>
 						
 					</ul>
@@ -206,7 +206,7 @@
 						</li>
 						<li> <a href="{{ url('myprocurements') }}"><i class="bx bx-right-arrow-alt"></i>My Procurements </a>
 						</li>
-					    <li> <a href="{{ url('procurements') }}"><i class="bx bx-right-arrow-alt"></i>View All Procurement</a>
+					    <li> <a href="{{ url('procurement') }}"><i class="bx bx-right-arrow-alt"></i>View All Procurement</a>
 						</li>
 						
 					</ul>
@@ -218,11 +218,29 @@
 						<div class="menu-title">Stocks</div>
 					</a>
 					<ul>
-						<li> <a href="{{ url('stockcreate') }}"><i class="bx bx-right-arrow-alt"></i>New Stock</a>
+						<li> <a href="{{ url('createstock') }}"><i class="bx bx-right-arrow-alt"></i>New Stock</a>
 
 						</li>
-						<li> <a href="{{ url('stocks') }}"><i class="bx bx-right-arrow-alt"></i>View All Stocks</a>
+						<li> <a href="{{ url('stock') }}"><i class="bx bx-right-arrow-alt"></i>View All Stocks</a>
 
+	
+						
+						</li>
+					
+					    
+						</li>
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-box' ></i>
+						</div>
+						<div class="menu-title">Stock Request</div>
+					</a>
+					<ul>
+
+				
 						<li> <a href="{{ url('stockrequest') }}"><i class="bx bx-right-arrow-alt"></i>All Stock Request</a>
 						<li> <a href="{{ url('stockrequestlisttreat') }}"><i class="bx bx-right-arrow-alt"></i>Treat Stock Request</a>
 

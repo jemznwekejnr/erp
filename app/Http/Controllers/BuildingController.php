@@ -169,6 +169,45 @@ class BuildingController extends Controller
         return redirect("/edittraining{$srequest->id}")->with('message', 'Training Request updated successfully!');
     }
 
+    public function treat(Request $request, $building)
+    {
+
+
+
+
+
+        $formFields = $request->validate([
+            'treat_comment' => 'nullable|string',
+            'status' => 'required',
+            'treated_by' => 'required',
+
+        ]);
+
+        $brequest = Building::find($building);
+        //$name = if($stock->name == )
+        $name = '';
+        if ($request->validate(['status' => 'required'])["status"] == "approved") {
+            $name = "approval_date";
+            $this->createnotification($brequest->requested_by, 'Training Request Approved', "You have an Approved Training Request", 'Unread', 'mystockrequest');
+        } else {
+            $name = 'decline_date';
+            $this->createnotification($brequest->requested_by, 'Training Request Rejected', "You have a Rejected Training Request", 'Unread', 'mystockrequest');
+        }
+
+        $formFields[$name] = now();
+
+
+
+
+
+
+        $brequest->update($formFields);
+        $brequest->save();
+
+
+        return redirect("/showtraining{$brequest->id}")->with('message', 'Approval Action Executed  successfully!');
+    }
+
     /**
      * Remove the specified resource from storage.
      *

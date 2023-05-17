@@ -25,6 +25,7 @@ class CreateLogisticsTable extends Migration
             $table->Timestamp('disbursed_date')->nullable(true);
             $table->Text('comment')->nullable(true);
             $table->string('status', 50);
+            $table->text('attachments')->nullable(true);
 
             $table->timestamps();
         });

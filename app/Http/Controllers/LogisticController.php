@@ -63,22 +63,40 @@ class LogisticController extends Controller
             'amount' => 'required',
             'requested_by' => 'required',
             'sent_to' => 'required',
-            'start_date' => ['required'],
-            'end_date' => ['required'],
+            'start_date' => 'date',
+            'end_date' => 'date',
+            // 'files.*' => 'file|mimes:pdf,jpeg,png|max:2048'
         ]);
-
-
-
-
 
 
         $formFields['status'] = 'pending';
 
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+            $attachment = "";
+            $count = 0;
+
+            foreach ($files as $file) {
+                // Customize the storage path and file name as per your requirements
+                $path = $file->store('logistics');
+
+                if ($count == 0) {
+                    $attachment = $path;
+                } else {
+                    $attachment = $attachment . "*" . $path;
+                }
 
 
+                // Process the file as needed (e.g., save file details to database)
+                $count++;
+            }
+
+            //  dd($attachment);
+            $formFields['attachments'] = $attachment;
+        }
         DB::table('logistics')->insert($formFields);
         //  dd($formFields);
-        return redirect('/logistics')->with('message', 'Logistics Request created successfully!');
+        return redirect('/logisticrequest')->with('message', 'Logistics Request created successfully!');
     }
 
     /**
@@ -118,11 +136,37 @@ class LogisticController extends Controller
             'amount' => 'required',
             'requested_by' => 'required',
             'sent_to' => 'required',
-            'start_date' => ['required'],
-            'end_date' => ['required'],
+            'start_date' => 'date',
+            'end_date' => 'date',
+            'files.*' => 'file|mimes:pdf,jpeg,png|max:2048'
+
         ]);
+        $attachment = "";
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+
+            $count = 0;
+
+            foreach ($files as $file) {
+                // Customize the storage path and file name as per your requirements
+                $path = $file->store('logistics');
+
+                if ($count == 0) {
+                    $attachment = $path;
+                } else {
+                    $attachment = $attachment . "*" . $path;
+                }
 
 
+                // Process the file as needed (e.g., save file details to database)
+                $count++;
+            }
+
+            //  dd($attachment);
+
+        }
+
+        $formFields['attachments'] = $attachment;
 
 
 
@@ -153,7 +197,7 @@ class LogisticController extends Controller
         ]);
         //$name = if($stock->name == )
         $name = '';
-        if ($request->validate(['status' => 'required'])["status"] == "approve") {
+        if ($request->validate(['status' => 'required'])["status"] == "approved") {
             $name = "approval_date";
             $this->createnotification($logistic->requested_by, 'Logistic Request Approved', "You have an Approved Logistic Request", 'Unread', 'mystockrequest');
         } else {
@@ -173,6 +217,68 @@ class LogisticController extends Controller
 
 
         return redirect("/logistic{$logistic->id}")->with('message', 'Approval Action Executed  successfully!');
+    }
+
+    public function updateretire(Request $request, Logistic $logistic)
+    {
+
+
+
+
+
+        $formFields = $request->validate([
+
+            'treated_by' => 'required',
+            'files.*' => 'file|mimes:pdf,jpeg,png|max:2048'
+
+        ]);
+        $attachment = "";
+
+
+
+
+        $formFields["retire_date"] = now();
+        $formFields["status"] = "retired";
+        if ($request->hasFile('files')) {
+
+            $files = $request->file('files');
+
+            $count = 0;
+            foreach ($files as $file) {
+                // Customize the storage path and file name as per your requirements
+                $path = $file->store('retireattachment');
+
+                if ($count == 0) {
+                    $attachment = $path;
+                } else {
+                    $attachment = $attachment . "*" . $path;
+                }
+
+
+                // Process the file as needed (e.g., save file details to database)
+                $count++;
+            }
+
+            //  dd($attachment);
+
+        }
+
+
+
+
+
+        $formFields['retire_attachment'] = $attachment;
+        // dd($srequest);
+        $logistic->update($formFields);
+
+
+
+        $logistic->save();
+
+        $this->createnotification($logistic->requested_by, 'Logistic Request Retired', "You have an Retired A Logistic Request", 'Unread', 'mystockrequest');
+
+
+        return redirect("/logistic{$logistic->id}")->with('message', 'Retire Action Executed  successfully!');
     }
 
     /**

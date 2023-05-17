@@ -306,7 +306,7 @@
 
                
 
-               @if(!is_null($procurement->disbursed_date))
+            
                      <div class="row my-3">
                                                 
                                                     <div class="col-lg-12 ">
@@ -390,7 +390,7 @@
 
                        </div>
                         
-              @endif
+          
       
       
                     </div>

@@ -16,7 +16,8 @@ class Stock extends Model
         'qty_purchased',
         'unit_price',
         'total_amount',
-        'supplier'
+        'supplier',
+        'qty_in_stock'
 
     ];
 

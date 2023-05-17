@@ -127,13 +127,19 @@
                                  @error('end_date')
                                     <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                                     @enderror
-			       	</div>
+			          	</div>
+						<div class="col-sm-4">
+								<label for="end_date" class="form-label">Attachment<small style="color:#ff0000"> (optional)</small></label>
+                                	
+								<input type="file" class="form-control" name="files[]" multiple >
+                                 @error('attachment')
+                                    <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+                                    @enderror
+									
+			       	       </div>
                           
 						</div><br />
-						
-					
-						
-                       
+
 						<div class="row">
 						 	<div class="col-sm-6">
 								
@@ -143,6 +149,29 @@
 								<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 							</div>
 						</div><br />
+						
+					@if($logistic->attachments)
+											<div class="row">
+												<h1>Attachment(s)</h1>
+
+
+												<div class="row">
+													@foreach (explode("*",$logistic->attachments) as $attach)
+
+                                                     <div class="col-sm-6">
+															@if (Str::endsWith($attach, ['.pdf', '.doc', '.docx'])) <!-- Add supported document extensions here -->
+																<iframe src="{{ asset($attach) }}" width="100%" height="400px"></iframe>
+															@elseif (Str::endsWith($attach, ['.jpg', '.jpeg', '.png', '.gif'])) <!-- Add supported image extensions here -->
+																<img src="{{ asset($attach) }}" alt="Image"height="400">
+															@endif
+													 </div>
+													@endforeach
+													</div>
+													
+											</div>
+									@endif
+						
+                       
 						</div>
 					 </form>
 					 </div>

@@ -23,6 +23,10 @@ class Stockrequest extends Model
     {
         return $this->belongsTo(User::class, 'requested_by');
     }
+    public function treater()
+    {
+        return $this->belongsTo(User::class, 'treated_by');
+    }
 
     // Relationship With User
     public function stock()

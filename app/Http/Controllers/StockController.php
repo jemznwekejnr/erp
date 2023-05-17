@@ -53,24 +53,19 @@ class StockController extends Controller
             'name' => 'required|string|max:255|unique:stocks',
             'stock_id' => 'required|unique:stocks',
             'cat_id' => 'required',
-            'qty_purchased' => 'required',
-            'unit_price' => 'required',
-            'total_amount' => 'required',
-            'supplier' => 'required'
+
         ]);
 
-
-        $formFields['qty_in_stock'] = $formFields['qty_purchased'];
         $formFields['status'] = 'In stock';
 
         if ($request->hasFile('image')) {
-            $formFields['image'] = $request->file('image')->store('image', 'local');
+            $formFields['image'] = $request->file('image')->store('stocks', 'local');
         }
 
 
 
         DB::table('stocks')->insert($formFields);
-        return redirect('/stocks')->with('message', 'Stock created successfully!');
+        return redirect('/stock')->with('message', 'Stock created successfully!');
     }
 
 
@@ -151,14 +146,8 @@ class StockController extends Controller
             'name' => $name,
             'stock_id' => $stock_id,
             'cat_id' => 'required',
-            'qty_purchased' => 'required',
-            'unit_price' => 'required',
-            'total_amount' => 'required',
-            'supplier' => 'required'
+
         ]);
-
-
-        $formFields['qty_in_stock'] = $formFields['qty_purchased'];
 
         $formFields['status'] = 'In stock';
 
@@ -174,8 +163,36 @@ class StockController extends Controller
         $stock->save();
 
 
-        return redirect("stocks/")->with('message', 'Stock Edited successfully!');
+        return redirect("stock{$stock->id}/")->with('message', 'Stock Edited successfully!');
     }
+
+
+    public function restock(Request $request, Stock $stock)
+    {
+
+
+        $formFields = $request->validate([
+            'restocked_by' => 'required',
+            'restock' => 'required',
+            'supplier' => 'required'
+        ]);
+
+
+        $formFields['qty_in_stock'] = $stock->qty_in_stock + $formFields['restock'];
+        $formFields['qty_purchased'] = $formFields['restock'];
+
+
+
+
+        //dd($formFields);
+        $stock->update($formFields);
+        $stock->save();
+        // dd($stock);
+
+        return redirect("stock{$stock->id}/")->with('message', 'Item Restocked successfully!');
+    }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -187,6 +204,6 @@ class StockController extends Controller
     {
         $stock->delete();
 
-        return redirect("stocks/")->with('message', 'Stock Deleted successfully!');
+        return redirect("stock/")->with('message', 'Stock Deleted successfully!');
     }
 }

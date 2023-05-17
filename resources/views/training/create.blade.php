@@ -53,7 +53,7 @@
 								<div class="row my-3">
                                     <div class="col-sm-4">
 										<label for="description" class="form-label">Training Description<small style="color:#ff0000">*</small></label>
-										<input type="text" class="form-control" id="description" name="description" placeholder="Budget of Description"  value="{{old('description')}}"  required>
+										<input type="text" class="form-control" id="description" name="description" placeholder="Training Description"  value="{{old('description')}}"  required>
 										@error('description')
 											<p class="text-red-500  text-danger  text-xs mt-1">{{$message}}</p>
 											@enderror
@@ -134,7 +134,15 @@
 
 										
 			
+								 <div class="row">
+					<div class="col-sm-12" style="margin-top: 50px;">
+					 		
+							<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }}" width="150px"></p>
+							<p id="sender"><b>{{ app\Http\Controllers\Controller::staffname(Auth::user()->profileid) }}</b></p>
 								
+					 	</div>
+					 	<br /><br />
+								 </div>
 				
 								
 							
@@ -176,7 +184,7 @@
 			})
 
 			swalWithBootstrapButtons.fire({
-			title: 'Are you sure you want to send Budget Request?',
+			title: 'Are you sure you want to send Training Request?',
 			text: "You won't be able to revert this!",
 			icon: 'warning',
 			showCancelButton: true,
@@ -187,7 +195,7 @@
 			if (result.isConfirmed) {
 				$(this).unbind('submit').submit();
 				swalWithBootstrapButtons.fire(
-				'Sending Logistics Request',
+				'Sending Training Request',
 				'...',
 				''
 				)

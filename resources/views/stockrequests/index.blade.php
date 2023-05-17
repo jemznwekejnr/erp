@@ -81,13 +81,50 @@
                                             
                                             <tr>
                                                 <td>{{ $key+1}}  </td>
-                                                <td><a href="/stockrequest{{$request->id}}"> <img src ="{{asset($request->stock->image) }}"  width="50px;"/></a> </td>
-                                                <td>{{ $request->stock->name }}</td>
-                                                <td>{{ $request->stock->stock_id }}</td>
-                                                <td>{{ $request->stock->categories->name }}</td>
-                                                <td>{{ $request->requester->name }}</td>
+                                                <td> 
+													<!--
+													<img src ="
+													asset($request->stock->image) 
+													
+													
+													"  width="50px;"/>
+													-->
+													 <img src ="{{asset($request?->stock?->image) }}"  width="50px;"/> 
+												</td>
+													
+                                                <td>
+												
+												  
+														
+													{{ $request?->stock?->name}}
+													
+												</td>
+                                                <td>
+																					   		
+														
+														{{ $request?->stock?->stock_id }}
+													
+													</td>
+                                                <td>
+													
+													
+														{{$request?->stock?->categories?->name}}
+													
+													
+												
+												
+												</td>
+                                                <td>{{ $request?->requester?->name }}</td>
                                                 <td>{{ number_format($request->qty_requested) }}</td>
-                                                <td> {{number_format($request->stock->qty_in_stock) }}</td>
+                                                <td>
+														
+                                                  {{  number_format($request?->stock?->qty_in_stock) }}
+
+                                              
+
+													
+													
+													</td>
                                                
                                                 <td>
                                                         <a href="/stockrequest{{$request->id}}">

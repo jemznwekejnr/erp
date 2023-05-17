@@ -161,8 +161,8 @@
                                                                 @elseif($logistic->status=="dispersed")
                                                                 <button type="button" class="btn btn-info btn-sm"> Dispersed</button>
 																@else
-																  <button type="button" class="btn btn-danger btn-sm"> Rejected</button>
-
+																 		  <button type="button" class="btn btn-info btn-sm"> Retired</button>
+  
                                                                 @endif
 												</td>
                                                

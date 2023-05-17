@@ -107,7 +107,7 @@ use App\Models\Category;
 								<select class="form-control" id="category" name="cat_id">
 									<option value="">Select Category</option>
 									@foreach(Category::all() as $category)
-									<option value="{{$category->id}}" @if($category->id == $stock->categories->id){{"selected"}} @endif >{{ $category->name }}</option>
+									<option value="{{$category?->id}}" @if($category->id == $stock?->categories?->id){{"selected"}} @endif >{{ $category->name }}</option>
 									@endforeach
                                     
 								</select>
@@ -120,40 +120,15 @@ use App\Models\Category;
 
 
 						 	<div class="col-sm-6">
-								<label for="qty_purchased" class="form-label">Quantity Purchased<small style="color:#ff0000">*</small></label>
-								<input type="number" class="form-control" required  name="qty_purchased" id="qty_purchased"  value="{{$stock->qty_purchased}}" placeholder="Quantity Purchased">
-                                   @error('qty_purchased')
-                                    <p class="text-red-500 text-danger text-xs mt-1">{{$message}}</p>
-                                    @enderror
+								
 							</div>
 						</div><br />
-						<div class="row">
-						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Unit Price<small style="color:#ff0000">*</small></label>
-								<input type="text" class="form-control" id="unit_price" required name="unit_price" placeholder="Unit Price" value="{{$stock->unit_price}}">
-                                 @error('qty_purchased')
-                                    <p class="text-red-500  text-danger text-xs mt-1">{{$message}}</p>
-                                    @enderror
-							</div>
-                            <div class="col-sm-6">
-								<label for="inputTotalamount" class="form-label">Total Amount<small style="color:#ff0000">*</small></label>
-								<input type="number" class="form-control" id="total_amount2" required name="total_amount2" placeholder="Total Amount" value="{{$stock->total_amount}}"  disabled  >
-                             
-								<input type="number" class="form-control" id="total_amount" required name="total_amount" placeholder="Total Amount" value="{{$stock->total_amount}}"  hidden  >
-                                 @error('total_amount')
-                                    <p class="text-red-500 text-danger text-xs mt-1">{{$message}}</p>
-                                    @enderror
-							</div>
-						 	
-						</div>
-						<br />
+						
 					
 						
                         <div class="row">
 						 	<div class="col-sm-6">
-								<label for="inputSupplier" class="form-label">Supplier<small style="color:#ff0000">*</small></label>
-								<input type="text" class="form-control" id="supplier" name="supplier" required placeholder="Supplier" value="{{$stock->supplier}}">
-							</div>
+								</div>
 						 	
 						</div>
                         

@@ -49,7 +49,7 @@ use App\Models\Category;
 				  <div class="card-body" style="padding-top: 40px;">
 					<x-flash-message />
 				  	<div class="form-body">
-					 <form class="row g-3" action="/stocks" id="submitstock" method="post" enctype="multipart/form-data">
+					 <form class="row g-3" action="/createstock" id="submitstock" method="post" enctype="multipart/form-data">
 					 	@csrf
 					 	<div class="col-sm-4">
 					 	<center>
@@ -82,6 +82,7 @@ use App\Models\Category;
 
 					 		
 						</center>
+						
 					 	</div>
 					 	<div class="col-sm-8">
 					 	<div class="row">
@@ -119,46 +120,24 @@ use App\Models\Category;
 
 
 						 	<div class="col-sm-6">
-								<label for="qty_purchased" class="form-label">Quantity Purchased<small style="color:#ff0000">*</small></label>
-								<input type="number" class="form-control" required id="qty_purchased"  name="qty_purchased"  value="{{old('qty_purchased')}}" placeholder="Quantity Purchased">
-                                   @error('qty_purchased')
-                                    <p class="text-red-500 text-danger text-xs mt-1">{{$message}}</p>
-                                    @enderror
+								
 							</div>
 						</div><br />
-						<div class="row">
-						 	<div class="col-sm-6">
-								<label for="inputFirstName" class="form-label">Unit Price<small style="color:#ff0000">*</small></label>
-								<input type="number" class="form-control" id="unit_price" required name="unit_price" placeholder="Unit Price" value="{{old('unit_price')}}">
-                                 @error('qty_purchased')
-                                    <p class="text-red-500 text-danger text-xs mt-1">{{$message}}</p>
-                                    @enderror
-							</div>
-                            <div class="col-sm-6">
-								<label for="inputTotalamount" class="form-label">Total Amount <small style="color:#ff0000">*</small></label>
-								<input type="number" class="form-control" id="total_amount2" required name="total_amount2" placeholder="Total Amount" value="{{old('total_amount')}}"  disabled  >
-                             
-								<input type="number" class="form-control" id="total_amount" required name="total_amount" placeholder="Total Amount" value="{{old('total_amount')}}"  hidden  >
-                                 @error('total_amount')
-                                    <p class="text-red-500 text-danger text-xs mt-1">{{$message}}</p>
-                                    @enderror
-							</div>
-						 	
-						</div>
+						
 						<br />
 					
 						
-                        <div class="row">
-						 	<div class="col-sm-6">
-								<label for="inputSupplier" class="form-label">Supplier<small style="color:#ff0000">*</small></label>
-								<input type="text"  class="form-control" id="supplier" name="supplier" required placeholder="Supplier" value="{{old('supplier')}}">
-								 @error('supplier')
-                                    <p class="text-red-500 text-danger text-xs mt-1">{{$message}}</p>
-                                    @enderror
-							</div>
-						 	
-						</div>
                         
+						
+                        <div class="row ">
+                          					<div class="col-sm-12" style="margin-top: 50px;">
+					 		
+							<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }}" width="150px"></p>
+							<p id="sender"><b>{{ app\Http\Controllers\Controller::staffname(Auth::user()->profileid) }}</b></p>
+								
+					 	</div>
+					 	<br /><br />
+						</div>
 						<div class="row">
 						 	<div class="col-sm-6">
 								

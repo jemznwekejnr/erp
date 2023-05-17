@@ -77,7 +77,7 @@
 							
 							<div class="row">
 								<div class="col-sm-4">
-										<label for="title" class="form-label">Actual Amount<small style="color:#ff0000">*</small></label>
+										<label for="actual_amount" class="form-label">Actual Amount<small style="color:#ff0000">*</small></label>
 										<input type="text" class="form-control" id="actual_amount" name="actual_amount" placeholder=" Budget Actual Amount"  value="{{old('actual_amount')}}"  required>
 										@error('actual_amount')
 											<p class="text-red-500  text-danger  text-xs mt-1">{{$message}}</p>
@@ -133,7 +133,15 @@
 											@enderror
 							</div>
 								
-				
+				            <div class="row m-2">
+                             					<div class="col-sm-12" style="margin-top: 50px;">
+					 		
+							<p id="signature"><img src="{{ asset(app\Http\Controllers\Controller::staffsignature(Auth::user()->profileid)) }}" width="150px"></p>
+							<p id="sender"><b>{{ app\Http\Controllers\Controller::staffname(Auth::user()->profileid) }}</b></p>
+								
+					 	</div>
+					 	<br /><br />
+							</div>
 								
 							
 								

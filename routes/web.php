@@ -159,16 +159,18 @@ Route::post('/submitpassword', [ProfileController::class, 'submitpassword']);
 /**************************** BEGINIG OF Logistics Route **************************************/
 
 
-Route::get('/logistics', [LogisticController::class, 'index']);
 
+Route::get('/alllogistics', [LogisticController::class, 'index']);
 Route::get('/logisticrequest', [LogisticController::class, 'myindex']);
 Route::get('/editlogistic{logistic}', [LogisticController::class, 'edit']);
 Route::get('/logisticcreate', [LogisticController::class, 'create']);
-Route::post('/logistics', [LogisticController::class, 'store']);
 Route::get('/logistic{logistic}', [LogisticController::class, 'show']);
+Route::post('/logisticcreate', [LogisticController::class, 'store']);
 Route::delete('/logistic/{logistic}', [LogisticController::class, 'destroy']);
 Route::put('/logistic/edit/{logistic}', [LogisticController::class, 'update']);
 Route::put('/logistic/treat/{logistic}', [LogisticController::class, 'updatetreat']);
+Route::put('/logistic/retire/{logistic}', [LogisticController::class, 'updateretire']);
+
 
 /**************************** ENDING OF Logistics Route **************************************/
 
@@ -217,7 +219,7 @@ Route::put('/bugetdisburse{budget}', [BudgetController::class, 'updatedisburse']
 Route::get('/trainingcreate', [BuildingController::class, 'create']);
 Route::post('/trainingcreate', [BuildingController::class, 'store']);
 Route::put('/edittraining{training}', [BuildingController::class, 'update']);
-Route::put('/treattraining{training}', [BuildingController::class, 'create']);
+Route::put('/treattraining{training}', [BuildingController::class, 'treat']);
 Route::get('/mytrainings', [BuildingController::class, 'myindex']);
 Route::get('/trainings', [BuildingController::class, 'index']);
 Route::delete('/training/{training}', [BuildingController::class, 'destroy']);
@@ -259,10 +261,10 @@ Route::post('/projects', [ProjectController::class, 'store']);
 // Route::get('/stock/{stock}/show', [StockController::class, 'show']);
 Route::get('/procurementedit{procurement}', [ProcurementController::class, 'edit']);
 Route::put('/procurementedit{procurement}', [ProcurementController::class, 'update']);
-Route::get('/procurements', [ProcurementController::class, 'index']);
+Route::get('/procurement', [ProcurementController::class, 'index']);
 Route::get('/myprocurements', [ProcurementController::class, 'myindex']);
 Route::get('/procurementcreate', [ProcurementController::class, 'create']);
-Route::post('/procurements', [ProcurementController::class, 'store']);
+Route::post('/procurementcreate', [ProcurementController::class, 'store']);
 Route::get('/procurement{procurement}', [ProcurementController::class, 'show']);
 Route::post('/procurement{procurement}', [ProcurementController::class, 'treat']);
 Route::delete('/procurement/{procurement}', [ProcurementController::class, 'destroy']);
@@ -308,17 +310,19 @@ Route::get('/stockrequest', [StockrequestController::class, 'index']);
 // Route::post('/itask/store', [TaskController::class, 'store']);
 
 // Route::get('/stock/{stock}/show', [StockController::class, 'show']);
-Route::get('/stocks', [StockController::class, 'index']);
-Route::get('/stockcreate', [StockController::class, 'create']);
+///stock/restock/{{$stock->id}}
 
-Route::get('/stockedit{stock}', [StockController::class, 'edit']);
+Route::get('/createstock', [StockController::class, 'create']);
+Route::post('/createstock', [StockController::class, 'store']);
+Route::get('/stock', [StockController::class, 'index']);
+Route::get('/editstock{stock}', [StockController::class, 'edit']);
 Route::get('/stock{stock}', [StockController::class, 'show']);
-
 Route::put('/stock/edit/{stock}', [StockController::class, 'update']);
+Route::put('/stock/restock/{stock}', [StockController::class, 'restock']);
 Route::delete('/stock/{stock}', [StockController::class, 'destroy']);
 
 // Create New Stock
-Route::post('/stocks', [StockController::class, 'store']);
+
 // Route::put('/stock/{task}', [StockController::class, 'update']);
 // Route::put('/project/move/task/{task}', [StockController::class, 'update_status']);
 // Route::delete('/project/task/{task}', [TaskController::class, 'destroy']);
