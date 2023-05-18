@@ -106,8 +106,15 @@ use App\Models\Category;
 								<label for="inputCategory" class="form-label">Categories</label>
 								<select class="form-control" id="category" name="cat_id">
 									<option value="">Select Category</option>
+									@php
+									$stock_cat_id = 0;
+									
+									if($stock && $stock->categories){
+									                  	$stock_cat_id = $stock->categories->id;
+                                                                }
+									@endphp
 									@foreach(Category::all() as $category)
-									<option value="{{$category?->id}}" @if($category->id == $stock?->categories?->id){{"selected"}} @endif >{{ $category->name }}</option>
+									<option value="{{$category->id}}" @if($category->id == $stock_cat_id){{"selected"}} @endif >{{ $category->name }}</option>
 									@endforeach
                                     
 								</select>

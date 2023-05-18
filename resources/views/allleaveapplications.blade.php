@@ -14,9 +14,9 @@
 						</div>
 						<hr/>
 						<div class="table-responsive">
-							<table id="example" class="table table-striped table-bordered" style="width:100%">
+							<table id="example" class="table table-striped" style="width:100%">
 								<thead>
-									<tr>
+									<tr style="background-color: #0000ff; color: #fff">
 										<th>Date</th>
 										<th>Title</th>
 										<th>Days Taken</th>

@@ -86,24 +86,94 @@
 											@endphp 
                                             
                                             <tr>
-                                                <td>{{ $key+1}}  </td>
-                                                <td><img src ="{{asset($request?->stock?->image) }}"  width="50px;"/></td>
-                                                <td>
+											<td> 
+													<!--
+													<img src ="
+													asset($request->stock->image) 
 													
+													
+													"  width="50px;"/>
+													-->
+													@php
+									$image = '';
+									
+									if($request && $request->stock){
+										$image = $request->stock->image;
+                                                                }
+									@endphp
+													 <img src ="{{asset($image) }}"  width="50px;"/> 
+												</td>
+													
+                                                <td>
+												@php
+												$name = '';
+												
+												if($request && $request->stock){
+													$name = $request->stock->name;
+																			}
+												@endphp
+												
+												  
 														
-												{{$request?->stock?->name}}
+													{{ $name}}
+													
+												</td>
+                                                <td>
+											  @php
+												$stock_id = '';
+												
+												if($request && $request->stock){
+													$stock_id = $request->stock->stock_id;
+																			}
+												@endphp							   		
+														
+														{{ $stock_id }}
+													
+													</td>
+                                                <td>
+													@php
+												$cat_name = '';
+												
+												if($request && $request->stock && $request->stock->categories){
+													$cat_name = $request->stock->name;
+																			}
+												@endphp
+													
+														{{$cat_name}}
+													
+													
 												
 												
 												</td>
                                                 <td>
-														
-														{{$request?->stock?->stock_id}}
+												@php
+												$requester_name = '';
+												
+												if($request && $request->requester ){
+													$requester_name = $request->requester->name;
+																			}
+												@endphp
 													
-                                               </td>
-                                                <td> {{$request?->stock?->categories?->name}}</td>
-                                                <td>{{ $request?->requester?->name }}</td>
+												{{ $requester->name }}
+											</td>
                                                 <td>{{ number_format($request->qty_requested) }}</td>
-                                                <td>{{ number_format($request?->stock?->qty_in_stock)}}</td>
+                                                <td>
+														
+												@php
+												$stock_quantity = '';
+												
+												if($request && $request->stock ){
+													$stock_quantity = $request->stock->qty_in_stock;
+																			}
+												@endphp
+
+                                                  {{  number_format($stock_quantity) }}
+
+                                              
+
+													
+													
+													</td>
                                                
                                                 <td>
                                                         <a href="/mystockrequest{{$request->id}}">

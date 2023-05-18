@@ -29,7 +29,28 @@ class HomeController extends Controller
 
         }else if($this->checkprofile(Auth::user()->profileid) == "Incomplete"){
 
+            $projectstatus = DB::table('projects')
+                 ->select('status', DB::raw('count(*) as total'))
+                 ->groupBy('status')
+                 ->get();
 
+            //get all the projects
+            $projects = DB::table('projects')->get();
+
+            $projectname = array();
+            $pending = array();
+            $ongoing = array();
+            $completed = array();
+
+            $i = 0;
+
+            foreach($projects as $project){
+                $total = DB::table('task')->where('projectid', $project->id)->count();
+                $projectname[$i] = $project->title;
+                $pending[$i] = DB::table('task')->where([['projectid', $project->id],['status', 'Pending']])->count() / $total;
+                $ongoing[$i] = DB::table('task')->where([['projectid', $project->id],['status', 'Ongoing']])->count() / $total;
+                $completed[$i] = DB::table('task')->where([['projectid', $project->id],['status', 'Completed']])->count() / $total;
+            }
 
             $staff = DB::table('profile')->where('id', Auth::user()->profileid)->get();
 
@@ -47,7 +68,7 @@ class HomeController extends Controller
 
             $pvs = DB::table('pv')->orderBy('created_at', 'desc')->limit(6)->get();
 
-            return view('dashboard', ['pvs' => $pvs]);
+            return view('dashboard', ['pvs' => $pvs, 'projectstatus' => $projectstatus, 'projectname' => $projectname, 'pending' => $pending, 'ongoing' => $ongoing, 'completed' => $completed]);
 
         }
 

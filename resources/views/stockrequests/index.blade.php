@@ -27,7 +27,7 @@
 							</div>
 						 	<div class="col-sm-6">
 								
-												</div>
+							</div>
 				</div>
 
 
@@ -67,17 +67,7 @@
                                     @unless (count($stockrequests)==0)
                                         
                                             @foreach($stockrequests as $key => $request)
-										  @php
-
-											// $startDate = \Carbon\Carbon::parse($project->start_date);
-                                          
-										 	// $endDate = \Carbon\Carbon::parse($project->end_date);
-
-											// $numberOfDays = $endDate->diffInDays($startDate);
-                         
-
-
-											@endphp 
+										 
                                             
                                             <tr>
                                                 <td>{{ $key+1}}  </td>
@@ -89,36 +79,80 @@
 													
 													"  width="50px;"/>
 													-->
-													 <img src ="{{asset($request?->stock?->image) }}"  width="50px;"/> 
+													@php
+									$image = '';
+									
+									if($request && $request->stock){
+										$image = $request->stock->image;
+                                                                }
+									@endphp
+													 <img src ="{{asset($image) }}"  width="50px;"/> 
 												</td>
 													
                                                 <td>
+												@php
+												$name = '';
+												
+												if($request && $request->stock){
+													$name = $request->stock->name;
+																			}
+												@endphp
 												
 												  
 														
-													{{ $request?->stock?->name}}
+													{{ $name}}
 													
 												</td>
                                                 <td>
-																					   		
+											  @php
+												$stock_id = '';
+												
+												if($request && $request->stock){
+													$stock_id = $request->stock->stock_id;
+																			}
+												@endphp							   		
 														
-														{{ $request?->stock?->stock_id }}
+														{{ $stock_id }}
 													
 													</td>
                                                 <td>
+													@php
+												$cat_name = '';
+												
+												if($request && $request->stock && $request->stock->categories){
+													$cat_name = $request->stock->name;
+																			}
+												@endphp
 													
-													
-														{{$request?->stock?->categories?->name}}
+														{{$cat_name}}
 													
 													
 												
 												
 												</td>
-                                                <td>{{ $request?->requester?->name }}</td>
+                                                <td>
+												@php
+												$requester_name = '';
+												
+												if($request && $request->requester ){
+													$requester_name = $request->requester->name;
+																			}
+												@endphp
+													
+												{{ $requester->name }}
+											</td>
                                                 <td>{{ number_format($request->qty_requested) }}</td>
                                                 <td>
 														
-                                                  {{  number_format($request?->stock?->qty_in_stock) }}
+												@php
+												$stock_quantity = '';
+												
+												if($request && $request->stock ){
+													$stock_quantity = $request->stock->qty_in_stock;
+																			}
+												@endphp
+
+                                                  {{  number_format($stock_quantity) }}
 
                                               
 

@@ -52,7 +52,7 @@
 						<div class="table-responsive">
 							<table class="table">
 								<thead>
-									<tr>
+									<tr style="background-color: #0000ff; color: #fff">
 										<th>SN</th>
 										<th>Leave Type</th>
 										<th>Days Allocated</th>

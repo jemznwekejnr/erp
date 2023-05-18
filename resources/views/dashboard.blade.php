@@ -150,8 +150,8 @@
 							</div>
 						 <div class="table-responsive">
 						   <table class="table align-middle mb-0">
-							<thead class="table-light">
-							 <tr>
+							<thead class="">
+							 <tr style="background-color: #0000ff; color: #fff">
 										<th>Date</th>
 										<th>Title</th>
 										<th>Net Amount (&#8358;)</th>

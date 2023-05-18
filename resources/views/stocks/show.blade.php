@@ -65,7 +65,7 @@
                                         
                                         <div class="status mb-3">
                                                                @php
-                                                                if($stock->total_amount > 0){
+                                                                if($stock->qty_in_stock > 0){
                                                                     echo "<span class='badge bg-success'>In Stock</span> ";
                                                                 }else{
                                                                     echo "<span class='badge bg-danger'>Out of Stock</span> ";
@@ -121,22 +121,15 @@
                                 <p>Category</p>
                             </div>
                             <div class="col-lg-10 ">
+                                
                                     <p><b>
+                                        	@php
+                                            if($stock && $stock->categories){
+                                                  echo  $stock->categories->name;
+                                                }
+                                           @endphp
                                         
-                                        		@php
-                                                     if( is_null($stock->categories )){
-														echo "NILL";
-													 }else {
-														
-														echo $stock?->categories?->name ;
-													 }
-
-                                                  @endphp
-
-
-                                        
-                                    
-                                    </b> </p>
+                                            </b> </p>
                             </div>
                        </div>
                        <div class="row my-3">
