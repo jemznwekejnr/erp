@@ -69,7 +69,7 @@ class PVController extends Controller
                         ->where([['staff', Auth::user()->profileid],['type', 'Payment Voucher'],['location', 'allpvs']])
                         ->update(['status' => 'Read', 'updated_at' => date('Y-m-d H:i:s')]);
 
-        $pvs = DB::table('pv')->orderBy('created_at', 'desc')->get();
+        $pvs = DB::table('pv')->orderBy('updated_at', 'desc')->paginate(10);
 
 
         return view('allpvs', ['pvs' => $pvs]);
@@ -153,6 +153,7 @@ class PVController extends Controller
         $data['amountinwords'] = $request->amountinwords;
         $data['project'] = $request->project;
         $data['created_at'] = date('Y-m-d H:i:s');
+        $data['updated_at'] = date('Y-m-d H:i:s');
 
 
         
@@ -200,6 +201,7 @@ class PVController extends Controller
                 $sdata['whtamount'] = $whta[$i];
                 $sdata['netamount'] = $net[$i];
                 $sdata['created_at'] = date('Y-m-d H:i:s');
+                $sdata['updated_at'] = date('Y-m-d H:i:s');
 
                 
                 try {
@@ -392,6 +394,7 @@ class PVController extends Controller
                 $sdata['whtamount'] = $whta;
                 $sdata['netamount'] = $net;
                 $sdata['created_at'] = date('Y-m-d H:i:s');
+                $sdata['updated_at'] = date('Y-m-d H:i:s');
 
                 
                 try {
@@ -624,4 +627,56 @@ class PVController extends Controller
             return redirect('login');
         }
     }
+
+
+    public function filterpvbymonth(Request $request){
+
+        $month = $request->month;
+
+        $pvs = DB::table('pv')->where('created_at', 'LIKE', $month.'%')->paginate('10');
+
+        $sum = DB::table('pv')->where('created_at', 'LIKE', $month.'%')->sum('totalnet');
+
+        return view('process.pvtable', ['pvs' => $pvs, 'sum' => $sum]);
+    }
+
+
+    public function filterpvbyyear(Request $request){
+
+        $year = $request->year;
+
+        $pvs = DB::table('pv')->where('created_at', 'LIKE', $year.'%')->paginate('10');
+
+        $sum = DB::table('pv')->where('created_at', 'LIKE', $year.'%')->sum('totalnet');
+
+        return view('process.pvtable', ['pvs' => $pvs, 'sum' => $sum]);
+    }
+
+
+    public function filterpvbystatus(Request $request){
+
+        $status = $request->status;
+
+        $pvs = DB::table('pv')->where('status', $status)->paginate('10');
+
+        $sum = DB::table('pv')->where('status', $status)->sum('totalnet');
+
+        return view('process.pvtable', ['pvs' => $pvs, 'sum' => $sum]);
+    }
+
+
+    public function filterpvbysearch(Request $request){
+
+        $search = $request->search;
+
+        $pvs = DB::table('pv')->where('title', 'LIKE', '%'.$search.'%')->paginate('10');
+
+        $sum = DB::table('pv')->where('title', 'LIKE', '%'.$search.'%')->sum('totalnet');
+
+        return view('process.pvtable', ['pvs' => $pvs, 'sum' => $sum]);
+    }
+
+
+
+    
 }

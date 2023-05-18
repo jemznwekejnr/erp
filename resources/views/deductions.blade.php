@@ -23,7 +23,6 @@
 					 	<div class="col-sm-4">
 					 		<input type="hidden" name="deductionid" id="deductionid" value="">
 					 		<select name="staff[]" id="staff" multiple class="form-control" required>
-					 			<option value="" selected disabled>Select Staff</option>
 					 			@foreach($staffs as $staff)
 					 			@if($staff->id != 1)
 					 			<option value="{{ $staff->id }}">{{ $staff->surname.' '.$staff->firstname.' '.$staff->othername }}</option>

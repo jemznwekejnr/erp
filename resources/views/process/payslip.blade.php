@@ -130,8 +130,8 @@
 	 	</div>
 
 		<div class="col-sm-2 text-right float-right" style="margin-top: 50px;">
-				<button class="btn btn-info" type="submit" id="button">Submit</button>
-				<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
+				<button class="btn btn-info" type="submit" id="buttons">Submit</button>
+				<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processings" class="processing" style="display: none;">
 		</div>
 	</div>
 		</form>
@@ -150,8 +150,8 @@
 	        cache: false,
 	        processData: false,
 	        beforeSend:function(){
-	                $("#button").hide();
-	                $("#processing").show();
+	                $("#buttons").hide();
+	                $("#processings").show();
 	            },
 	        success: function(data){
 
@@ -164,8 +164,8 @@
 	        	Swal.fire("Error!", data.info, "error");
 	        }
 	          
-              $("#button").show();
-              $("#processing").hide();
+              $("#buttons").show();
+              $("#processings").hide();
 	        }
 	      });
 	    });

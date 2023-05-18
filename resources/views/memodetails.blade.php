@@ -13,7 +13,7 @@
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-copy"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Create New Memo</li>
+								<li class="breadcrumb-item active" aria-current="page">Memo Details</li>
 							</ol>
 						</nav>
 					</div>

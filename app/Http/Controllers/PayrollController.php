@@ -1447,6 +1447,9 @@ class PayrollController extends Controller
 
         if($newpayroll){
 
+            $employerpension = 0;
+            $employerpaye = 0;
+
             for($i=0; $i<$totalstaff; $i++){
 
                 $datas = array();
@@ -1471,6 +1474,63 @@ class PayrollController extends Controller
 
                 if($create){
 
+                    //store staff allowances for the month
+                    $monthallowances = $this->monthallowances();
+
+                    foreach($monthallowances as $monthallowance){
+
+                        $adata = array();
+
+                        $adata['staff'] = $staff[$i];
+                        $adata['month'] = $month;
+                        $adata['allowance'] = $monthallowance->allowance;
+                        $adata['amount'] = round($monthallowance->percentage / 100 * $basicpay[$i]);
+                        $adata['created_at'] = date('Y-m-d H:i:s');
+
+                        $newallowance = DB::table('monthallowances')->insert($adata);
+                        
+                    }
+
+
+                    //store staff deductions for the month
+                    $monthdeductions = $this->monthdeductions();
+
+                    foreach($monthdeductions as $monthdeduction){
+
+                        if($monthdeduction->deduction == 'Pension'){
+                            $sdeduction = $this->annualpension($designation[$i]) / 12;
+                            $employerpension += $sdeduction;
+                        }else if($monthdeduction->deduction == 'PAYE'){
+                            $sdeduction = $this->annualtaxcaculation($designation[$i]) / 12;
+                            $employerpaye += $sdeduction;
+                        }
+
+                        $ddata = array();
+
+                        $ddata['staff'] = $staff[$i];
+                        $ddata['month'] = $month;
+                        $ddata['deduction'] = $monthdeduction->deduction;
+                        $ddata['amount'] = round($sdeduction);
+                        $ddata['created_at'] = date('Y-m-d H:i:s');
+
+                        $newdeduction = DB::table('monthdeduction')->insert($ddata);
+
+
+                        //store employer pension
+                        if($monthdeduction->deduction == 'Pension'){
+                            $edata = array();
+
+                            $edata['staff'] = $staff[$i];
+                            $edata['month'] = $month;
+                            $edata['deduction'] = $monthdeduction->deduction;
+                            $edata['amount'] = round($this->annualemployerpension($designation[$i]) / 12);
+                            $edata['created_at'] = date('Y-m-d H:i:s');
+
+                            $newededuction = DB::table('employerdeduction')->insert($edata);
+                        }
+                        
+                    }
+
                     //send email to actors
                     $username = $this->staffname($staff[$i]);
                     $useremail = $this->profileemail($staff[$i]);
@@ -1490,6 +1550,7 @@ class PayrollController extends Controller
                     $this->createnotification($staff[$i], 'Payslip', 'New payslip for '.$month, 'Unread', 'individualpayroll');
                 }
             }
+
 
             //send email to the parties involved
             
@@ -1713,39 +1774,27 @@ class PayrollController extends Controller
 
     public function staffpayslip(Request $request){
 
+        $recipient = DB::table('generalpayslip')->where('month', $request->month)->value('recipient');
+
         $payslips = DB::table('individualpayslip')->where([['staff', $request->staff], ['month', $request->month]])->get();
 
-        $allowances = DB::table('allowances')->get();
+        $allowances = DB::table('monthallowances')->where([['staff', $request->staff], ['month', $request->month]])->get();
 
-        $staffs = DB::table('profile')->orderBy('surname', 'asc')->get();
+        $deductions = DB::table('monthdeduction')->where([['staff', $request->staff], ['month', $request->month]])->get();
 
-        $deductions = DB::table('alloweddeductions')->get();
+        $bonuses = DB::table('bonuses')->where([['staff', $request->staff], ['month', $request->month]])->get();
 
-        $staffdeductions = array(array());
+        $staffdeductions = DB::table('deductions')->where([['staff', $request->staff], ['month', $request->month]])->get();
 
+        $employerdeductions = DB::table('employerdeduction')->where([['staff', $request->staff], ['month', $request->month]])->value('amount');
 
-        foreach($staffs as $staff){
-
-            foreach($deductions as $deduction){
-                if($deduction->deduction == "Pension"){
-
-                    $staffdeductions[$staff->id][$deduction->deduction] = $this->annualpension($staff->designation) / 12;
-
-                }else if($deduction->deduction == "PAYE"){
-
-                    $staffdeductions[$staff->id][$deduction->deduction] = $this->annualtaxcaculation($staff->designation) / 12;
-                    
-                }else if($deduction->deduction == "NHS"){
-                    
-                    $staffdeductions[$staff->id][$deduction->deduction] = 0;
-                }
-                
-            }
-        }
+        return view('staffpayslip', ['payslips' => $payslips, 'allowances' => $allowances, 'deductions' => $deductions, 'employerdeductions' => $employerdeductions, 'bonuses' => $bonuses, 'staffdeductions' => $staffdeductions, 'recipient' => $recipient]);
+    }
 
 
+    public function comparepayroll(){
 
-        return view('staffpayslip', ['payslips' => $payslips, 'allowances' => $allowances, 'payslips' => $payslips, 'allowances' => $allowances, 'deductions' => $deductions, 'staffdeductions' => $staffdeductions]);
+        return view('comparepayroll');
     }
 
 

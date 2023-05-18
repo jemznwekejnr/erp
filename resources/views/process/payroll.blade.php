@@ -701,7 +701,36 @@
 
 
 
-	
+	$("#compare1").change(function(){
+
+		var month = $("#compare1").val();;
+		var year = '';
+		var status = '';
+		$.ajax({
+	        url: 'querypayroll?month='+month+'&year='+year+'&status='+status,
+	        success: function(data){
+	        	$("#compare1div").html("");
+	        	$("#compare1div").html(data);
+	        }
+		})
+
+	});
+
+
+	$("#compare2").change(function(){
+
+		var month = $("#compare2").val();;
+		var year = '';
+		var status = '';
+		$.ajax({
+	        url: 'querypayroll?month='+month+'&year='+year+'&status='+status,
+	        success: function(data){
+	        	$("#compare2div").html("");
+	        	$("#compare2div").html(data);
+	        }
+		})
+
+	});
 	
 
 </script>

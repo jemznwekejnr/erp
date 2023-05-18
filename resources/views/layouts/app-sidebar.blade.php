@@ -57,8 +57,8 @@
 						<li> <a href="{{ url('paymentvoucher') }}"><i class="bx bx-right-arrow-alt"></i>New PV</a>
 						</li>
 						@endif
-						<!--<li> <a href="{{ url('mypvs') }}"><i class="bx bx-right-arrow-alt"></i>My PV</a>
-						</li>-->
+						<li> <a href="{{ url('sentpvs') }}"><i class="bx bx-right-arrow-alt"></i>My PV</a>
+						</li>
 						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 6, 2) == "allow")
 						<li> <a href="{{ url('allpvs') }}"><i class="bx bx-right-arrow-alt"></i>View All PVs</a>
 						</li>
@@ -211,11 +211,32 @@
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-repeat"></i>
 						</div>
+						<div class="menu-title">Leave</div>
+					</a>
+					<ul>
+					    @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
+						<li> <a href="{{ url('leaverequest') }}"><i class="bx bx-right-arrow-alt"></i>Leave Application</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 6) == "allow")
+						<li> <a href="{{ url('myleaveapplications') }}"><i class="bx bx-right-arrow-alt"></i>My Leave Applications</a>
+						</li>
+						@endif
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class="bx bx-repeat"></i>
+						</div>
 						<div class="menu-title">Payroll</div>
 					</a>
 					<ul>
 					    @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
 						<li> <a href="{{ url('basicpay') }}"><i class="bx bx-right-arrow-alt"></i>Basic Pay</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
+						<li> <a href="{{ url('paye') }}"><i class="bx bx-right-arrow-alt"></i>PAYE Calculation</a>
 						</li>
 						@endif
 						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
@@ -242,6 +263,10 @@
 						<li> <a href="{{ url('allpayroll') }}"><i class="bx bx-right-arrow-alt"></i>Payroll History</a>
 						</li>
 						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 14, 2) == "allow")
+						<li> <a href="{{ url('comparepayroll') }}"><i class="bx bx-right-arrow-alt"></i>Compare Payslips</a>
+						</li>
+						@endif
 						<!--<li> <a href="{{ url('banks') }}"><i class="bx bx-right-arrow-alt"></i>Banks</a></li>
 						--<li> <a href="error-blank-page.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Blank Page</a>
 						</li>-->
@@ -265,6 +290,139 @@
 						</div>
 					</a>
 				</li>-->
+					<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-bus' ></i>
+						</div>
+						<div class="menu-title">Logistics</div>
+					</a>
+					<ul>
+						<li> <a href="{{ url('alllogistics') }}"><i class="bx bx-right-arrow-alt"></i>Logistics</a>
+						</li>
+						<li> <a href="{{ url('logisticcreate') }}"><i class="bx bx-right-arrow-alt"></i>Create Request</a>
+						</li>
+					    <li> <a href="{{ url('logisticrequest') }}"><i class="bx bx-right-arrow-alt"></i>Requests</a>
+						</li>
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-store-alt'></i>
+						</div>
+						<div class="menu-title">Procuremet</div>
+					</a>
+					<ul>
+						<li> <a href="{{ url('procurementcreate') }}"><i class="bx bx-right-arrow-alt"></i>New Procurement</a>
+						</li>
+						<li> <a href="{{ url('myprocurements') }}"><i class="bx bx-right-arrow-alt"></i>My Procurements </a>
+						</li>
+					    <li> <a href="{{ url('procurement') }}"><i class="bx bx-right-arrow-alt"></i>View All Procurement</a>
+						</li>
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-box' ></i>
+						</div>
+						<div class="menu-title">Stocks</div>
+					</a>
+					<ul>
+						<li> <a href="{{ url('createstock') }}"><i class="bx bx-right-arrow-alt"></i>New Stock</a>
+
+						</li>
+						<li> <a href="{{ url('stock') }}"><i class="bx bx-right-arrow-alt"></i>View All Stocks</a>
+
+	
+						
+						</li>
+					
+					    
+						</li>
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-box' ></i>
+						</div>
+						<div class="menu-title">Stock Request</div>
+					</a>
+					<ul>
+
+				
+						<li> <a href="{{ url('stockrequest') }}"><i class="bx bx-right-arrow-alt"></i>All Stock Request</a>
+						<li> <a href="{{ url('stockrequestlisttreat') }}"><i class="bx bx-right-arrow-alt"></i>Treat Stock Request</a>
+
+						<li> <a href="{{ url('mystockrequest') }}"><i class="bx bx-right-arrow-alt"></i>View My Requests</a>
+						</li>
+						<li> <a href="{{ url('stockrequestcreate') }}"><i class="bx bx-right-arrow-alt"></i>Make  Request</a>
+						</li>
+						
+						</li>
+					
+					    
+						</li>
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-group'></i>
+						</div>
+						<div class="menu-title">Categories</div>
+					</a>
+					<ul>
+						 <li> <a href="{{ url('categorycreate') }}"><i class="bx bx-right-arrow-alt"></i>New Category</a>
+						</li>
+						<li> <a href="{{ url('categories') }}"><i class="bx bx-right-arrow-alt"></i>View All Category</a>
+						</li>
+					
+					   
+						
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-group'></i>
+						</div>
+						<div class="menu-title">Budget</div>
+					</a>
+					<ul>
+						 <li> 
+							<a href="{{url('budgetcreate')}}"><i class="bx bx-right-arrow-alt"></i>New Budget Request</a>
+						</li>
+						<li> 
+							<a href="{{url('budgets')}}"><i class="bx bx-right-arrow-alt"></i>All Budget Request</a>
+						</li>
+					    <li>
+							 <a href="{{ url('mybudgets') }}"><i class="bx bx-right-arrow-alt"></i>My Budget Request</a>
+						</li>
+					   
+						
+					</ul>
+				</li>
+					<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bxs-group'></i>
+						</div>
+						<div class="menu-title">Trainings</div>
+					</a>
+					<ul>
+						 <li> 
+							<a href="{{url('trainingcreate')}}"><i class="bx bx-right-arrow-alt"></i>New Training Request</a>
+						</li>
+						<li> 
+							<a href="{{url('trainings')}}"><i class="bx bx-right-arrow-alt"></i>All Training Request</a>
+						</li>
+					    <li>
+							 <a href="{{ url('mytrainings') }}"><i class="bx bx-right-arrow-alt"></i>My Training Request</a>
+						</li>
+					   
+						
+					</ul>
+				</li>
 				<li>
 					<a href="{{ url('individualpayroll') }}">
 						<div class="parent-icon"> <i class="bx bx-video-recording"></i>
@@ -272,6 +430,26 @@
 						<div class="menu-title">My Payslip</div>
 					</a>
 				</li>
+
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class="bx bx-repeat"></i>
+						</div>
+						<div class="menu-title">Leave Manager</div>
+					</a>
+					<ul>
+					    @if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 2) == "allow")
+						<li> <a href="{{ url('leavetypes') }}"><i class="bx bx-right-arrow-alt"></i>Leave Types</a>
+						</li>
+						@endif
+						@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 13, 6) == "allow")
+						<li> <a href="{{ url('allleaveapplications') }}"><i class="bx bx-right-arrow-alt"></i>Leave Applications</a>
+						</li>
+						@endif
+					</ul>
+				</li>
+
+				
 			</ul>
 			<!--end navigation-->
 			

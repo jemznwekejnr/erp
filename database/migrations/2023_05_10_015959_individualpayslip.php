@@ -16,7 +16,7 @@ class Individualpayslip extends Migration
         Schema::create('individualpayslip', function (Blueprint $table) {
             $table->id();
             $table->string('month');
-            $table->integer('payid')
+            $table->integer('payid');
             $table->string('staff');
             $table->string('designation');
             $table->double('basicpay');

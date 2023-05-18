@@ -239,6 +239,7 @@
 									@endif
 									@if(app\Http\Controllers\Controller::getactions($actioned[$i]) == "Paid" && app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 5) == "allow")
 									<option>{{ app\Http\Controllers\Controller::getactions($actioned[$i]) }}</option>
+									<option>Uploaded</option>
 									@endif
 									@endif
 									@endfor

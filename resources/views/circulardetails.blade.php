@@ -56,7 +56,7 @@
 
 								@php $recipients = app\Http\Controllers\Controller::circularrecipients($circular[0]->id) @endphp
 								
-								<p class="form-control" name="title">
+								<p class="form-control" name="title" style="height: 100px; overflow: scroll;">
 									@foreach($recipients as $recipient)
 									{{ app\Http\Controllers\Controller::staffname($recipient->recipient) }},
 									@endforeach

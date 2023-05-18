@@ -28,6 +28,13 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<title>Relia Energy ERP</title>
 
+	<script type="text/javascript" src="<your installation path>/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: "#mytextarea"
+        });
+    </script>
+
 	<style>
 
 		.required{

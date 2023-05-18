@@ -27,6 +27,33 @@ class Controller extends BaseController
         return DB::table('departments')->where('id', $department)->value('departments');
     }
 
+    public static function staffdepartment($staff){
+
+        return DB::table('profile')->where('id', $staff)->value('department');
+    }
+
+    public static function staffemploymentstatus($staff){
+
+        return DB::table('profile')->where('id', $staff)->value('employmentstatus');
+        
+    }
+
+    public static function getleavedaysleft($profileid, $leavetype){
+
+        return DB::table('leaveapplication')->where([['staff', $profileid], ['leavetype', $leavetype], ['status', 'Approved']])->sum('duration');
+    }
+
+    public static function getleavename($leave){
+
+        return DB::table('leavetype')->where('id', $leave)->value('leavename');
+    }
+
+
+    public static function getleavedaysallocated($leave){
+
+        return DB::table('leavetype')->where('id', $leave)->value('totaldaysalloted');
+    }
+
 
     public static function annualbasic($level){
 
@@ -47,6 +74,20 @@ class Controller extends BaseController
     }
 
 
+
+    public static function annualemployerpension($level){
+
+        $allowancepen = DB::table('allowances')
+                            ->where('allowance', 'Housing')
+                            ->orWhere('allowance', 'Transport')
+                            ->sum('percentage');
+
+        $allowancepenval = ($allowancepen / 100) * static::annualbasic($level);
+
+        return round((10 / 100) * (static::annualbasic($level) + $allowancepenval));
+    }
+
+
     public static function annualallowances($level){
 
         $totalallowper = DB::table('allowances')->sum('percentage');
@@ -54,6 +95,8 @@ class Controller extends BaseController
         return round(($totalallowper / 100) * static::annualbasic($level));
 
     }
+
+
 
 
     public static function annualgross($level){
@@ -623,6 +666,33 @@ class Controller extends BaseController
     public static function expensesthismonth(){
         
         return DB::table('pv')->where([['status', 'Approved'], ['created_at', 'LIKE', date('Y-m').'%']])->sum('totalnet');
+    }
+
+    public static function monthallowances(){
+
+        return DB::table('allowances')->get();
+    }
+
+
+    public static function monthdeductions(){
+
+        return DB::table('alloweddeductions')->get();
+    }
+
+    public static function getstaffallowances($staff){
+
+        return DB::table('monthallowances')->where('staff', $staff)->get();
+    }
+
+
+    public static function getstaffdeductions($staff){
+
+        return DB::table('monthdeduction')->where('staff', $staff)->get();
+    }
+
+    public static function getemployerdeductions($month){
+
+        return DB::table('employerdeduction')->where('month', $month)->sum('amount');
     }
 
 }

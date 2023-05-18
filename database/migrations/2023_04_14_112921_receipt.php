@@ -19,7 +19,6 @@ class Receipt extends Migration
             $table->string("title");;
             $table->string("clientinfo");
             $table->string("body", 5000);
-            $table->string("status");
             $table->string("sendto");
             $table->string("copies")->nullable();
             $table->double("totalprice");

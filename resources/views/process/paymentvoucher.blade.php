@@ -272,6 +272,55 @@ $("#submitpv").on('submit', function(event){
 	});
 
 
+	$("#month").change(function(){
+		var month = $("#month").val();
+		$.ajax({
+			url: 'filterpvbymonth?month='+month,
+			success: function(data){
+				$("#showpv").html("");
+				$("#showpv").html(data);
+			}
+		});
+	});
 
+
+
+	$("#year").change(function(){
+		var year = $("#year").val();
+		$.ajax({
+			url: 'filterpvbyyear?year='+year,
+			success: function(data){
+				$("#showpv").html("");
+				$("#showpv").html(data);
+			}
+		});
+	});
+
+
+	$("#status").change(function(){
+		var status = $("#status").val();
+		$.ajax({
+			url: 'filterpvbystatus?status='+status,
+			success: function(data){
+				$("#showpv").html("");
+				$("#showpv").html(data);
+			}
+		});
+	});
+
+
+	$("#search").keyup(function(){
+		var search = $("#search").val();
+		$.ajax({
+			url: 'filterpvbysearch?search='+search,
+			success: function(data){
+				$("#showpv").html("");
+				$("#showpv").html(data);
+			}
+		});
+	});
+
+
+	
 
 </script>

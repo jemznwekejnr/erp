@@ -12,53 +12,46 @@
 							<h4 class="mb-0">All Payment Vouchers</h4>
 						</div>
 						<hr/>
-						<div class="table-responsive">
-							<table class="table">
-								<thead>
-									<tr>
-										<th>Date</th>
-										<th>Title</th>
-										<th>Project</th>
-										<th>Net Amount (&#8358;)</th>
-										<th>Created By</th>
-										<th>Sent To</th>
-										<th>CCs</th>
-										<th>Status</th>
-									</tr>
-								</thead>
-								<tbody>
-									@foreach($pvs as $pv)
-									<tr>
-										<td>{{ $pv->created_at }}</td>
-										<td>{{ $pv->title }}</td>
-										<td>{{ app\Http\Controllers\Controller::projectname($pv->project) }}</td>
-										<td>{{ number_format($pv->totalnet, 2) }}</td>
-										<td>{{ app\Http\Controllers\Controller::staffname($pv->sentform) }}</td>
-										<td>{{ app\Http\Controllers\Controller::staffname($pv->sendto) }}</td>
-										<td>@if(!empty($pv->copies))
-											@php $copy = explode(",", $pv->copies) @endphp
-											@for($j=0; $j < count($copy); $j++)
-											{{ app\Http\Controllers\Controller::staffname($copy[$j]) }},
-											@endfor
-											@endif</td>
-										<td>
-											<a href="{{ url('pvdetails?id='.$pv->id) }}">@if($pv->status == "Pending")
-											<button type="button" class="btn btn-warning btn-sm">{{ $pv->status }}</button>
-											@elseif($pv->status == "Approved")
-											<button type="button" class="btn btn-primary btn-sm">{{ $pv->status }}</button>
-											@elseif($pv->status == "Paid")
-											<button type="button" class="btn btn-success btn-sm">{{ $pv->status }}</button>
-											@elseif($pv->status == "Rejected")
-											<button type="button" class="btn btn-danger btn-sm">{{ $pv->status }}</button>
-											@else
-											<button type="button" class="btn btn-info btn-sm">{{ $pv->status }}</button>
-											@endif</a>
-											</td>
-										
-									</tr>
-									@endforeach
-								</tbody>
-							</table>
+						<div class="form-body">
+					 <form class="row g-2" method="POST" action="generatepayslip" id="generatepayslip">
+					 	@csrf
+					 	<div class="col-sm-2">
+					 		
+					 		<input type="month" name="month" id="month" class="form-control">
+						
+					 	</div>
+					 	<div class="col-sm-2">
+					 		<select name="year" id="year" class="form-control">
+					 			<option value="" selected disabled>Year</option>
+					 			@for($i=2023; $i <= date('Y'); $i++)
+					 			<option>{{ $i }}</option>
+					 			@endfor
+					 		</select>
+						
+					 	</div>
+					 	<div class="col-sm-3">
+					 		<select name="status" id="status" class="form-control">
+					 			<option value="" selected disabled>Status</option>
+					 			<option>Paid</option>
+					 			<option>Approved</option>
+					 			<option>Pending</option>
+					 			<option>Rejected</option>
+					 			<option>Verified</option>
+					 			<option>Uploaded</option>
+					 		</select>
+					 	</div>
+					 	<div class="col-sm-5">
+					 		<input type="text" name="search" id="search" class="form-control" placeholder="Search by title">
+					 	</div>
+					 </form>
+					 </div>
+					</div>
+				</div>
+
+			<div class="card" style="padding: 20px;">
+					<div class="card-body">
+						<div class="table-responsive" id="showpv">
+							@include("process.pvtable")
 						</div>
 					</div>
 				</div>
@@ -66,3 +59,4 @@
 </div>
 <!--end page wrapper -->
 @include("layouts.app-footer")
+@include("process.paymentvoucher")

@@ -94,6 +94,56 @@ class PdfController extends Controller
         return $pdf->stream();
     }
 
+
+    public function individualpayslippdf(Request $request){
+
+        $recipient = DB::table('generalpayslip')->where('month', $request->month)->value('recipient');
+
+        $payslips = DB::table('individualpayslip')->where([['staff', $request->staff], ['month', $request->month]])->get();
+
+        $allowances = DB::table('monthallowances')->where([['staff', $request->staff], ['month', $request->month]])->get();
+
+        $deductions = DB::table('monthdeduction')->where([['staff', $request->staff], ['month', $request->month]])->get();
+
+        $bonuses = DB::table('bonuses')->where([['staff', $request->staff], ['month', $request->month]])->get();
+
+        $staffdeductions = DB::table('deductions')->where([['staff', $request->staff], ['month', $request->month]])->get();
+
+        $employerdeductions = DB::table('employerdeduction')->where([['staff', $request->staff], ['month', $request->month]])->value('amount');
+
+
+        $office = DB::table('companyinfo')->limit(1)->get();
+
+        $image = base64_encode(file_get_contents(public_path($office[0]->logo)));
+
+        $pdf = PDF::loadView('pdf.individualpayslip', array('payslips' =>  $payslips, 'image' => $image, 'recipient' => $recipient, 'office' => $office, 'allowances' => $allowances, 'deductions' => $deductions, 'bonuses' => $bonuses, 'staffdeductions' => $staffdeductions, 'employerdeductions' => $employerdeductions))
+        ->setPaper('a4', 'portrait');
+
+        return $pdf->stream();
+    }
+
+
+
+    public function generalpayslippdf(Request $request){
+
+        $payrolls = DB::table('generalpayslip')->where('id', $request->id)->get();
+
+        $payslips = DB::table('individualpayslip')->where('payid', $request->id)->get();
+
+        $employerdeductions = DB::table('employerdeduction')->where('month', $payrolls[0]->month)->sum('amount');
+
+
+        $office = DB::table('companyinfo')->limit(1)->get();
+
+        $image = base64_encode(file_get_contents(public_path($office[0]->logo)));
+
+        $pdf = PDF::loadView('pdf.generalpayslippdf', array('payslips' =>  $payslips, 'image' => $image, 'payrolls' => $payrolls, 'office' => $office, 'employerdeductions' => $employerdeductions))
+        ->setPaper('a4', 'landscape');
+
+        return $pdf->stream();
+    }
+    
+
     
 
     public function qrcode(){

@@ -59,12 +59,12 @@
 					 	<div class="col-sm-12">
 					 	<div class="row g-3">
 							<div class="col-sm-3">
-								<label for="inputFirstName" class="form-label">Contract Amount <span class="required" >*</span></label>
-								<input type="number" name="amount" class="form-control" placeholder="Contract Amount" required>
+								<label for="inputFirstName" class="form-label">Contract Amount <span class="required" ></span></label>
+								<input type="number" name="amount" class="form-control" placeholder="Contract Amount">
 							</div>
 							<div class="col-sm-3">
-								<label for="inputFirstName" class="form-label">Project Budget <span class="required" >*</span></label>
-								<input type="number" name="budget" class="form-control" placeholder="Project Budget" required>
+								<label for="inputFirstName" class="form-label">Project Budget <span class="required" ></span></label>
+								<input type="number" name="budget" class="form-control" placeholder="Project Budget">
 							</div>
 						 	<div class="col-sm-3">
 								<label for="inputFirstName" class="form-label">Start Date <span class="required" ></span></label required>

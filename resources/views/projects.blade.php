@@ -15,7 +15,7 @@
 						<div class="table-responsive">
 							<table class="table">
 								<thead>
-									<tr>
+									<tr style="background-color: #0000ff; color: #fff">
 										<th>Date</th>
 										<th>Title</th>
 										<th>Client</th>

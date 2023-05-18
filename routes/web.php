@@ -10,6 +10,14 @@ use App\Http\Controllers\AccessController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LogisticController;
+use App\Http\Controllers\ProcurementController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockrequestController;
 
 
 
@@ -155,6 +163,14 @@ Route::get('editpv', [PVController::class, 'editpv']);
 
 Route::get('sentpvs', [PVController::class, 'sentpvs']);
 
+Route::get('filterpvbymonth', [PVController::class, 'filterpvbymonth']);
+
+Route::get('filterpvbyyear', [PVController::class, 'filterpvbyyear']);
+
+Route::get('filterpvbystatus', [PVController::class, 'filterpvbystatus']);
+
+Route::get('filterpvbysearch', [PVController::class, 'filterpvbysearch']);
+
 
 /*************************** Circular Controller *********************************/
 
@@ -258,6 +274,11 @@ Route::get('/qrcode', [PdfController::class, 'qrcode']);
 
 Route::get('/receiptpdf', [PdfController::class, 'receiptpdf']);
 
+Route::get('/individualpayslippdf', [PdfController::class, 'individualpayslippdf']);
+
+Route::get('/generalpayslippdf', [PdfController::class, 'generalpayslippdf']);
+
+
 
 /************************* Payroll Controller **********************************************/
 
@@ -319,8 +340,211 @@ Route::post('/updatepayroll', [PayrollController::class, 'updatepayroll']);
 
 Route::get('/staffpayslip', [PayrollController::class, 'staffpayslip']);
 
+Route::get('/comparepayroll', [PayrollController::class, 'comparepayroll']);
+
+/******************************* Payroll ends here ******************************************/
 
 
+/******************************* Leave starts here ******************************************/
+
+Route::get('leavetypes', [LeaveController::class, 'leavetypes']);
+
+Route::post('submitleave', [LeaveController::class, 'submitleave']);
+
+Route::get('deleteleave', [LeaveController::class, 'deleteleave']);
+
+Route::get('leaverequest', [LeaveController::class, 'leaverequest']);
+
+Route::get('leaveduration', [LeaveController::class, 'leaveduration']);
+
+Route::post('submitleaveapplication', [LeaveController::class, 'submitleaveapplication']);
+
+Route::get('allleaveapplications', [LeaveController::class, 'allleaveapplications']);
+
+Route::get('myleaveapplications', [LeaveController::class, 'myleaveapplications']);
+
+Route::get('leavedetails', [LeaveController::class, 'leavedetails']);
+
+Route::post('leavereaction', [LeaveController::class, 'leavereaction']);
+
+Route::get('editleaverequest', [LeaveController::class, 'editleaverequest']);
+
+Route::post('submitleaveedit', [LeaveController::class, 'submitleaveedit']);
+
+
+
+
+/**************************** BEGINIG OF Category Controller **************************************/
+
+
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categorycreate', [CategoryController::class, 'create']);
+
+//  show the edit;
+Route::get('/category/{category}', [CategoryController::class, 'edit']);
+
+
+
+
+// Create New Stock
+Route::post('/category', [CategoryController::class, 'store']);
+
+// Edit New Stock
+Route::put('/category/{category}', [CategoryController::class, 'update']);
+Route::delete('/category/{category}', [CategoryController::class, 'destroy']);
+
+
+
+
+/**************************** END OF Category Controller **************************************/
+
+
+/**************************** BEGINIG OF Logistics Route **************************************/
+
+
+
+Route::get('/alllogistics', [LogisticController::class, 'index']);
+Route::get('/logisticrequest', [LogisticController::class, 'myindex']);
+Route::get('/editlogistic{logistic}', [LogisticController::class, 'edit']);
+Route::get('/logisticcreate', [LogisticController::class, 'create']);
+Route::get('/logistic{logistic}', [LogisticController::class, 'show']);
+Route::post('/logisticcreate', [LogisticController::class, 'store']);
+Route::delete('/logistic/{logistic}', [LogisticController::class, 'destroy']);
+Route::put('/logistic/edit/{logistic}', [LogisticController::class, 'update']);
+Route::put('/logistic/treat/{logistic}', [LogisticController::class, 'updatetreat']);
+Route::put('/logistic/retire/{logistic}', [LogisticController::class, 'updateretire']);
+
+
+/**************************** ENDING OF Logistics Route **************************************/
+
+
+
+
+/**************************** STARTING OF BUDGET Route **************************************/
+//create budget
+Route::post('/budgetcreate', [BudgetController::class, 'store']);
+
+// all budgets
+Route::get('/budgets', [BudgetController::class, 'index']);
+// all of my budgets
+Route::get('/mybudgets', [BudgetController::class, 'myindex']);
+// show details of my budget
+Route::get('/showmybudget{budget}', [BudgetController::class, 'show']);
+// show details of budget for treat
+Route::get('/showbudget{budget}', [BudgetController::class, 'show2']);
+
+// delete budget
+Route::delete('/budget/{budget}', [BudgetController::class, 'destroy']);
+
+//create budget
+Route::get('/budgetcreate', [BudgetController::class, 'create']);
+
+//showeditpage
+Route::get('/editbudget{budget}', [BudgetController::class, 'edit']);
+
+//showeditpage
+Route::put('/editbudget{budget}', [BudgetController::class, 'update']);
+
+
+//showeditpage
+Route::put('/treatbudget{budget}', [BudgetController::class, 'updatetreat']);
+
+//showeditpage
+Route::put('/bugetdisburse{budget}', [BudgetController::class, 'updatedisburse']);
+
+
+/**************************** Ending  OF BUDGET route **************************************/
+
+
+/**************************** STARTING OF TRAINING Route **************************************/
+
+//create budget 
+Route::get('/trainingcreate', [BuildingController::class, 'create']);
+Route::post('/trainingcreate', [BuildingController::class, 'store']);
+Route::put('/edittraining{training}', [BuildingController::class, 'update']);
+Route::put('/treattraining{training}', [BuildingController::class, 'treat']);
+Route::get('/mytrainings', [BuildingController::class, 'myindex']);
+Route::get('/trainings', [BuildingController::class, 'index']);
+Route::delete('/training/{training}', [BuildingController::class, 'destroy']);
+Route::get('/showmytraining{training}', [BuildingController::class, 'show']);
+Route::get('/showtraining{training}', [BuildingController::class, 'show2']);
+Route::get('/edittraining{training}', [BuildingController::class, 'edit']);
+
+
+/**************************** Ending  OF BUDGET route **************************************/
+
+
+
+
+/**************************** BEGINIG OF Procurement Controller **************************************/
+
+
+
+
+// Route::get('/stock/{stock}/show', [StockController::class, 'show']);
+Route::get('/procurementedit{procurement}', [ProcurementController::class, 'edit']);
+Route::put('/procurementedit{procurement}', [ProcurementController::class, 'update']);
+Route::get('/procurement', [ProcurementController::class, 'index']);
+Route::get('/myprocurements', [ProcurementController::class, 'myindex']);
+Route::get('/procurementcreate', [ProcurementController::class, 'create']);
+Route::post('/procurementcreate', [ProcurementController::class, 'store']);
+Route::get('/procurement{procurement}', [ProcurementController::class, 'show']);
+Route::post('/procurement{procurement}', [ProcurementController::class, 'treat']);
+Route::delete('/procurement/{procurement}', [ProcurementController::class, 'destroy']);
+
+
+
+
+
+
+
+
+/**************************** Start  OF Stock Request Controller **************************************/
+
+Route::get('/mystockrequest', [StockrequestController::class, 'myindex']);
+Route::put('/mystockrequestedit{request}', [StockrequestController::class, 'update']);
+Route::get('/mystockrequestedit{request}', [StockrequestController::class, 'edit']);
+
+Route::get('/mystockrequest{request}', [StockrequestController::class, 'myshow']);
+Route::delete('/mystockrequest{request}', [StockrequestController::class, 'destroy']);
+Route::put('/mystockrequest{request}', [StockrequestController::class, 'disburse']);
+
+
+
+Route::post('/stockrequestcreate', [StockrequestController::class, 'store']);
+Route::get('/stockrequestcreate', [StockrequestController::class, 'create']);
+
+
+
+
+Route::get('/stockrequestlisttreat{request}', [StockrequestController::class, 'treat']);
+
+Route::post('/stockrequestlisttreat{request}', [StockrequestController::class, 'updatetreat']);
+Route::get('/stockrequestlisttreat', [StockrequestController::class, 'stockrequestlisttreat']);
+Route::get('/stockrequest{request}', [StockrequestController::class, 'show']);
+Route::get('/stockrequest', [StockrequestController::class, 'index']);
+
+
+/**************************** End  OF Stock Request Controller **************************************/
+
+/**************************** BEGINIG OF Stocl Controller **************************************/
+
+
+// Route::post('/itask/store', [TaskController::class, 'store']);
+
+// Route::get('/stock/{stock}/show', [StockController::class, 'show']);
+///stock/restock/{{$stock->id}}
+
+Route::get('/createstock', [StockController::class, 'create']);
+Route::post('/createstock', [StockController::class, 'store']);
+Route::get('/stock', [StockController::class, 'index']);
+Route::get('/editstock{stock}', [StockController::class, 'edit']);
+Route::get('/stock{stock}', [StockController::class, 'show']);
+Route::put('/stock/edit/{stock}', [StockController::class, 'update']);
+Route::put('/stock/restock/{stock}', [StockController::class, 'restock']);
+Route::delete('/stock/{stock}', [StockController::class, 'destroy']);
+
+// Create New Stock
 
 
 
