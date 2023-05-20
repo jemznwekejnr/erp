@@ -26,6 +26,7 @@
 	<!-- Theme Style CSS -->
 	<link rel="stylesheet" href="{{ asset('assets/css/semi-dark.css') }}" />
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<title>Relia Energy ERP</title>
 
 	<script type="text/javascript" src="<your installation path>/tinymce/tinymce.min.js"></script>

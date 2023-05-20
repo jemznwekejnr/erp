@@ -123,6 +123,10 @@ Route::post('/submitinfo', [ProfileController::class, 'submitinfo']);
 
 Route::get('/deleteinfo', [ProfileController::class, 'deleteinfo']);
 
+Route::get('/allnotifications', [ProfileController::class, 'allnotifications']);
+
+Route::get('/alllogs', [ProfileController::class, 'alllogs']);
+
 
 /*************************** Memo Controller *************************************/
 
@@ -509,13 +513,8 @@ Route::get('/mystockrequest{request}', [StockrequestController::class, 'myshow']
 Route::delete('/mystockrequest{request}', [StockrequestController::class, 'destroy']);
 Route::put('/mystockrequest{request}', [StockrequestController::class, 'disburse']);
 
-
-
 Route::post('/stockrequestcreate', [StockrequestController::class, 'store']);
 Route::get('/stockrequestcreate', [StockrequestController::class, 'create']);
-
-
-
 
 Route::get('/stockrequestlisttreat{request}', [StockrequestController::class, 'treat']);
 

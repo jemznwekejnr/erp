@@ -133,6 +133,7 @@
 						</li>
 						<li> <a href="{{ url('banks') }}"><i class="bx bx-right-arrow-alt"></i>Banks</a></li>
 						<li> <a href="{{ url('companyinfo') }}"><i class="bx bx-right-arrow-alt"></i>Company Info</a>
+						<li> <a href="{{ url('alllogs') }}"><i class="bx bx-right-arrow-alt"></i>System Logs</a>
 						</li>
 					</ul>
 				</li>

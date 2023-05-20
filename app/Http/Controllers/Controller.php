@@ -27,6 +27,28 @@ class Controller extends BaseController
         return DB::table('departments')->where('id', $department)->value('departments');
     }
 
+
+    public static function totalprojects(){
+
+        return DB::table('projects')->count();
+    }
+
+
+    public static function pendingprojects(){
+
+        return DB::table('projects')->where('status', 'Pending')->count();
+    }
+
+    public static function ongoingprojects(){
+
+        return DB::table('projects')->where('status', 'Ongoing')->count();
+    }
+
+    public static function completedprojects(){
+
+        return DB::table('projects')->where('status', 'Completed')->count();
+    }
+
     public static function staffdepartment($staff){
 
         return DB::table('profile')->where('id', $staff)->value('department');

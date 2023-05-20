@@ -2010,5 +2010,19 @@ class ProfileController extends Controller
 
     }
 
+
+    public function allnotifications(){
+
+        return view('allnotifications');
+    }
+
+
+    public function alllogs(){
+
+        $logs = DB::table('logs')->orderBy('created_at', 'desc')->get();
+
+        return view('alllogs', ['logs' => $logs]);
+    }
+
     
 }

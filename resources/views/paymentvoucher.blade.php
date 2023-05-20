@@ -20,7 +20,7 @@
 				</div>
 		<!--end breadcrumb-->
 
-	 <form  method="post" action="submitpv" enctype="multipart/form-data" id="submitpv">
+	 <form  method="post" action="submitpv" enctype="multipart/form-data" id="submitpvs">
 	 	@csrf
 		<div class="card" style="padding-bottom: 30px;">
 		       <div class="col-12 col-lg-12">
@@ -30,21 +30,6 @@
 						<div>
 							<h4 class="mb-0">Payment Voucher (PV) Info</h4>
 						</div>
-						<!--<div class="dropdown ms-auto">
-							<a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
-							</a>
-							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="javascript:;">Action</a>
-								</li>
-								<li><a class="dropdown-item" href="javascript:;">Another action</a>
-								</li>
-								<li>
-									<hr class="dropdown-divider">
-								</li>
-								<li><a class="dropdown-item" href="javascript:;">Something else here</a>
-								</li>
-							</ul>
-						</div>-->
 					</div>
 				</div>
 				  <div class="card-body" style="padding-top: 30px;">
@@ -86,7 +71,7 @@
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Body <span class="required" >*</span></label>
-							<textarea class="form-control" id="body" name="body" placeholder="PV Body" maxlength="5000" required></textarea>
+							<textarea class="form-control" id="body" name="body" placeholder="PV Body" maxlength="5000" style="height: 200px;" required></textarea>
 								
 					 	</div>
 
@@ -170,8 +155,8 @@
 								<tr>
 									<td><p id="sn1">1 <span class="required" >*</span></p></td>
 									<td><input type="text" class="form-control" id="description1" name="description[]" placeholder="Description" required></td>
-									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="0" required></td>
-									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="0.00" required></td>
+									<td><input type="text" class="form-control qty" id="qty1" name="qty[]" value="0"></td>
+									<td><input type="text" class="form-control prc" id="price1" name="price[]" value="0.00"></td>
 									<td><p class="form-control amt" id="amount1">0.00</p>
 						 			<input type="hidden" class="form-control" id="amounts1" name="amounts[]" value="0.00"></td>
 									<td><input type="text" class="form-control" id="vatp1" name="vatp[]" value="0.00"></td>
@@ -215,7 +200,7 @@
 						</div>
 						<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">Net Amount in Words</label>
-							<input type="text" class="form-control" id="amountinwords" name="amountinwords" placeholder="Type Net Amount in Words" required>
+							<input type="text" class="form-control" id="amountinwords" name="amountinwords" placeholder="Type Net Amount in Words">
 					 	</div><br />
 					</div>
 				</div>
@@ -233,24 +218,32 @@
 						<div class="row g-3">
 						 	<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Bank Name</label>
-								<select name="bankname" id="sendto" class="form-control" required>
+								<select name="bankname" id="sendto" class="form-control">
 									<option value="">Select Bank</option>
 									@foreach($banks as $bank)
 									<option>{{ $bank->banks }}</option>
 									@endforeach
 								</select>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-2">
 						 		<label for="inputFirstName" class="form-label">Account Number</label>
-								<input type="number" name="accountnumber" maxlength="10" class="form-control" placeholder="Account Number" required>
+								<input type="number" name="accountnumber" maxlength="10" class="form-control" placeholder="Account Number">
 							</div>
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 						 		<label for="inputFirstName" class="form-label">Account Name</label>
-								<input type="text" name="accountname" class="form-control" placeholder="Account Name" required>
+								<input type="text" name="accountname" class="form-control" placeholder="Account Name">
+							</div>
+							<div class="col-sm-2">
+						 		<label class="form-label">Submit Status</label>
+								<select name="submitstatus" class="form-control" required>
+									<option value="">Select Status</option>
+									<option>Saved</option>
+									<option>Submit</option>
+								</select>
 							</div>
 						 	<div class="col-sm-2 text-right float-right" style="padding-top: 25px;">
 						 		<label for="inputFirstName" class="form-label"></label>
-								<button class="btn btn-info" type="submit" id="button">Submit</button>
+								<button class="btn btn-info button" type="submit" id="button">Submit</button>
 								<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 							</div>
 						</div>

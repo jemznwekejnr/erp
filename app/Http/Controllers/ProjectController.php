@@ -969,7 +969,7 @@ class ProjectController extends Controller
                     }
 
 
-                $this->createnotification($copies[$i], 'Client Invoice', $clientdata, 'Unread', 'allinvoice');
+                $this->createnotification($copies[$i], 'Client Invoice', $clientdata, 'Unread', 'allinvoices');
 
             }
 

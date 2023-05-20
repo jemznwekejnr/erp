@@ -13,7 +13,7 @@
 							<ol class="breadcrumb mb-0 p-0" style="background-color: transparent;">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-copy"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Create New Payment Voucher</li>
+								<li class="breadcrumb-item active" aria-current="page">Edit Payment Voucher</li>
 							</ol>
 						</nav>
 					</div>
@@ -52,8 +52,8 @@
 					 		<label for="inputFirstName" class="form-label">PV Title</label>
 							<input type="text" class="form-control" id="title" name="title" value="{{ $pvs[0]->title }}" required>
 							<input type="hidden" class="form-control" id="id" name="id" value="{{ $pvs[0]->id }}">
-					 	</div><br />
-					 	<div class="col-sm-12">
+					 	</div>
+					 	<div class="col-sm-12" style="margin-top: 20px;">
 					 	<div class="row g-3">
 						 	<div class="col-sm-6">
 								<label for="inputFirstName" class="form-label">PV Recipient</label>
@@ -78,7 +78,7 @@
 					</div>
 					 	<div class="col-sm-12">
 					 		<label for="inputFirstName" class="form-label">PV Body</label>
-							<textarea class="form-control" id="body" name="body" placeholder="PV Body" required>{{ $pvs[0]->body }}</textarea>
+							<textarea class="form-control" id="body" name="body" placeholder="PV Body" style="height: 150px" required>{{ $pvs[0]->body }}</textarea>
 								
 					 	</div>
 
@@ -260,13 +260,21 @@
 						<hr/>
 					<div class="col-sm-12">
 						<div class="row g-3">
-						 	<div class="col-sm-10">
+						 	<div class="col-sm-8">
 						 		<label for="inputFirstName" class="form-label">What changed on this PV</label>
 								<input type="text" name="changes" id="changes" class="form-control" placeholder="Changes made">
 							</div>
+							<div class="col-sm-2">
+						 		<label class="form-label">Submit Status</label>
+								<select name="submitstatus" class="form-control" required>
+									<option value="">Select Status</option>
+									<option>Saved</option>
+									<option>Submit</option>
+								</select>
+							</div>
 						 	<div class="col-sm-2 text-right float-right" style="padding-top: 25px;">
 						 		<label for="inputFirstName" class="form-label"></label>
-								<button class="btn btn-info" type="submit" id="button">Submit</button>
+								<button class="btn btn-info button" type="submit" id="button">Submit</button>
 								<img src="{{ asset('assets/images/processing.gif') }}" width="50px;" id="processing" class="processing" style="display: none;">
 							</div>
 						</div>

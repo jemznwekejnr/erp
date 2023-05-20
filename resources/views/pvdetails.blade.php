@@ -33,8 +33,10 @@
 							<ul class="dropdown-menu">
 								@if($pvs[0]->sentform == Auth::user()->profileid)
 								@if(app\Http\Controllers\Controller::checkrole(Auth::user()->role, 2, 7) == "allow")
+								@if($pvs[0]->status == "Saved" || $pvs[0]->status == "Pending" || $pvs[0]->status == "Rejected")
 								<li><a class="dropdown-item" href="{{ url('editpv?id='.$pvs[0]->id) }}">Edit PV</a>
 								</li>
+								@endif
 								@endif
 								@endif
 								<li>

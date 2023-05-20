@@ -28,11 +28,12 @@ class Pv extends Migration
             $table->double("totalgross");
             $table->double("totalwht");
             $table->double("totalnet");
-            $table->string("accountno");
-            $table->string("accountname");
-            $table->string("bank");
-            $table->string("amountinwords");
+            $table->string("accountno")->nullable();
+            $table->string("accountname")->nullable();
+            $table->string("bank")->nullable();
+            $table->string("amountinwords")->nullable();
             $table->string("project");
+            $table->string("submission");
             $table->timestamps();
         });
     }

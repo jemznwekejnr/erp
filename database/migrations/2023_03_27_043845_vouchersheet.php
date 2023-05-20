@@ -17,15 +17,15 @@ class Vouchersheet extends Migration
             $table->id();
             $table->string("pvid");
             $table->string("description");
-            $table->integer("qty");
-            $table->double("unitprice");
-            $table->double("amount");
-            $table->double("vatpercent");
-            $table->double("vatamount");
-            $table->double("grossamount");
-            $table->double("whtpercent");
-            $table->double("whtamount");
-            $table->double("netamount");
+            $table->integer("qty")->nullable();
+            $table->double("unitprice")->nullable();
+            $table->double("amount")->nullable();
+            $table->double("vatpercent")->nullable();
+            $table->double("vatamount")->nullable();
+            $table->double("grossamount")->nullable();
+            $table->double("whtpercent")->nullable();
+            $table->double("whtamount")->nullable();
+            $table->double("netamount")->nullable();
             $table->timestamps();
         });
     }

@@ -105,8 +105,6 @@ class PVController extends Controller
 
     public function submitpv(Request $request){
 
-        //dd($request);
-
         $title = $request->title;
         $sendto = $request->sendto;
         $copies = $request->copies;
@@ -117,6 +115,7 @@ class PVController extends Controller
         $accountname = $request->accountname;
         $amountinwords = $request->amountinwords;
         $project = $request->project;
+        $submission = $request->submitstatus;
 
         $data = array();
 
@@ -127,7 +126,13 @@ class PVController extends Controller
         $data['copies'] = implode(",", $copies);
         }
         $data['body'] = $body;
-        $data['status'] = 'Pending';
+
+        if($submission == "Saved"){
+            $data['status'] = 'Saved';
+        }else{
+            $data['status'] = 'Pending';
+        }
+        
 
         if(!empty($attachment)){
             try{
@@ -152,6 +157,7 @@ class PVController extends Controller
         $data['totalnet'] = $request->totalnets;
         $data['amountinwords'] = $request->amountinwords;
         $data['project'] = $request->project;
+        $data['submission'] = $submission;
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
@@ -175,51 +181,51 @@ class PVController extends Controller
             $count = count($request->description);
 
             for($i=0; $i<$count; $i++){
+                
+                    $description = $request->description;
+                    $qty = $request->qty;
+                    $price = $request->price;
+                    $amounts = $request->amounts;
+                    $vatp = $request->vatp;
+                    $vata = $request->vata;
+                    $gross = $request->gross;
+                    $whtp = $request->whtp;
+                    $whta = $request->whta;
+                    $net = $request->net;
 
-                $description = $request->description;
-                $qty = $request->qty;
-                $price = $request->price;
-                $amounts = $request->amounts;
-                $vatp = $request->vatp;
-                $vata = $request->vata;
-                $gross = $request->gross;
-                $whtp = $request->whtp;
-                $whta = $request->whta;
-                $net = $request->net;
+                    $sdata = array();
 
-                $sdata = array();
-
-                $sdata['pvid'] = $create;
-                $sdata['description'] = $description[$i];
-                $sdata['qty'] = $qty[$i];
-                $sdata['unitprice'] = $price[$i];
-                $sdata['amount'] = $amounts[$i];
-                $sdata['vatpercent'] = $vatp[$i];
-                $sdata['vatamount'] = $vata[$i];
-                $sdata['grossamount'] = $gross[$i];
-                $sdata['whtpercent'] = $whtp[$i];
-                $sdata['whtamount'] = $whta[$i];
-                $sdata['netamount'] = $net[$i];
-                $sdata['created_at'] = date('Y-m-d H:i:s');
-                $sdata['updated_at'] = date('Y-m-d H:i:s');
+                    $sdata['pvid'] = $create;
+                    $sdata['description'] = $description[$i];
+                    $sdata['qty'] = $qty[$i];
+                    $sdata['unitprice'] = $price[$i];
+                    $sdata['amount'] = $amounts[$i];
+                    $sdata['vatpercent'] = $vatp[$i];
+                    $sdata['vatamount'] = $vata[$i];
+                    $sdata['grossamount'] = $gross[$i];
+                    $sdata['whtpercent'] = $whtp[$i];
+                    $sdata['whtamount'] = $whta[$i];
+                    $sdata['netamount'] = $net[$i];
+                    $sdata['created_at'] = date('Y-m-d H:i:s');
+                    $sdata['updated_at'] = date('Y-m-d H:i:s');
 
                 
-                try {
+                    try {
 
-                $addsheet = DB::table('vouchersheet')->insert($sdata);
+                    $addsheet = DB::table('vouchersheet')->insert($sdata);
 
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    // something went wrong
-                    return response()->json([
-                        'message' => 'error',
-                        'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
-                    ]);
-                }
-
+                    } catch (\Exception $e) {
+                        DB::rollback();
+                        // something went wrong
+                        return response()->json([
+                            'message' => 'error',
+                            'info' => 'Error performing this action, make sure all the required fields are provided then try again.'
+                        ]);
+                    }
+                
             }
 
-
+            if($submission == "Submit"){
             //send email to actors
             $username = $this->staffname($sendto);
             $useremail = $this->profileemail($sendto);
@@ -240,6 +246,8 @@ class PVController extends Controller
             //create recipient notification
 
             $this->createnotification($sendto, 'Payment Voucher', $title, 'Unread', 'allpvs');
+
+            }
 
             if(!empty($copies)){
             $total = count($copies);
@@ -314,6 +322,7 @@ class PVController extends Controller
         $accountname = $request->accountname;
         $amountinwords = $request->amountinwords;
         $project = $request->project;
+        $submission = $request->submitstatus;
 
         $data = array();
 
@@ -344,6 +353,12 @@ class PVController extends Controller
         $data['totalnet'] = $request->totalnets;
         $data['amountinwords'] = $amountinwords;
         $data['project'] = $project;
+        $data['submission'] = $submission;
+        if($submission == "Saved"){
+            $data['status'] = 'Saved';
+        }else{
+            $data['status'] = 'Pending';
+        }
         $data['updated_at'] = date('Y-m-d H:i:s');
 
 
@@ -424,7 +439,7 @@ class PVController extends Controller
 
             $pvtrail = DB::table('pvtrail')->insert($pdata);
 
-
+            if($submission == "Submit"){
             //send email to actors
             $username = $this->staffname($sendto);
             $useremail = $this->profileemail($sendto);
@@ -442,6 +457,8 @@ class PVController extends Controller
 
                 //create recipient notification
                 $this->createnotification($sendto, 'Payment Voucher', $title, 'Unread', 'sentpvs');
+            }
+
 
             if(!empty($copies)){
             $total = count($copies);
